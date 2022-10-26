@@ -37,22 +37,28 @@ public class PriceModelImpl implements PriceModel{
 
     HashMap<String, HashMap<String, String[]>> map = new HashMap<>();
     HashMap<String, String[]> innerMap = new HashMap<>();
+    StringBuilder output = new StringBuilder();
 
     try {
       in = url.openStream();
+      int b;
 
-      try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-        while (reader.ready()) {
-          String line = reader.readLine();
-          String[] arrOfStr = line.split(",", 0);
-          String[] subarray = IntStream.range(1, 6)
-                  .mapToObj(i -> arrOfStr[i])
-                  .toArray(String[]::new);
-          innerMap.put(arrOfStr[0], subarray);
-        }
-      }catch (IOException e) {
-        e.printStackTrace();
+      while ((b=in.read())!=-1) {
+        output.append((char)b);
       }
+
+      String[] strArr = output.toString().split("\r\n");
+      for (String line : strArr) {
+        if (line.charAt(0) == 't') { //Skip first line
+          continue;
+        }
+        String[] arrOfStr = line.split(",", 0);
+        String[] subarray = IntStream.range(1, 6)
+                .mapToObj(i -> arrOfStr[i])
+                .toArray(String[]::new);
+        innerMap.put(arrOfStr[0], subarray);
+      }
+
     }
     catch (IOException e) {
       throw new IllegalArgumentException("No price data found for "+stockSymbol);
