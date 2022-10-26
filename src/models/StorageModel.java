@@ -5,19 +5,19 @@ import java.util.HashMap;
 /**
  * Description of interface.
  */
-public interface StorageModel {
+interface StorageModel {
 
   /**
    * Description of method.
    *
    * @return Hashmap.
    */
-  HashMap<String, HashMap<String, String[]>> read();
+  HashMap<String, HashMap<String, Integer>> read();
 
   /**
    * Description of method.
    *
    * @param data Hashmap.
    */
-  void write(HashMap<String, HashMap<String, String[]>> data);
+  void write(HashMap<String, HashMap<String, Integer>> data);
 }
