@@ -1,0 +1,42 @@
+Model
+-StrorageModel & Impl
+    -Read()
+    -Write()
+
+-PriceModel & Impl
+    -getValue(date, ticker)
+    -getAPIData(ticker)
+
+-PortfolioModel & Impl
+    -Constructor - to get data from memory & initialize class variables
+    -Persist()
+    	- Update class variables
+    	- Update storageModel
+    - getPortfolioNames()
+    - getProtfolioComposition(portfolioName)
+    - getPortfolioValue(portfolioName)
+
+
+
+
+
+View
+- PortfolioView & Impl
+    - displayActions()
+    - displayPortfolios()
+    - displayPortComposition()
+    - displayPortfolioValue()
+
+
+
+
+Controller
+- PortfolioController  & PrortofolioControllerImpl
+    - go()
+    - createPortfolio (Returns 2D Hashmap & goes back to go)
+        - Accept Name
+        - start Loop
+            - Ticker, Quantity
+        - End
+    - getComposition()
+    - getValue()
