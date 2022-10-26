@@ -38,7 +38,12 @@ public class PortfolioControllerImpl implements PortfolioController {
           System.out.println(map);
           break;
         case 2:
-          System.out.println("\nGet portfolio composition\n");
+          // System.out.println("\nGet portfolio composition\n");
+          HashMap<String, Integer> stock1 = new HashMap<>();
+          stock1.put("C", 56);
+          stock1.put("B", 36);
+          stock1.put("A", 46);
+          view.displayPortfolioComposition("College savings 1", stock1);
           break;
         case 3:
           System.out.println("\nGet portfolio value\n");
