@@ -29,4 +29,12 @@ public interface PortfolioModel {
    */
   String[] getPortfolios();
 
+  /**
+   * Returns the stock name, Current value from the portfolio.
+   * @return Hashmap containing name, value.
+   */
+  HashMap<String, Float> getPortfolioValues(String name, String date);
+
+  Float getPortfolioTotal(HashMap<String, Float> portfolioValues);
+
 }

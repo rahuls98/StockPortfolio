@@ -45,7 +45,15 @@ public class PortfolioControllerImpl implements PortfolioController {
           view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
           break;
         case 3:
-          System.out.println("\nGet portfolio value\n");
+          portfolios = model.getPortfolios();
+          view.displayPortfolios(portfolios);
+          choice = sc.nextInt();
+          portfolioName = portfolios[choice - 1];
+          System.out.println("Enter the date for which you want the value");
+          String date = sc.next();
+          HashMap<String, Float> portValues = model.getPortfolioValues(portfolioName, date);
+          view.displayPortfolioValue(portfolioName, portValues);
+          System.out.println("Total Price of Portfolio is " + String.format("%.4f", model.getPortfolioTotal(portValues)));
           break;
         case 4:
           return;

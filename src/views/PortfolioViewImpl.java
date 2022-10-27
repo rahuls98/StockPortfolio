@@ -39,4 +39,16 @@ public class PortfolioViewImpl implements PortfolioView {
       System.out.format("%-12s %-3s %-12s \n", entry.getKey(), "|", entry.getValue());
     }
   }
+
+  @Override
+  public void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues) {
+    System.out.println("\n");
+    System.out.println("Portfolio: " + name);
+    System.out.format("%s", "-------------------------------\n");
+    System.out.format("%-12s %-3s %-12s \n", "Stock", "|", "Value");
+    System.out.format("%s", "-------------------------------\n");
+    for (Map.Entry<String, Float> entry : portfolioValues.entrySet()) {
+      System.out.format("%-12s %-3s %-12s \n", entry.getKey(), "|", entry.getValue());
+    }
+  }
 }
