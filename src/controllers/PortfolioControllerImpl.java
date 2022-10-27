@@ -39,10 +39,7 @@ public class PortfolioControllerImpl implements PortfolioController {
           break;
         case 2:
           String[] portfolios = model.getPortfolios();
-          for (String portfolio : portfolios) {
-            System.out.println(portfolio);
-          }
-          System.out.println("Enter Portfolio Number");
+          view.displayPortfolios(portfolios);
           choice = sc.nextInt();
           String portfolioName = portfolios[choice - 1];
           view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
