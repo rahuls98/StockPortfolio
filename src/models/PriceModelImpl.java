@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
+import static java.lang.Thread.sleep;
+
 public class PriceModelImpl implements PriceModel {
   private HashMap<String, HashMap<String, String[]>> priceMap;
 
@@ -18,8 +20,10 @@ public class PriceModelImpl implements PriceModel {
 
   @Override
   public float getPriceOnDate(String ticker, String date) {
+    // TODO : Handle illegal date
     if ((!this.priceMap.containsKey(ticker)) || (!(this.priceMap.get(ticker).containsKey(date)))) {
       try {
+        sleep(3000);
         this.priceMap.put(ticker, callAPI(ticker));
       } catch (Exception e) {
         //TODO: Handle exception
