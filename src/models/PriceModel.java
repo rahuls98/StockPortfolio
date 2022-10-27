@@ -15,6 +15,8 @@ public interface PriceModel {
    */
   float getPriceOnDate(String ticker, String date);
 
+  float[] getPriceForTickers(String[] tickers, String date);
+
   /**
    * Makes a call to Stock API and gets price.
    * @param ticker Ticker of company.

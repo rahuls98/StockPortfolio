@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
@@ -13,9 +14,29 @@ import static java.lang.Thread.sleep;
 
 public class PriceModelImpl implements PriceModel {
   private HashMap<String, HashMap<String, String[]>> priceMap;
+  private final String key = "0KD9ZFT8VD5QTNLQ";
 
   public PriceModelImpl() {
-    priceMap = new HashMap<>();
+    this.priceMap = new HashMap<>();
+  }
+
+
+  @Override
+  public float[] getPriceForTickers(String[] tickers, String date) {
+    int count = 0;
+    float[] prices = new float[tickers.length];
+    for(String ticker: tickers) {
+      count += 1;
+      prices[count - 1] = this.getPriceOnDate(ticker, date);
+      if ((count % 5) == 0) {
+        try {
+          sleep(60000);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+    return prices;
   }
 
   @Override
@@ -23,18 +44,19 @@ public class PriceModelImpl implements PriceModel {
     // TODO : Handle illegal date
     if ((!this.priceMap.containsKey(ticker)) || (!(this.priceMap.get(ticker).containsKey(date)))) {
       try {
-        sleep(3000);
         this.priceMap.put(ticker, callAPI(ticker));
       } catch (Exception e) {
         //TODO: Handle exception
       }
     }
+
     return Float.parseFloat(this.priceMap.get(ticker).get(date)[3]);
   }
 
+
   @Override
   public HashMap<String, String[]> callAPI(String ticker) {
-    String apiKey = "BHKT7UTDPMVQV5QF";
+    String apiKey = this.key;
     String stockSymbol = ticker;
     URL url;
 
