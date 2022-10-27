@@ -9,14 +9,27 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
-public class PriceModelImpl implements PriceModel{
-  @Override
-  public float getPriceOnDate(String ticker, String date) {
-    return 0;
+public class PriceModelImpl implements PriceModel {
+  private HashMap<String, HashMap<String, String[]>> priceMap;
+
+  public PriceModelImpl() {
+    priceMap = new HashMap<>();
   }
 
   @Override
-  public HashMap<String, HashMap<String, String[]>> callAPI(String ticker) throws MalformedURLException {
+  public float getPriceOnDate(String ticker, String date) {
+    if ((!this.priceMap.containsKey(ticker)) || (!(this.priceMap.get(ticker).containsKey(date)))) {
+      try {
+        this.priceMap.put(ticker, callAPI(ticker));
+      } catch (Exception e) {
+        //TODO: Handle exception
+      }
+    }
+    return Float.parseFloat(this.priceMap.get(ticker).get(date)[3]);
+  }
+
+  @Override
+  public HashMap<String, String[]> callAPI(String ticker) {
     String apiKey = "BHKT7UTDPMVQV5QF";
     String stockSymbol = ticker;
     URL url;
@@ -26,16 +39,14 @@ public class PriceModelImpl implements PriceModel{
               + ".co/query?function=TIME_SERIES_DAILY"
               + "&outputsize=full"
               + "&symbol"
-              + "=" + stockSymbol + "&apikey="+apiKey+"&datatype=csv");
-    }
-    catch (MalformedURLException e) {
-      throw new MalformedURLException("the alphavantage API has either changed or "
+              + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("the alphavantage API has either changed or "
               + "no longer works");
     }
 
     InputStream in;
 
-    HashMap<String, HashMap<String, String[]>> map = new HashMap<>();
     HashMap<String, String[]> innerMap = new HashMap<>();
     StringBuilder output = new StringBuilder();
 
@@ -43,8 +54,8 @@ public class PriceModelImpl implements PriceModel{
       in = url.openStream();
       int b;
 
-      while ((b=in.read())!=-1) {
-        output.append((char)b);
+      while ((b = in.read()) != -1) {
+        output.append((char) b);
       }
 
       String[] strArr = output.toString().split("\r\n");
@@ -59,11 +70,9 @@ public class PriceModelImpl implements PriceModel{
         innerMap.put(arrOfStr[0], subarray);
       }
 
+    } catch (IOException e) {
+      throw new IllegalArgumentException("No price data found for " + stockSymbol);
     }
-    catch (IOException e) {
-      throw new IllegalArgumentException("No price data found for "+stockSymbol);
-    }
-    map.put(ticker, innerMap);
-    return map;
+    return innerMap;
   }
 }

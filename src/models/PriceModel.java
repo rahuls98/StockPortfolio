@@ -20,6 +20,6 @@ public interface PriceModel {
    * @param ticker Ticker of company.
    * @return String of all Values from today to 2014.
    */
-  HashMap<String, HashMap<String, String[]>> callAPI(String ticker) throws MalformedURLException;
+  HashMap<String, String[]> callAPI(String ticker) throws MalformedURLException;
 }
 

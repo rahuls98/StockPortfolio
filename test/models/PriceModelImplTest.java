@@ -10,11 +10,9 @@ import static org.junit.Assert.*;
 public class PriceModelImplTest {
 
   @Test
-  public void sanityTest() throws MalformedURLException {
-    PriceModel pm = new PriceModelImpl();
-    HashMap<String, HashMap<String, String[]>> map;
-    map = pm.callAPI("GOOG");
-    System.out.println(map);
+  public void testPrice() {
+    PriceModel model = new PriceModelImpl();
+    System.out.println(model.getPriceOnDate("GOOG", "2022-10-25"));
   }
 
 }

@@ -35,15 +35,17 @@ public class PortfolioControllerImpl implements PortfolioController {
         case 1:
           System.out.println("\nCreate portfolio\n");
           HashMap<String, HashMap<String, Integer>> map = readPortfolioStocks();
-          System.out.println(map);
+          this.model.updatePortfolio(map);
           break;
         case 2:
-          // System.out.println("\nGet portfolio composition\n");
-          HashMap<String, Integer> stock1 = new HashMap<>();
-          stock1.put("C", 56);
-          stock1.put("B", 36);
-          stock1.put("A", 46);
-          view.displayPortfolioComposition("College savings 1", stock1);
+          String[] portfolios = model.getPortfolios();
+          for (String portfolio : portfolios) {
+            System.out.println(portfolio);
+          }
+          System.out.println("Enter Portfolio Number");
+          choice = sc.nextInt();
+          String portfolioName = portfolios[choice - 1];
+          view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
           break;
         case 3:
           System.out.println("\nGet portfolio value\n");
@@ -57,8 +59,8 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
   }
 
-  @Override
-  public HashMap<String, HashMap<String, Integer>> readPortfolioStocks() {
+
+  private HashMap<String, HashMap<String, Integer>> readPortfolioStocks() {
     HashMap<String, HashMap<String, Integer>> map = new HashMap<>();
     HashMap<String, Integer> innerMap = new HashMap<>();
     Scanner sc = new Scanner(System.in);
@@ -76,7 +78,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       String[] arr = line.split(" ");
       innerMap.put(arr[0], Integer.parseInt(arr[1]));
     }
-    System.out.println("We have recorded your Entry to Portfolio: "+name);
+    System.out.println("We have recorded your Entry to Portfolio: " + name);
     map.put(name, innerMap);
     return map;
   }

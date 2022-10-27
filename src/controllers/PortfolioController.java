@@ -12,5 +12,4 @@ public interface PortfolioController {
    */
   void go();
 
-  HashMap<String, HashMap<String, Integer>> readPortfolioStocks();
 }
