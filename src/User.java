@@ -1,14 +1,17 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
 
-  private ArrayList<Portfolio> portfolios;
+  private String userName;
+  private HashMap<String, Portfolio> portfolios;
 
-  public User() {
-    this.portfolios = new ArrayList<>();
+  public User(String name) {
+    this.userName = name;
+    this.portfolios = new HashMap<>();
   }
 
   public void addPortfolio(Portfolio portfolio) {
-    portfolios.add(portfolio);
+    portfolios.put(this.userName, portfolio);
   }
 }

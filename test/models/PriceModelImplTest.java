@@ -13,17 +13,17 @@ public class PriceModelImplTest {
   @Test
   public void testPrice() {
     PriceModel model = new PriceModelImpl();
-    System.out.println(model.getPriceOnDate("GOOG", "2022-10-25"));
+//    System.out.println(model.getPriceOnDate("GOOG", "2022-10-25"));
   }
 
   @Test
   public void testTimeout() throws InterruptedException {
     PriceModel model = new PriceModelImpl();
-    String[] tickers = new String[]{"AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "TSLA",
-            "BRK/A", "BRK/B", "UNH", "JNJ", "XOM", "V", "WMT"};
-    for (String ticker : tickers) {
-      System.out.println(model.getPriceOnDate(ticker, "2022-10-25"));
-//      sleep(10000);
+    String[] tickers = new String[]{"AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "TSLA", "UNH", "JNJ", "XOM", "V", "WMT",
+            "HD", "MA", "BAC", "META", "KO"};
+    float[] prices = model.getPriceForTickers(tickers, "2022-10-25");
+    for (float price : prices) {
+      System.out.println(price);
     }
   }
 }

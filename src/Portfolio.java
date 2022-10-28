@@ -4,13 +4,11 @@ import java.util.HashMap;
 public class Portfolio {
 
   private String name;
-  private ArrayList<Stock> stocks;
-  private HashMap<String, Integer> quantities;
+  private HashMap<Stock, Integer> stocks;
 
   public Portfolio(String name) {
     this.name = name;
-    this.stocks = new ArrayList<>();
-    this.quantities = new HashMap<>();
+    this.stocks = new HashMap<>();
   }
 
   public String getName() {
@@ -18,7 +16,6 @@ public class Portfolio {
   }
 
   public void addStock(Stock stock, int quantity) {
-    stocks.add(stock);
-    quantities.put(stock.getTicker(), quantity);
+    stocks.put(stock, quantity);
   }
 }
