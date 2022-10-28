@@ -6,6 +6,11 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+
+import entities.Portfolio;
+import entities.Stock;
+import entities.User;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -47,7 +52,7 @@ public class StorageModelLocalImplTest {
     File localStorageFile = new File("./localStorage.xml");
     if (localStorageFile.delete()) {
       setup();
-      assertNull(localStorage.read());
+      assertNull(localStorage.read("Default"));
     } else {
       fail();
     }
@@ -55,24 +60,36 @@ public class StorageModelLocalImplTest {
 
   @Test
   public void testRead() {
-    System.out.println(localStorage.read());
+    User user = localStorage.read("Test");
+    HashMap<String, Portfolio> portfolios = user.getPortfolios();
+    for (Map.Entry<String, Portfolio> portfolio : portfolios.entrySet()) {
+      for (Map.Entry<Stock, Integer> stock : portfolio.getValue().getStocks().entrySet()) {
+        System.out.println(stock.getKey().getTicker());
+        System.out.println(stock.getValue());
+      }
+    }
   }
 
   @Test
   public void testWrite() {
-    HashMap<String, HashMap<String, Integer>> data = new HashMap<>();
-    HashMap<String, Integer> stock1 = new HashMap<>();
-    stock1.put("C", 56);
-    stock1.put("B", 36);
-    stock1.put("A", 46);
-    data.put("College savings 1", stock1);
+    User user = new User("Test");
+    Portfolio testPortfolio = new Portfolio("Test portfolio");
+    Stock stockX = new Stock("X");
+    Stock stockY = new Stock("Y");
+    Stock stockZ = new Stock("Z");
+    testPortfolio.addStock(stockX, 56);
+    testPortfolio.addStock(stockY, 36);
+    testPortfolio.addStock(stockZ, 46);
+    user.addPortfolio(testPortfolio);
 
-    HashMap<String, Integer> stock2 = new HashMap<>();
-    stock2.put("E", 100);
-    stock2.put("F", 12);
-    data.put("College savings 2", stock2);
-
-    localStorage.write(data);
+    Portfolio testPortfolio2 = new Portfolio("Test portfolio 2");
+    Stock stockA = new Stock("A");
+    Stock stockB = new Stock("B");
+    Stock stockC = new Stock("C");
+    testPortfolio2.addStock(stockA, 56-10);
+    testPortfolio2.addStock(stockB, 36-10);
+    testPortfolio2.addStock(stockC, 46-10);
+    user.addPortfolio(testPortfolio2);
+    localStorage.write(user);
   }
-
 }
