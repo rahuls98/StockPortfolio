@@ -80,7 +80,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     int stockQuantity;
     Stock stock;
     for (int i = 0; i < n; i++) {
-      System.out.print("Stock " + (i + 1) + " ticker (Enter 'end' to exit): ");
+      System.out.print("Stock " + (i + 1) + " ticker: ");
       stockName = sc.next();
       System.out.print("Quantity : ");
       stockQuantity = sc.nextInt();

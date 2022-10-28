@@ -3,6 +3,8 @@ package models;
 import java.util.HashMap;
 import java.util.Map;
 
+import entities.Portfolio;
+
 /**
  * Description of class.
  */
@@ -10,6 +12,7 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   private HashMap<String, HashMap<String, Integer>> map;
   private StorageModel store;
+
 
   public PortfolioModelImpl() {
     try {
