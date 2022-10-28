@@ -2,6 +2,8 @@ package models;
 
 import java.util.HashMap;
 
+import entities.User;
+
 /**
  * Description of interface.
  */
@@ -12,12 +14,12 @@ interface StorageModel {
    *
    * @return Hashmap.
    */
-  HashMap<String, HashMap<String, Integer>> read();
+  User read(String userName);
 
   /**
    * Description of method.
    *
    * @param data Hashmap.
    */
-  void write(HashMap<String, HashMap<String, Integer>> data);
+  void write(User user);
 }

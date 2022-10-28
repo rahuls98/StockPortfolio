@@ -20,12 +20,12 @@ public class PortfolioModelImpl implements PortfolioModel {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    HashMap<String, HashMap<String, Integer>> mapFromStorage = store.read();
-    if (mapFromStorage != null) {
-      this.map = store.read();
-    } else {
-      this.map = new HashMap<>();
-    }
+//    HashMap<String, HashMap<String, Integer>> mapFromStorage = store.read("Default");
+//    if (mapFromStorage != null) {
+//      this.map = store.read("Default");
+//    } else {
+//      this.map = new HashMap<>();
+//    }
   }
 
   @Override
@@ -33,7 +33,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     for (String key : portfolio.keySet()) {
       this.map.put(key, portfolio.get(key));
     }
-    store.write(this.map);
+    //store.write(this.map);
   }
 
   @Override

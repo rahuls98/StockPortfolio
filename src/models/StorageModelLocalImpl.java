@@ -22,6 +22,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import entities.Portfolio;
+import entities.Stock;
+import entities.User;
+
 /**
  * Description of class.
  */
@@ -40,18 +44,18 @@ class StorageModelLocalImpl implements StorageModel {
   }
 
   @Override
-  public HashMap<String, HashMap<String, Integer>> read() {
+  public User read(String userName) {
     File newFile = new File(pathToLocalStorage);
     if (newFile.length() == 0) {
       return null;
     }
     Document document = readXmlFromFile();
-    return xmlToHashmap(document);
+    return xmlToUser(document, userName);
   }
 
   @Override
-  public void write(HashMap<String, HashMap<String, Integer>> data) {
-    Document document = hashmapToXml(data);
+  public void write(User user) {
+    Document document = userToXml(user);
     writeXmlToFile(document);
   }
 
@@ -67,52 +71,57 @@ class StorageModelLocalImpl implements StorageModel {
     }
   }
 
-  private HashMap<String, HashMap<String, Integer>> xmlToHashmap(Document document) {
-    HashMap<String, HashMap<String, Integer>> portfolios = new HashMap<>();
-    NodeList portfolioList = document.getElementsByTagName("portfolio");
-    Node portfolioNode;
-    Element portfolioElement;
-    NodeList stockList;
-    HashMap<String, Integer> stocks;
-    Node stock;
-    Element stockElement;
-    for (int i = 0; i < portfolioList.getLength(); i++) {
-      portfolioNode = portfolioList.item(i);
-      if (portfolioNode.getNodeType() == Node.ELEMENT_NODE) {
-        portfolioElement = (Element) portfolioNode;
-        stockList = portfolioElement.getElementsByTagName("stock");
-        stocks = new HashMap<>();
-        for (int j = 0; j < stockList.getLength(); j++) {
-          stock = stockList.item(j);
-          if (stock.getNodeType() == Node.ELEMENT_NODE) {
-            stockElement = (Element) stock;
-            stocks.put(stockElement.getAttribute("symbol"),
-                    Integer.parseInt(stockElement.getAttribute("quantity")));
-          }
-        }
-        portfolios.put(portfolioElement.getAttribute("title"), stocks);
+  private User xmlToUser(Document document, String userName) {
+    User user = new User(userName);
+    NodeList userList = document.getElementsByTagName("user");
+    Element targetUser = null;
+    for (int i = 0; i < userList.getLength(); i++) {
+      Node userNode = userList.item(i);
+      Element userElement = (Element) userNode;
+      if (userElement.getAttribute("name").equals(userName)) {
+        targetUser = userElement;
       }
     }
-    return portfolios;
+    NodeList portfolioList = targetUser.getElementsByTagName("portfolio");
+    for (int i = 0; i < portfolioList.getLength(); i++) {
+      Node portfolioNode = portfolioList.item(i);
+      Element portfolioElement = (Element) portfolioNode;
+      Portfolio portfolio = new Portfolio(portfolioElement.getAttribute("title"));
+      NodeList stockList = portfolioElement.getElementsByTagName("stock");
+      for (int j = 0; j < stockList.getLength(); j++) {
+        Node stockNode = stockList.item(j);
+        Element stockElement = (Element) stockNode;
+        Stock stock = new Stock(stockElement.getAttribute("symbol"));
+        portfolio.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
+      }
+      user.addPortfolio(portfolio);
+    }
+    return user;
   }
 
-  private Document hashmapToXml(HashMap<String, HashMap<String, Integer>> data) {
+  private Document userToXml(User userObj) {
     try {
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
       Document document = docBuilder.newDocument();
-      Element rootElement = document.createElement("portfolios");
+      Element rootElement = document.createElement("users");
       document.appendChild(rootElement);
-      for (Map.Entry<String, HashMap<String, Integer>> entry : data.entrySet()) {
+      Element user = document.createElement("user");
+      rootElement.appendChild(user);
+      user.setAttribute("name", userObj.getName());
+      Element portfolios = document.createElement("portfolios");
+      user.appendChild(portfolios);
+      for (Map.Entry<String, Portfolio> portfoliosObj : userObj.getPortfolios().entrySet()) {
         Element portfolio = document.createElement("portfolio");
-        rootElement.appendChild(portfolio);
-        portfolio.setAttribute("title", entry.getKey());
+        portfolios.appendChild(portfolio);
+        portfolio.setAttribute("title", portfoliosObj.getKey());
         Element stocks = document.createElement("stocks");
         portfolio.appendChild(stocks);
-        for (Map.Entry<String, Integer> nestedEntry : entry.getValue().entrySet()) {
+        for (Map.Entry<Stock, Integer> stocksObj :
+                portfoliosObj.getValue().getStocks().entrySet()) {
           Element stock = document.createElement("stock");
-          stock.setAttribute("symbol", nestedEntry.getKey());
-          stock.setAttribute("quantity", Integer.toString(nestedEntry.getValue()));
+          stock.setAttribute("symbol", stocksObj.getKey().getTicker());
+          stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
           stocks.appendChild(stock);
         }
       }

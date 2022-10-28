@@ -17,7 +17,7 @@ public class User {
   }
 
   public void addPortfolio(Portfolio portfolio) {
-    portfolios.put(this.name, portfolio);
+    portfolios.put(portfolio.getName(), portfolio);
   }
 
   public HashMap<String, Portfolio> getPortfolios() {
