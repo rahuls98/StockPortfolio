@@ -1,3 +1,5 @@
+package entities;
+
 import java.util.HashMap;
 
 public class Portfolio {
@@ -16,5 +18,9 @@ public class Portfolio {
 
   public void addStock(Stock stock, int quantity) {
     stocks.put(stock, quantity);
+  }
+
+  public HashMap<Stock, Integer> getStocks() {
+    return stocks;
   }
 }

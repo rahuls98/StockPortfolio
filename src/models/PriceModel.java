@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /**
  * Represents the functionality of a class that
- * is used to fetch data from Stock API.
+ * is used to fetch data from entities.Stock API.
  */
 public interface PriceModel {
   /**
@@ -18,7 +18,7 @@ public interface PriceModel {
   float[] getPriceForTickers(String[] tickers, String date);
 
   /**
-   * Makes a call to Stock API and gets price.
+   * Makes a call to entities.Stock API and gets price.
    * @param ticker Ticker of company.
    * @return String of all Values from today to 2014.
    */

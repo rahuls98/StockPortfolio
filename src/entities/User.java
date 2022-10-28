@@ -1,3 +1,5 @@
+package entities;
+
 import java.util.HashMap;
 
 public class User {
@@ -10,8 +12,15 @@ public class User {
     this.portfolios = new HashMap<>();
   }
 
+  public String getName() {
+    return name;
+  }
+
   public void addPortfolio(Portfolio portfolio) {
     portfolios.put(this.name, portfolio);
   }
 
+  public HashMap<String, Portfolio> getPortfolios() {
+    return portfolios;
+  }
 }
