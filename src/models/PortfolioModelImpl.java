@@ -32,7 +32,7 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   @Override
   public void updatePortfolio(User updatedUser) {
-    if (this.user.getName() == updatedUser.getName()) {
+    if (this.user.getName().equals(updatedUser.getName())) {
       for (Map.Entry<String, Portfolio> entry : updatedUser.getPortfolios().entrySet()) {
         this.user.addPortfolio(entry.getValue());
       }
