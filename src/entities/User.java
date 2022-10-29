@@ -8,6 +8,7 @@ public class User {
   private HashMap<String, Portfolio> portfolios;
 
   public User(String name) {
+    // TODO : validate user names for invalid characters, null, empty strings
     this.name = name;
     this.portfolios = new HashMap<>();
   }
@@ -17,6 +18,7 @@ public class User {
   }
 
   public void addPortfolio(Portfolio portfolio) {
+    // TODO : validate not null
     portfolios.put(portfolio.getName(), portfolio);
   }
 

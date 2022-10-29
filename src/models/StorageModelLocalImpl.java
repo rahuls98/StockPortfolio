@@ -38,13 +38,15 @@ class StorageModelLocalImpl implements StorageModel {
     try {
       File localStorage = new File(pathToLocalStorage);
       localStorage.createNewFile();
+      // TODO : handle createNewFile result
     } catch (IOException e) {
+      // TODO handle IOException
       e.printStackTrace();
     }
   }
 
   @Override
-  public User read(String userName) {
+  public User readUser(String userName) {
     File newFile = new File(pathToLocalStorage);
     //TODO: Return null if User not in local Storage
     if (newFile.length() == 0) {
@@ -55,7 +57,7 @@ class StorageModelLocalImpl implements StorageModel {
   }
 
   @Override
-  public void write(User user) {
+  public void writeUser(User user) {
     Document document = userToXml(user);
     writeXmlToFile(document);
   }
@@ -83,6 +85,7 @@ class StorageModelLocalImpl implements StorageModel {
         targetUser = userElement;
       }
     }
+    // TODO : handle null targetUser
     NodeList portfolioList = targetUser.getElementsByTagName("portfolio");
     for (int i = 0; i < portfolioList.getLength(); i++) {
       Node portfolioNode = portfolioList.item(i);

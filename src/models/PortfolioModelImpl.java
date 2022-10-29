@@ -15,29 +15,33 @@ public class PortfolioModelImpl implements PortfolioModel {
   private User user;
   private StorageModel store;
 
-
-  public PortfolioModelImpl(String name) {
+  /**
+   * Description of constructor.
+   *
+   * @param userName desc.
+   */
+  public PortfolioModelImpl(String userName) {
     try {
       this.store = new StorageModelLocalImpl();
     } catch (Exception e) {
+      // TODO : handle exceptions
       e.printStackTrace();
     }
-
-    if (this.store.read(name) != null) {
-      this.user = store.read(name);
+    if (this.store.read(userName) != null) {
+      this.user = this.store.read(userName);
     } else {
-      this.user = new User("Default");
+      this.user = new User(userName);
     }
   }
 
   @Override
   public void updatePortfolio(User updatedUser) {
-    if (this.user.getName() == updatedUser.getName()) {
+    if (this.user.getName().equals(updatedUser.getName())) {
       for (Map.Entry<String, Portfolio> entry : updatedUser.getPortfolios().entrySet()) {
         this.user.addPortfolio(entry.getValue());
       }
     }
-    store.write(this.user);
+    this.store.write(this.user);
   }
 
 

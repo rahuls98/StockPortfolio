@@ -13,7 +13,7 @@ public interface PortfolioModel {
   /**
    * Updated the local Storage with User.
    *
-   * @param portfolio desc.
+   * @param user desc.
    */
   void updatePortfolio(User user);
 

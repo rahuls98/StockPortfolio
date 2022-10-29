@@ -1,3 +1,5 @@
+import java.io.InputStream;
+
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
 import entities.User;
@@ -11,10 +13,12 @@ import views.PortfolioViewImpl;
  */
 public class StockPortfolio {
   public static void main(String[] args) {
-    PortfolioModel model = new PortfolioModelImpl("Default");
+    String userName = "default";
+    User defaultUser = new User(userName);
+    PortfolioModel model = new PortfolioModelImpl(userName);
     PortfolioView view = new PortfolioViewImpl();
-    User defaultUser = new User("Default");
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser);
+    InputStream input = System.in;
+    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input);
     controller.go();
   }
 }

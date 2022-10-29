@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -10,53 +11,44 @@ import models.PortfolioModel;
 import views.PortfolioView;
 
 /**
- * Description of class.
+ * Dethis.inputription of class.
  */
 public class PortfolioControllerImpl implements PortfolioController {
 
   private final PortfolioModel model;
   private final PortfolioView view;
   private final User user;
+  private final Scanner input;
 
   /**
-   * Description of constructor.
+   * Dethis.inputription of constructor.
    *
-   * @param model desc.
-   * @param view  desc.
-   * @param user  desc.
+   * @param model dethis.input.
+   * @param view  dethis.input.
+   * @param user  dethis.input.
    */
-  public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user) {
+  public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user,
+                                 InputStream input) {
     this.model = model;
     this.view = view;
     this.user = user;
+    this.input = new Scanner(input);
   }
 
   @Override
   public void go() {
     while (true) {
       view.displayActions();
-      Scanner sc = new Scanner(System.in);
-      int choice = sc.nextInt();
+      int choice = this.input.nextInt();
       switch (choice) {
         case 1:
           this.createPortfolio();
           break;
         case 2:
-          String[] portfolios = model.getPortfolios();
-          view.displayPortfolios(portfolios);
-          choice = sc.nextInt();
-          String portfolioName = portfolios[choice - 1];
-          view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
+          this.getComposition();
           break;
         case 3:
-          portfolios = model.getPortfolios();
-          view.displayPortfolios(portfolios);
-          choice = sc.nextInt();
-          portfolioName = portfolios[choice - 1];
-          System.out.println("Enter the date for which you want the value");
-          String date = sc.next();
-          view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
-          System.out.println("Total Price of Portfolio is " + String.format("%.2f", model.getPortfolioTotal(portfolioName, date)));
+          this.getPortfolioValue();
           break;
         case 4:
           return;
@@ -68,21 +60,20 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createPortfolio() {
-    Scanner sc = new Scanner(System.in);
     System.out.print("\nEnter portfolio name: ");
-    String portfolioName = sc.nextLine();
+    String portfolioName = this.input.nextLine();
     // TODO : validate name
     Portfolio portfolio = new Portfolio(portfolioName);
     System.out.print("Enter number of stocks: ");
-    int n = sc.nextInt();
+    int n = this.input.nextInt();
     String stockName;
     int stockQuantity;
     Stock stock;
     for (int i = 0; i < n; i++) {
       System.out.print("Stock " + (i + 1) + " ticker: ");
-      stockName = sc.next();
+      stockName = this.input.next();
       System.out.print("Quantity : ");
-      stockQuantity = sc.nextInt();
+      stockQuantity = this.input.nextInt();
       stock = new Stock(stockName);
       portfolio.addStock(stock, stockQuantity);
     }
@@ -91,27 +82,23 @@ public class PortfolioControllerImpl implements PortfolioController {
     System.out.println("\nNew portfolio (" + portfolioName + ") has been recorded!");
   }
 
+  private void getComposition() {
+    String[] portfolios = model.getPortfolios();
+    view.displayPortfolios(portfolios);
+    int choice = this.input.nextInt();
+    String portfolioName = portfolios[choice - 1];
+    view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
+  }
 
-  private HashMap<String, HashMap<String, Integer>> readPortfolioStocks() {
-    HashMap<String, HashMap<String, Integer>> map = new HashMap<>();
-    HashMap<String, Integer> innerMap = new HashMap<>();
-    Scanner sc = new Scanner(System.in);
-
-    System.out.println("Enter Name of entities.Portfolio");
-    String name = sc.nextLine();
-    System.out.println("Enter Stocks one by one followed by Quantity");
-    System.out.println("Enter done to exit after done");
-    while (true) {
-      //Read line by line
-      String line = sc.nextLine();
-      if (line.equals("done")) {
-        break;
-      }
-      String[] arr = line.split(" ");
-      innerMap.put(arr[0], Integer.parseInt(arr[1]));
-    }
-    System.out.println("We have recorded your Entry to entities.Portfolio: " + name);
-    map.put(name, innerMap);
-    return map;
+  private void getPortfolioValue() {
+    String[] portfolios = model.getPortfolios();
+    view.displayPortfolios(portfolios);
+    int choice = this.input.nextInt();
+    String portfolioName = portfolios[choice - 1];
+    System.out.print("Enter the date for which you want the value: ");
+    String date = this.input.next();
+    view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
+    System.out.println("Total value of portfolio on is " + String.format("%.2f",
+            model.getPortfolioTotal(portfolioName, date)));
   }
 }
