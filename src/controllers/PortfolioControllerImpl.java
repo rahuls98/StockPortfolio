@@ -56,7 +56,7 @@ public class PortfolioControllerImpl implements PortfolioController {
           System.out.println("Enter the date for which you want the value");
           String date = sc.next();
           view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
-          System.out.println("Total Price of Portfolio is " + String.format("%.4f", model.getPortfolioTotal(portfolioName, date)));
+          System.out.println("Total Price of Portfolio is " + String.format("%.2f", model.getPortfolioTotal(portfolioName, date)));
           break;
         case 4:
           return;
