@@ -1,13 +1,10 @@
 package controllers;
 
-<<<<<<< HEAD
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.Arrays;
-=======
 import java.io.InputStream;
->>>>>>> a085d07e1543fc0a500b4afdc49d890a5b06748e
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
