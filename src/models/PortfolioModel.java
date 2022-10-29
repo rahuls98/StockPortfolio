@@ -15,7 +15,7 @@ public interface PortfolioModel {
    *
    * @param user desc.
    */
-  void updatePortfolio(User user);
+  void addPortfolio(User user);
 
   /**
    * Returns Stock Names & Quantity.

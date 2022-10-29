@@ -19,12 +19,15 @@ public class Stock {
   }
 
   public float getPriceOnDate(String date) {
+    // todo : validate date
     if (!(prices.containsKey(date))) {
       PriceModel model = new PriceModelImpl();
       prices = model.callAPI(this.ticker);
     }
+    // todo : create variable to indicate what [3] is, example: closingValue =
     return prices.get(date)[3];
   }
+
   public String getTicker() {
     return ticker;
   }

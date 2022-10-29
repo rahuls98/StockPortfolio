@@ -29,6 +29,7 @@ public class PortfolioControllerImpl implements PortfolioController {
    */
   public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user,
                                  InputStream input) {
+    // TODO : handle nulls
     this.model = model;
     this.view = view;
     this.user = user;
@@ -72,13 +73,15 @@ public class PortfolioControllerImpl implements PortfolioController {
     for (int i = 0; i < n; i++) {
       System.out.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
+      // TODO : Validate stock names
       System.out.print("Quantity : ");
       stockQuantity = this.input.nextInt();
+      // TODO : Validate not 0, negative, fractional
       stock = new Stock(stockName);
       portfolio.addStock(stock, stockQuantity);
     }
     user.addPortfolio(portfolio);
-    model.updatePortfolio(user);
+    model.addPortfolio(user);
     System.out.println("\nNew portfolio (" + portfolioName + ") has been recorded!");
   }
 
@@ -86,17 +89,21 @@ public class PortfolioControllerImpl implements PortfolioController {
     String[] portfolios = model.getPortfolios();
     view.displayPortfolios(portfolios);
     int choice = this.input.nextInt();
+    // todo : handle invalid choice
     String portfolioName = portfolios[choice - 1];
     view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
   }
 
   private void getPortfolioValue() {
     String[] portfolios = model.getPortfolios();
+    // todo : handle empty portfolio set (message and return)
     view.displayPortfolios(portfolios);
     int choice = this.input.nextInt();
+    // todo : handle invalid choice
     String portfolioName = portfolios[choice - 1];
     System.out.print("Enter the date for which you want the value: ");
     String date = this.input.next();
+    // todo : handle invalid date, empty
     view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
     System.out.println("Total value of portfolio on is " + String.format("%.2f",
             model.getPortfolioTotal(portfolioName, date)));
