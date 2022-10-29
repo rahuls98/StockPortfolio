@@ -46,6 +46,7 @@ class StorageModelLocalImpl implements StorageModel {
   @Override
   public User read(String userName) {
     File newFile = new File(pathToLocalStorage);
+    //TODO: Return null if User not in local Storage
     if (newFile.length() == 0) {
       return null;
     }

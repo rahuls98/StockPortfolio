@@ -2,25 +2,28 @@ package models;
 
 import java.util.HashMap;
 
+import entities.Portfolio;
+import entities.User;
+
 /**
  * Description of interface.
  */
 public interface PortfolioModel {
 
   /**
-   * Description of method.
+   * Updated the local Storage with User.
    *
    * @param portfolio desc.
    */
-  void updatePortfolio(HashMap<String, HashMap<String, Integer>> portfolio);
+  void updatePortfolio(User user);
 
   /**
-   * Description of method.
+   * Returns Stock Names & Quantity.
    *
    * @param name desc.
    * @return desc.
    */
-  HashMap<String, Integer> getPortfolio(String name);
+  Portfolio getPortfolio(String name);
 
   /**
    * Description of method.
@@ -35,6 +38,6 @@ public interface PortfolioModel {
    */
   HashMap<String, Float> getPortfolioValues(String name, String date);
 
-  Float getPortfolioTotal(HashMap<String, Float> portfolioValues);
+  Float getPortfolioTotal(String name, String date);
 
 }

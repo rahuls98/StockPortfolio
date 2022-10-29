@@ -11,7 +11,7 @@ import views.PortfolioViewImpl;
  */
 public class StockPortfolio {
   public static void main(String[] args) {
-    PortfolioModel model = new PortfolioModelImpl();
+    PortfolioModel model = new PortfolioModelImpl("Default");
     PortfolioView view = new PortfolioViewImpl();
     User defaultUser = new User("Default");
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser);

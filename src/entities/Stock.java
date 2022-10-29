@@ -2,20 +2,34 @@ package entities;
 
 import java.util.HashMap;
 
+import models.PriceModel;
+import models.PriceModelImpl;
+
 public class Stock {
   private final String ticker;
-  private HashMap<String, String[]> prices;
+  private HashMap<String, Float[]> prices;
 
   public Stock(String ticker) {
     this.ticker = ticker;
     this.prices = new HashMap<>();
   }
 
+  public void setPrices(HashMap<String, Float[]> prices) {
+    this.prices = prices;
+  }
+
+  public float getPriceOnDate(String date) {
+    if (!(prices.containsKey(date))) {
+      PriceModel model = new PriceModelImpl();
+      prices = model.callAPI(this.ticker);
+    }
+    return prices.get(date)[3];
+  }
   public String getTicker() {
     return ticker;
   }
 
-  public HashMap<String, String[]> getPrices() {
+  public HashMap<String, Float[]> getPrices() {
     return prices;
   }
 }

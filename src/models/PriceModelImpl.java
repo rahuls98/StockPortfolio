@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.IntStream;
+
+import entities.Stock;
 
 import static java.lang.Thread.sleep;
 
@@ -20,42 +23,22 @@ public class PriceModelImpl implements PriceModel {
     this.priceMap = new HashMap<>();
   }
 
-
   @Override
-  public float[] getPriceForTickers(String[] tickers, String date) {
-    int count = 0;
-    float[] prices = new float[tickers.length];
-    for(String ticker: tickers) {
-      count += 1;
-      prices[count - 1] = this.getPriceOnDate(ticker, date);
-      if ((count % 5) == 0) {
-        try {
-          sleep(60000);
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
-    }
-    return prices;
-  }
-
-  @Override
-  public float getPriceOnDate(String ticker, String date) {
+  public Stock getPriceOnDate(Stock stock, String date) {
     // TODO : Handle illegal date
-    if ((!this.priceMap.containsKey(ticker)) || (!(this.priceMap.get(ticker).containsKey(date)))) {
+    if(!(stock.getPrices().containsKey(date))) {
       try {
-        this.priceMap.put(ticker, callAPI(ticker));
-      } catch (Exception e) {
-        //TODO: Handle exception
+        stock.setPrices(this.callAPI(stock.getTicker()));
+      }catch (Exception e) {
+        //TODO: Handle exception.
       }
     }
-
-    return Float.parseFloat(this.priceMap.get(ticker).get(date)[3]);
+    return stock;
   }
 
 
   @Override
-  public HashMap<String, String[]> callAPI(String ticker) {
+  public HashMap<String, Float[]> callAPI(String ticker) {
     String apiKey = this.key;
     String stockSymbol = ticker;
     URL url;
@@ -66,14 +49,14 @@ public class PriceModelImpl implements PriceModel {
               + "&outputsize=full"
               + "&symbol"
               + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
-    } catch (MalformedURLException e) {
+    } catch (Exception e) {
       throw new RuntimeException("the alphavantage API has either changed or "
               + "no longer works");
     }
 
     InputStream in;
 
-    HashMap<String, String[]> innerMap = new HashMap<>();
+    HashMap<String, Float[]> innerMap = new HashMap<>();
     StringBuilder output = new StringBuilder();
 
     try {
@@ -93,7 +76,10 @@ public class PriceModelImpl implements PriceModel {
         String[] subarray = IntStream.range(1, 6)
                 .mapToObj(i -> arrOfStr[i])
                 .toArray(String[]::new);
-        innerMap.put(arrOfStr[0], subarray);
+        Float[] floats = Arrays.stream(subarray)
+                .map(Float::valueOf)
+                .toArray(Float[]::new);
+        innerMap.put(arrOfStr[0], floats);
       }
 
     } catch (IOException e) {

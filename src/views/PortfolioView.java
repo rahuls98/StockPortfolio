@@ -2,6 +2,9 @@ package views;
 
 import java.util.HashMap;
 
+import entities.Portfolio;
+import entities.Stock;
+
 /**
  * Represents all operations associated to the user-view of the application.
  */
@@ -25,6 +28,6 @@ public interface PortfolioView {
    * @param name      Name of the portfolio.
    * @param portfolio Contents of the portfolio.
    */
-  void displayPortfolioComposition(String name, HashMap<String, Integer> portfolio);
+  void displayPortfolioComposition(String name, Portfolio portfolio);
   void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues);
 }

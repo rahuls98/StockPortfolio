@@ -55,9 +55,8 @@ public class PortfolioControllerImpl implements PortfolioController {
           portfolioName = portfolios[choice - 1];
           System.out.println("Enter the date for which you want the value");
           String date = sc.next();
-          HashMap<String, Float> portValues = model.getPortfolioValues(portfolioName, date);
-          view.displayPortfolioValue(portfolioName, portValues);
-          System.out.println("Total Price of entities.Portfolio is " + String.format("%.4f", model.getPortfolioTotal(portValues)));
+          view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
+          System.out.println("Total Price of Portfolio is " + String.format("%.4f", model.getPortfolioTotal(portfolioName, date)));
           break;
         case 4:
           return;
@@ -88,6 +87,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       portfolio.addStock(stock, stockQuantity);
     }
     user.addPortfolio(portfolio);
+    model.updatePortfolio(user);
     System.out.println("\nNew portfolio (" + portfolioName + ") has been recorded!");
   }
 
