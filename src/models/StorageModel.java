@@ -12,14 +12,14 @@ interface StorageModel {
   /**
    * Description of method.
    *
-   * @return Hashmap.
+   * @return desc.
    */
-  User read(String userName);
+  User readUser(String userName);
 
   /**
    * Description of method.
    *
-   * @param data Hashmap.
+   * @param user desc.
    */
-  void write(User user);
+  void writeUser(User user);
 }

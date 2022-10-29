@@ -38,15 +38,17 @@ class StorageModelLocalImpl implements StorageModel {
     try {
       File localStorage = new File(pathToLocalStorage);
       localStorage.createNewFile();
+      // TODO : handle createNewFile result
     } catch (IOException e) {
+      // TODO handle IOException
       e.printStackTrace();
     }
   }
 
   @Override
-  public User read(String userName) {
+  public User readUser(String userName) {
     File newFile = new File(pathToLocalStorage);
-    //TODO: Return null if User not in local Storage
+    //TODO: Return null if user not in local Storage
     if (newFile.length() == 0) {
       return null;
     }
@@ -55,7 +57,8 @@ class StorageModelLocalImpl implements StorageModel {
   }
 
   @Override
-  public void write(User user) {
+  public void writeUser(User user) {
+    // todo : user not null
     Document document = userToXml(user);
     writeXmlToFile(document);
   }
@@ -68,6 +71,7 @@ class StorageModelLocalImpl implements StorageModel {
       document.getDocumentElement().normalize();
       return document;
     } catch (ParserConfigurationException | SAXException | IOException e) {
+      // TODO : Handle errors
       throw new RuntimeException(e);
     }
   }
@@ -83,6 +87,7 @@ class StorageModelLocalImpl implements StorageModel {
         targetUser = userElement;
       }
     }
+    // TODO : handle null targetUser
     NodeList portfolioList = targetUser.getElementsByTagName("portfolio");
     for (int i = 0; i < portfolioList.getLength(); i++) {
       Node portfolioNode = portfolioList.item(i);
@@ -97,6 +102,7 @@ class StorageModelLocalImpl implements StorageModel {
       }
       user.addPortfolio(portfolio);
     }
+    // TODO : handle missing nodes
     return user;
   }
 
@@ -118,8 +124,8 @@ class StorageModelLocalImpl implements StorageModel {
         portfolio.setAttribute("title", portfoliosObj.getKey());
         Element stocks = document.createElement("stocks");
         portfolio.appendChild(stocks);
-        for (Map.Entry<Stock, Integer> stocksObj :
-                portfoliosObj.getValue().getStocks().entrySet()) {
+        HashMap<Stock, Integer> portfolioStocks = portfoliosObj.getValue().getStocks();
+        for (Map.Entry<Stock, Integer> stocksObj : portfolioStocks.entrySet()) {
           Element stock = document.createElement("stock");
           stock.setAttribute("symbol", stocksObj.getKey().getTicker());
           stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
@@ -128,6 +134,7 @@ class StorageModelLocalImpl implements StorageModel {
       }
       return document;
     } catch (ParserConfigurationException e) {
+      // todo : handle exception
       throw new RuntimeException(e);
     }
   }
@@ -138,10 +145,8 @@ class StorageModelLocalImpl implements StorageModel {
       tr.setOutputProperty(OutputKeys.INDENT, "yes");
       tr.setOutputProperty(OutputKeys.METHOD, "xml");
       tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
       tr.transform(new DOMSource(document),
               new StreamResult(new FileOutputStream(pathToLocalStorage)));
-
     } catch (TransformerException | IOException te) {
       System.out.println(te.getMessage());
     }

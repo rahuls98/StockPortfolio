@@ -52,7 +52,7 @@ public class StorageModelLocalImplTest {
     File localStorageFile = new File("./localStorage.xml");
     if (localStorageFile.delete()) {
       setup();
-      assertNull(localStorage.read("Default"));
+      assertNull(localStorage.readUser("Default"));
     } else {
       fail();
     }
@@ -60,7 +60,7 @@ public class StorageModelLocalImplTest {
 
   @Test
   public void testRead() {
-    User user = localStorage.read("Test");
+    User user = localStorage.readUser("Test");
     HashMap<String, Portfolio> portfolios = user.getPortfolios();
     for (Map.Entry<String, Portfolio> portfolio : portfolios.entrySet()) {
       for (Map.Entry<Stock, Integer> stock : portfolio.getValue().getStocks().entrySet()) {
@@ -90,6 +90,6 @@ public class StorageModelLocalImplTest {
     testPortfolio2.addStock(stockB, 36-10);
     testPortfolio2.addStock(stockC, 46-10);
     user.addPortfolio(testPortfolio2);
-    localStorage.write(user);
+    localStorage.writeUser(user);
   }
 }
