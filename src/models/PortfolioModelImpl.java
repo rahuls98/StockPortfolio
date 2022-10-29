@@ -36,6 +36,8 @@ public class PortfolioModelImpl implements PortfolioModel {
       for (Map.Entry<String, Portfolio> entry : updatedUser.getPortfolios().entrySet()) {
         this.user.addPortfolio(entry.getValue());
       }
+    } else {
+      this.user = updatedUser;
     }
     store.write(this.user);
   }
