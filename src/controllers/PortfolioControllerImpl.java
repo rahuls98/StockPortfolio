@@ -1,6 +1,11 @@
 package controllers;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Portfolio;
@@ -53,8 +58,7 @@ public class PortfolioControllerImpl implements PortfolioController {
           view.displayPortfolios(portfolios);
           choice = sc.nextInt();
           portfolioName = portfolios[choice - 1];
-          System.out.println("Enter the date for which you want the value");
-          String date = sc.next();
+          String date = this.getDate();
           view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
           System.out.println("Total Price of Portfolio is " + String.format("%.2f", model.getPortfolioTotal(portfolioName, date)));
           break;
@@ -113,5 +117,24 @@ public class PortfolioControllerImpl implements PortfolioController {
     System.out.println("We have recorded your Entry to entities.Portfolio: " + name);
     map.put(name, innerMap);
     return map;
+  }
+
+  private String getDate() {
+    //TODO: Perform Validation on input date.
+    System.out.println("Enter the date for which you want the value");
+    Scanner sc = new Scanner(System.in);
+    String strDate = sc.next();
+    LocalDate date = LocalDate.parse(strDate);
+    DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK));
+    if ((day == DayOfWeek.SUNDAY) || (day == DayOfWeek.SATURDAY)) {
+      System.out.println("Entered day is a weekend");
+      if (day == DayOfWeek.SATURDAY) {
+        date = date.minusDays(1);
+      } else {
+        date = date.minusDays(2);
+      }
+      System.out.println("Calculating Value on Friday before the weekend on " + date.toString());
+    }
+    return date.toString();
   }
 }
