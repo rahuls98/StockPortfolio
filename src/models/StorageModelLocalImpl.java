@@ -87,7 +87,9 @@ class StorageModelLocalImpl implements StorageModel {
         targetUser = userElement;
       }
     }
-    // TODO : handle null targetUser
+    if (targetUser == null) {
+      return new User(userName);
+    }
     NodeList portfolioList = targetUser.getElementsByTagName("portfolio");
     for (int i = 0; i < portfolioList.getLength(); i++) {
       Node portfolioNode = portfolioList.item(i);

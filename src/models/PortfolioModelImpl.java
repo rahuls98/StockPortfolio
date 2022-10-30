@@ -1,6 +1,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import entities.Portfolio;
@@ -14,6 +15,7 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   private User user;
   private StorageModel store;
+  private HashSet<String> tickerSet;
 
   /**
    * Description of constructor.
@@ -29,6 +31,9 @@ public class PortfolioModelImpl implements PortfolioModel {
     }
     User userFromStore = this.store.readUser(userName);
     this.user = (userFromStore != null) ? userFromStore : new User(userName);
+
+    APIModel model = new APIModelImpl();
+    tickerSet = model.callTickerApi();
   }
 
   @Override
@@ -62,5 +67,10 @@ public class PortfolioModelImpl implements PortfolioModel {
   @Override
   public Float getPortfolioTotal(String name, String date) {
     return this.user.getPortfolios().get(name).getTotalComp(date);
+  }
+
+  @Override
+  public Boolean isValidTicker(String ticker) {
+    return this.tickerSet.contains(ticker);
   }
 }

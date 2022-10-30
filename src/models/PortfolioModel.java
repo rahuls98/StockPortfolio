@@ -40,4 +40,6 @@ public interface PortfolioModel {
 
   Float getPortfolioTotal(String name, String date);
 
+  Boolean isValidTicker(String ticker);
+
 }

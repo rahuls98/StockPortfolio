@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.OutputStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
@@ -43,7 +44,6 @@ public class PortfolioControllerImpl implements PortfolioController {
     while (true) {
       view.displayActions();
       int choice = this.input.nextInt();
-      // todo : handle invalid choice
       switch (choice) {
         case 1:
           this.createPortfolio();
@@ -65,18 +65,24 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private void createPortfolio() {
     System.out.print("\nEnter portfolio name: ");
-    String portfolioName = this.input.nextLine();
-    // TODO : validate name
+    String portfolioName = this.input.next();
     Portfolio portfolio = new Portfolio(portfolioName);
     System.out.print("Enter number of stocks: ");
     int n = this.input.nextInt();
+    while (n <= 0) {
+      System.out.println("Enter a valid number of Stocks ");
+      n = this.input.nextInt();
+    }
     String stockName;
     int stockQuantity;
     Stock stock;
     for (int i = 0; i < n; i++) {
       System.out.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
-      // TODO : Validate stock names
+      while (!(model.isValidTicker(stockName))) {
+        System.out.println("Enter Valid Ticker Name: ");
+        stockName = this.input.next();
+      }
       System.out.print("Quantity : ");
       stockQuantity = this.input.nextInt();
       // TODO : Validate not 0, negative, fractional
@@ -90,28 +96,34 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private void getComposition() {
     String[] portfolios = model.getPortfolios();
-    view.displayPortfolios(portfolios);
-    System.out.print("Select action: ");
-    int choice = this.input.nextInt();
-    // todo : handle invalid choice
-    String portfolioName = portfolios[choice - 1];
+    String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
     view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName).getStockQuantities());
   }
 
   private void getPortfolioValue() {
     String[] portfolios = model.getPortfolios();
-    // todo : handle empty portfolio set (message and return)
-    view.displayPortfolios(portfolios);
-    System.out.print("Select portfolio: ");
-    int choice = this.input.nextInt();
-    // todo : handle invalid choice
-    String portfolioName = portfolios[choice - 1];
+    if( portfolios.length == 0) {
+      System.out.println("No portfolios to display, Try entering portfolios first");
+      return;
+    }
+    String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
     System.out.print("Enter the date for which you want the value: ");
     String date = this.getDate();
-    // todo : handle invalid date, empty
     view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
-    System.out.println("Total value of portfolio on is " + String.format("%.2f",
+    System.out.println("Total value of portfolio on is " + String.format("%.4f",
             model.getPortfolioTotal(portfolioName, date)));
+  }
+
+  private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
+    view.displayPortfolios(portfolios);
+    System.out.print("Select Portfolio: ");
+    int choice = this.input.nextInt();
+    while ((choice <= 0) || (choice > portfolios.length)) {
+      System.out.println("Enter a valid number for Portfolio ");
+      choice = this.input.nextInt();
+    }
+    String portfolioName = portfolios[choice - 1];
+    return portfolioName;
   }
 
   private String getDate() {
