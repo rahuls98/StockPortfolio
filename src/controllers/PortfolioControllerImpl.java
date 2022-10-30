@@ -107,7 +107,6 @@ public class PortfolioControllerImpl implements PortfolioController {
       return;
     }
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
-    System.out.print("Enter the date for which you want the value: ");
     String date = this.getDate();
     view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
     System.out.println("Total value of portfolio on is " + String.format("%.4f",
