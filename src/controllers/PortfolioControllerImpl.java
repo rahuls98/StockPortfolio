@@ -3,10 +3,7 @@ package controllers;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.util.Arrays;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Portfolio;
@@ -16,7 +13,7 @@ import models.PortfolioModel;
 import views.PortfolioView;
 
 /**
- * Dethis.inputription of class.
+ * Description of class.
  */
 public class PortfolioControllerImpl implements PortfolioController {
 
@@ -26,11 +23,11 @@ public class PortfolioControllerImpl implements PortfolioController {
   private final Scanner input;
 
   /**
-   * Dethis.inputription of constructor.
+   * Description of constructor.
    *
-   * @param model dethis.input.
-   * @param view  dethis.input.
-   * @param user  dethis.input.
+   * @param model desc.
+   * @param view  desc.
+   * @param user  desc.
    */
   public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user,
                                  InputStream input) {
@@ -46,6 +43,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     while (true) {
       view.displayActions();
       int choice = this.input.nextInt();
+      // todo : handle invalid choice
       switch (choice) {
         case 1:
           this.createPortfolio();
@@ -93,16 +91,18 @@ public class PortfolioControllerImpl implements PortfolioController {
   private void getComposition() {
     String[] portfolios = model.getPortfolios();
     view.displayPortfolios(portfolios);
+    System.out.print("Select action: ");
     int choice = this.input.nextInt();
     // todo : handle invalid choice
     String portfolioName = portfolios[choice - 1];
-    view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName));
+    view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName).getStockQuantities());
   }
 
   private void getPortfolioValue() {
     String[] portfolios = model.getPortfolios();
     // todo : handle empty portfolio set (message and return)
     view.displayPortfolios(portfolios);
+    System.out.print("Select portfolio: ");
     int choice = this.input.nextInt();
     // todo : handle invalid choice
     String portfolioName = portfolios[choice - 1];

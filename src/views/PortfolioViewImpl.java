@@ -1,57 +1,79 @@
 package views;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import entities.Portfolio;
-import entities.Stock;
 
 /**
  * Represents a text-based user-interface view of the application.
  */
 public class PortfolioViewImpl implements PortfolioView {
 
+  private final PrintStream out;
+
+  /**
+   * Description of constructor.
+   */
+  public PortfolioViewImpl(PrintStream out) {
+    this.out = out;
+  }
+
   @Override
-  public void displayActions() {
+  public Object displayActions() {
     String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
             "Get portfolio value", "Exit"};
-    System.out.println("\n");
     for (int i = 0; i < actions.length; i++) {
-      System.out.println((i + 1) + ". " + actions[i]);
+      this.out.println((i + 1) + ". " + actions[i]);
     }
-    System.out.print("Select action: ");
+    return null;
   }
 
   @Override
   public void displayPortfolios(String[] portfolios) {
-    System.out.println("\n");
-    for (int i = 0; i < portfolios.length; i++) {
-      System.out.println((i + 1) + ". " + portfolios[i]);
+    if (portfolios == null) {
+      throw new IllegalArgumentException("Input cannot be null!");
     }
-    System.out.print("Select portfolio: ");
+    if (portfolios.length == 0) {
+      throw new IllegalArgumentException("Input cannot be empty!");
+    }
+    for (int i = 0; i < portfolios.length; i++) {
+      this.out.println((i + 1) + ". " + portfolios[i]);
+    }
   }
 
   @Override
-  public void displayPortfolioComposition(String name, Portfolio portfolio) {
-    System.out.println("\n");
-    System.out.println("Portfolio: " + name);
-    System.out.format("%s", "-------------------------------\n");
-    System.out.format("%-12s %-3s %-12s \n", "Stock", "|", "Quantity");
-    System.out.format("%s", "-------------------------------\n");
-    for (Map.Entry<Stock, Integer> entry : portfolio.getStocks().entrySet()) {
-      System.out.format("%-12s %-3s %-12s \n", entry.getKey().getTicker(), "|", entry.getValue());
+  public void displayPortfolioComposition(String name, HashMap<String, Integer> stockQuantities) {
+    if (name == null || stockQuantities == null) {
+      throw new IllegalArgumentException("Input cannot be null!");
     }
+    if (name.equals("") || stockQuantities.isEmpty()) {
+      throw new IllegalArgumentException("Input cannot be empty!");
+    }
+    this.out.println("Portfolio: " + name);
+    this.out.format("%s", "---------------------------\n");
+    this.out.format("%-12s%-3s%-12s\n", "Stock", "|", "Quantity");
+    this.out.format("%s", "---------------------------\n");
+    for (Map.Entry<String, Integer> entry : stockQuantities.entrySet()) {
+      this.out.format("%-12s%-3s%-12s\n", entry.getKey(), "|", entry.getValue());
+    }
+    this.out.format("%s", "---------------------------\n");
   }
 
   @Override
   public void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues) {
-    System.out.println("\n");
-    System.out.println("Portfolio: " + name);
-    System.out.format("%s", "-------------------------------\n");
-    System.out.format("%-12s %-3s %-12s \n", "Stock", "|", "Value");
-    System.out.format("%s", "-------------------------------\n");
-    for (Map.Entry<String, Float> entry : portfolioValues.entrySet()) {
-      System.out.format("%-12s %-3s %-12s \n", entry.getKey(), "|", entry.getValue());
+    if (name == null || portfolioValues == null) {
+      throw new IllegalArgumentException("Input cannot be null!");
     }
+    if (name.equals("") || portfolioValues.isEmpty()) {
+      throw new IllegalArgumentException("Input cannot be empty!");
+    }
+    this.out.println("Portfolio: " + name);
+    this.out.format("%s", "---------------------------\n");
+    this.out.format("%-12s%-3s%-12s\n", "Stock", "|", "Value");
+    this.out.format("%s", "---------------------------\n");
+    for (Map.Entry<String, Float> entry : portfolioValues.entrySet()) {
+      this.out.format("%-12s%-3s%-12s\n", entry.getKey(), "|", entry.getValue());
+    }
+    this.out.format("%s", "---------------------------\n");
   }
 }

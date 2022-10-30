@@ -21,9 +21,9 @@ public class PriceModelImplTest {
     PriceModel model = new PriceModelImpl();
     String[] tickers = new String[]{"AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "TSLA", "UNH", "JNJ", "XOM", "V", "WMT",
             "HD", "MA", "BAC", "META", "KO"};
-    float[] prices = model.getPriceForTickers(tickers, "2022-10-25");
-    for (float price : prices) {
-      System.out.println(price);
-    }
+//    float[] prices = model.getPriceForTickers(tickers, "2022-10-25");
+//    for (float price : prices) {
+//      System.out.println(price);
+//    }
   }
 }

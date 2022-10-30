@@ -3,13 +3,18 @@ package entities;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Description of class.
+ */
 public class Portfolio {
 
   private String name;
   private HashMap<Stock, Integer> stocks;
-
   private String lastPossibleValue;
 
+  /**
+   * Description of constructor.
+   */
   public Portfolio(String name) {
     // TODO : handle null, empty, invalid strings
     this.name = name;
@@ -17,6 +22,54 @@ public class Portfolio {
     this.lastPossibleValue = "0";
   }
 
+  /**
+   * Description of method.
+   *
+   * @return desc.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Description of method.
+   *
+   * @param stock desc.
+   * @param quantity desc.
+   */
+  public void addStock(Stock stock, int quantity) {
+    // TODO : validate ticker, quantity for neg, 0, fractional
+    stocks.put(stock, quantity);
+  }
+
+  /**
+   * Description of method.
+   *
+   * @return desc.
+   */
+  public HashMap<Stock, Integer> getStocks() {
+    return stocks;
+  }
+
+  /**
+   * Description of method.
+   *
+   * @return desc.
+   */
+  public HashMap<String, Integer> getStockQuantities() {
+    HashMap<String, Integer> map = new HashMap<>();
+    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
+      map.put(entry.getKey().getTicker(), entry.getValue());
+    }
+    return map;
+  }
+
+  /**
+   * Description of method.
+   *
+   * @param date desc.
+   * @return desc.
+   */
   public HashMap<String, Float> getValue(String date) {
     // todo : date validation
     HashMap<String, Float> portfolioValueMap = new HashMap<>();
@@ -37,6 +90,12 @@ public class Portfolio {
     return portfolioValueMap;
   }
 
+  /**
+   * Description of method.
+   *
+   * @param date desc.
+   * @return desc.
+   */
   public float getTotalComp(String date) {
     // todo : date validation
     float total = 0.00f;
@@ -44,18 +103,5 @@ public class Portfolio {
       total += entry.getValue();
     }
     return total;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void addStock(Stock stock, int quantity) {
-    // TODO : validate ticker, quantity for neg, 0, fractional
-    stocks.put(stock, quantity);
-  }
-
-  public HashMap<Stock, Integer> getStocks() {
-    return stocks;
   }
 }
