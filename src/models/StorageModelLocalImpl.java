@@ -52,7 +52,9 @@ class StorageModelLocalImpl implements StorageModel {
     if (newFile.length() == 0) {
       return null;
     }
-    Document document = readXmlFromFile();
+    FileModelXmlImpl xmlHandler = new FileModelXmlImpl();
+    xmlHandler.readFile(pathToLocalStorage);
+    Document document = xmlHandler.getDocument();
     return xmlToUser(document, userName);
   }
 

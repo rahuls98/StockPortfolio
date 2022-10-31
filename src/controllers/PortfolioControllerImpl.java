@@ -78,6 +78,11 @@ public class PortfolioControllerImpl implements PortfolioController {
         case 1:
           System.out.print("\nEnter portfolio name: ");
           String portfolioName = this.input.next();
+          System.out.println(portfolioName);
+          while(user.getPortfolios().containsKey(portfolioName)) {
+            System.out.print("Portfolio already exists, enter a different name: ");
+            portfolioName = this.input.next();
+          }
           portfolio = new Portfolio(portfolioName);
           System.out.print("Enter number of stocks: ");
           int n = this.input.nextInt();
@@ -109,6 +114,7 @@ public class PortfolioControllerImpl implements PortfolioController {
           System.out.print("Path to XML: ");
           String pathToXml = this.input.next();
           portfolio = model.readPortfolioFromXml(pathToXml);
+          // todo : check if portfolio with same name already exists
           user.addPortfolio(portfolio);
           model.addPortfolio(user);
           System.out.println("\nNew portfolio (" + portfolio.getName() + ") has been recorded!");

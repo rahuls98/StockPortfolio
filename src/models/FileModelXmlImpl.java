@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Objects;
 
 import javax.print.Doc;
@@ -28,10 +29,8 @@ public class FileModelXmlImpl implements FileModel {
 
   @Override
   public void readFile(String pathToFile) {
-    ClassLoader loader = FileModelXmlImpl.class.getClassLoader();
-    File file = new File(loader.getResource(pathToFile).getFile());
     try {
-      this.document = builder.parse(file);
+      this.document = builder.parse(new File(pathToFile));
     } catch (SAXException | IOException e) {
       throw new RuntimeException(e);
     }
