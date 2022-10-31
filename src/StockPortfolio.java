@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -13,8 +14,8 @@ import views.PortfolioViewImpl;
  * Description of class.
  */
 public class StockPortfolio {
-  public static void main(String[] args) {
-    String userName = "default";
+  public static void main(String[] args) throws IOException {
+    String userName = "rohith";
     InputStream input = System.in;
     PrintStream out = System.out;
     User defaultUser = new User(userName);

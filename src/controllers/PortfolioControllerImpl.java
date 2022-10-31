@@ -138,6 +138,7 @@ public class PortfolioControllerImpl implements PortfolioController {
           this.output.print("Path to XML: ");
           String pathToXml = this.input.next();
           portfolio = model.readPortfolioFromXml(pathToXml);
+          // todo : check if portfolio with same name already exists
           user.addPortfolio(portfolio);
           model.addPortfolio(user);
           this.output.println("\nNew portfolio (" + portfolio.getName() + ") has been recorded!");

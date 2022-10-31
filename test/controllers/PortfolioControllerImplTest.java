@@ -30,7 +30,11 @@ public class PortfolioControllerImplTest {
     this.out = new ByteArrayOutputStream();
     this.userName = "default";
     this.defaultUser = new User(userName);
-    this.model = new PortfolioModelImpl(userName);
+    try {
+      this.model = new PortfolioModelImpl(userName);
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
     this.view = new PortfolioViewImpl(new PrintStream(out));
   }
 
