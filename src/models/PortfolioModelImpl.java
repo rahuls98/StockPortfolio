@@ -1,5 +1,10 @@
 package models;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -72,5 +77,23 @@ public class PortfolioModelImpl implements PortfolioModel {
   @Override
   public Boolean isValidTicker(String ticker) {
     return this.tickerSet.contains(ticker);
+  }
+
+  public Portfolio readPortfolioFromXml(String pathToFile) {
+    FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
+    xmlFileHandler.readFile(pathToFile);
+    Document document = xmlFileHandler.getDocument();
+    NodeList nodeList = document.getElementsByTagName("portfolio");
+    Node portfolioNode = nodeList.item(0);
+    Element portfolioElement = (Element) portfolioNode;
+    Portfolio portfolioObj = new Portfolio(portfolioElement.getAttribute("title"));
+    NodeList stockList = portfolioElement.getElementsByTagName("stock");
+    for (int j = 0; j < stockList.getLength(); j++) {
+      Node stockNode = stockList.item(j);
+      Element stockElement = (Element) stockNode;
+      Stock stock = new Stock(stockElement.getAttribute("symbol"));
+      portfolioObj.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
+    }
+    return portfolioObj;
   }
 }

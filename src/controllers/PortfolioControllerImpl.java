@@ -10,6 +10,7 @@ import java.util.Scanner;
 import entities.Portfolio;
 import entities.Stock;
 import entities.User;
+import models.FileModelXmlImpl;
 import models.PortfolioModel;
 import views.PortfolioView;
 
@@ -42,7 +43,9 @@ public class PortfolioControllerImpl implements PortfolioController {
   @Override
   public void go() {
     while (true) {
-      view.displayActions();
+      String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
+              "Get portfolio value", "Exit"};
+      view.displayActions(actions);
       System.out.print("Enter action: ");
       int choice = this.input.nextInt();
       switch (choice) {
@@ -65,34 +68,56 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createPortfolio() {
-    System.out.print("\nEnter portfolio name: ");
-    String portfolioName = this.input.next();
-    Portfolio portfolio = new Portfolio(portfolioName);
-    System.out.print("Enter number of stocks: ");
-    int n = this.input.nextInt();
-    while (n <= 0) {
-      System.out.println("Enter a valid number of Stocks ");
-      n = this.input.nextInt();
-    }
-    String stockName;
-    int stockQuantity;
-    Stock stock;
-    for (int i = 0; i < n; i++) {
-      System.out.print("Stock " + (i + 1) + " ticker: ");
-      stockName = this.input.next();
-      while (!(model.isValidTicker(stockName))) {
-        System.out.println("Enter Valid Ticker Name: ");
-        stockName = this.input.next();
+    Portfolio portfolio = null;
+    while (true) {
+      String[] actions = new String[]{"Enter manually", "Load from file"};
+      view.displayActions(actions);
+      System.out.print("Select action: ");
+      int choice = this.input.nextInt();
+      switch (choice) {
+        case 1:
+          System.out.print("\nEnter portfolio name: ");
+          String portfolioName = this.input.next();
+          portfolio = new Portfolio(portfolioName);
+          System.out.print("Enter number of stocks: ");
+          int n = this.input.nextInt();
+          while (n <= 0) {
+            System.out.println("Enter a valid number of Stocks ");
+            n = this.input.nextInt();
+          }
+          String stockName;
+          int stockQuantity;
+          Stock stock;
+          for (int i = 0; i < n; i++) {
+            System.out.print("Stock " + (i + 1) + " ticker: ");
+            stockName = this.input.next();
+            while (!(model.isValidTicker(stockName))) {
+              System.out.println("Enter Valid Ticker Name: ");
+              stockName = this.input.next();
+            }
+            System.out.print("Quantity : ");
+            stockQuantity = this.input.nextInt();
+            // TODO : Validate not 0, negative, fractional
+            stock = new Stock(stockName);
+            portfolio.addStock(stock, stockQuantity);
+          }
+          user.addPortfolio(portfolio);
+          model.addPortfolio(user);
+          System.out.println("\nNew portfolio (" + portfolio.getName() + ") has been recorded!");
+          return;
+        case 2:
+          System.out.print("Path to XML: ");
+          String pathToXml = this.input.next();
+          portfolio = model.readPortfolioFromXml(pathToXml);
+          user.addPortfolio(portfolio);
+          model.addPortfolio(user);
+          System.out.println("\nNew portfolio (" + portfolio.getName() + ") has been recorded!");
+          return;
+        default:
+          System.out.println("Invalid choice");
+          break;
       }
-      System.out.print("Quantity : ");
-      stockQuantity = this.input.nextInt();
-      // TODO : Validate not 0, negative, fractional
-      stock = new Stock(stockName);
-      portfolio.addStock(stock, stockQuantity);
     }
-    user.addPortfolio(portfolio);
-    model.addPortfolio(user);
-    System.out.println("\nNew portfolio (" + portfolioName + ") has been recorded!");
   }
 
   private void getComposition() {

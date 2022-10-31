@@ -14,7 +14,7 @@ public interface PortfolioView {
    *
    * @return
    */
-  Object displayActions();
+  Object displayActions(String[] actions);
 
   /**
    * Displays list of saved portfolios.
