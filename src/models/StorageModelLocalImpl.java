@@ -15,12 +15,6 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import entities.Portfolio;
 import entities.Stock;
@@ -37,11 +31,11 @@ class StorageModelLocalImpl implements StorageModel {
     this.pathToLocalStorage = "./localStorage.xml";
     try {
       File localStorage = new File(pathToLocalStorage);
-      localStorage.createNewFile();
-      // TODO : handle createNewFile result
+      if (localStorage.createNewFile()) {
+        this.initializeLocalStorage();
+      }
     } catch (IOException e) {
-      // TODO handle IOException
-      e.printStackTrace();
+      throw new IOException(e);
     }
   }
 
@@ -55,30 +49,36 @@ class StorageModelLocalImpl implements StorageModel {
     FileModelXmlImpl xmlHandler = new FileModelXmlImpl();
     xmlHandler.readFile(pathToLocalStorage);
     Document document = xmlHandler.getDocument();
-    return xmlToUser(document, userName);
+    return getUserFromXml(document, userName);
   }
 
   @Override
   public void writeUser(User user) {
     // todo : user not null
-    Document document = userToXml(user);
-    writeXmlToFile(document);
+    FileModelXmlImpl xmlHandler = new FileModelXmlImpl();
+    xmlHandler.readFile(pathToLocalStorage);
+    Document document = this.addUserToXml(user, xmlHandler.getDocument());
+    xmlHandler.setDocument(document);
+    xmlHandler.writeFile(pathToLocalStorage);
   }
 
-  private Document readXmlFromFile() {
+  private void initializeLocalStorage() {
+    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder docBuilder = null;
     try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      Document document = builder.parse(new File(pathToLocalStorage));
-      document.getDocumentElement().normalize();
-      return document;
-    } catch (ParserConfigurationException | SAXException | IOException e) {
-      // TODO : Handle errors
+      docBuilder = docFactory.newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
       throw new RuntimeException(e);
     }
+    Document document = docBuilder.newDocument();
+    Element rootElement = document.createElement("users");
+    document.appendChild(rootElement);
+    FileModelXmlImpl xmlHandler = new FileModelXmlImpl();
+    xmlHandler.setDocument(document);
+    xmlHandler.writeFile(this.pathToLocalStorage);
   }
 
-  private User xmlToUser(Document document, String userName) {
+  private User getUserFromXml(Document document, String userName) {
     User user = new User(userName);
     NodeList userList = document.getElementsByTagName("user");
     Element targetUser = null;
@@ -110,49 +110,29 @@ class StorageModelLocalImpl implements StorageModel {
     return user;
   }
 
-  private Document userToXml(User userObj) {
-    try {
-      DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-      Document document = docBuilder.newDocument();
-      Element rootElement = document.createElement("users");
-      document.appendChild(rootElement);
-      Element user = document.createElement("user");
-      rootElement.appendChild(user);
-      user.setAttribute("name", userObj.getName());
-      Element portfolios = document.createElement("portfolios");
-      user.appendChild(portfolios);
-      for (Map.Entry<String, Portfolio> portfoliosObj : userObj.getPortfolios().entrySet()) {
-        Element portfolio = document.createElement("portfolio");
-        portfolios.appendChild(portfolio);
-        portfolio.setAttribute("title", portfoliosObj.getKey());
-        Element stocks = document.createElement("stocks");
-        portfolio.appendChild(stocks);
-        HashMap<Stock, Integer> portfolioStocks = portfoliosObj.getValue().getStocks();
-        for (Map.Entry<Stock, Integer> stocksObj : portfolioStocks.entrySet()) {
-          Element stock = document.createElement("stock");
-          stock.setAttribute("symbol", stocksObj.getKey().getTicker());
-          stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
-          stocks.appendChild(stock);
-        }
+  private Document addUserToXml(User userObj, Document document) {
+    NodeList usersList = document.getElementsByTagName("users");
+    Node usersNode = usersList.item(0);
+    // Element usersElement = (Element) usersNode;
+    Element user = document.createElement("user");
+    usersNode.appendChild(user);
+    user.setAttribute("name", userObj.getName());
+    Element portfolios = document.createElement("portfolios");
+    user.appendChild(portfolios);
+    for (Map.Entry<String, Portfolio> portfoliosObj : userObj.getPortfolios().entrySet()) {
+      Element portfolio = document.createElement("portfolio");
+      portfolios.appendChild(portfolio);
+      portfolio.setAttribute("title", portfoliosObj.getKey());
+      Element stocks = document.createElement("stocks");
+      portfolio.appendChild(stocks);
+      HashMap<Stock, Integer> portfolioStocks = portfoliosObj.getValue().getStocks();
+      for (Map.Entry<Stock, Integer> stocksObj : portfolioStocks.entrySet()) {
+        Element stock = document.createElement("stock");
+        stock.setAttribute("symbol", stocksObj.getKey().getTicker());
+        stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
+        stocks.appendChild(stock);
       }
-      return document;
-    } catch (ParserConfigurationException e) {
-      // todo : handle exception
-      throw new RuntimeException(e);
     }
-  }
-
-  private void writeXmlToFile(Document document) {
-    try {
-      Transformer tr = TransformerFactory.newInstance().newTransformer();
-      tr.setOutputProperty(OutputKeys.INDENT, "yes");
-      tr.setOutputProperty(OutputKeys.METHOD, "xml");
-      tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      tr.transform(new DOMSource(document),
-              new StreamResult(new FileOutputStream(pathToLocalStorage)));
-    } catch (TransformerException | IOException te) {
-      System.out.println(te.getMessage());
-    }
+    return document;
   }
 }

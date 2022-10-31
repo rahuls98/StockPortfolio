@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,16 +28,9 @@ public class PortfolioModelImpl implements PortfolioModel {
    *
    * @param userName desc.
    */
-  public PortfolioModelImpl(String userName) {
-    try {
-      this.store = new StorageModelLocalImpl();
-    } catch (Exception e) {
-      // TODO : handle exceptions
-      e.printStackTrace();
-    }
-    User userFromStore = this.store.readUser(userName);
-    this.user = (userFromStore != null) ? userFromStore : new User(userName);
-
+  public PortfolioModelImpl(String userName) throws IOException {
+    this.store = new StorageModelLocalImpl();
+    this.user = this.store.readUser(userName);
     APIModel model = new APIModelImpl();
     tickerSet = model.callTickerApi();
   }

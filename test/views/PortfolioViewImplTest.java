@@ -34,7 +34,9 @@ public class PortfolioViewImplTest {
             .concat("\n3. Get portfolio value")
             .concat("\n4. Exit")
             .concat("\n");
-    textBasedUI.displayActions();
+    String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
+            "Get portfolio value", "Exit"};
+    textBasedUI.displayActions(actions);
     assertEquals(expectedOutput, out.toString());
   }
 
