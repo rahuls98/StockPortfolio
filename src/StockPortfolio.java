@@ -20,7 +20,7 @@ public class StockPortfolio {
     User defaultUser = new User(userName);
     PortfolioModel model = new PortfolioModelImpl(userName);
     PortfolioView view = new PortfolioViewImpl(out);
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input);
+    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, out);
     controller.go();
   }
 }
