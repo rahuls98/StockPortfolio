@@ -43,6 +43,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   public void go() {
     while (true) {
       view.displayActions();
+      System.out.print("Enter action: ");
       int choice = this.input.nextInt();
       switch (choice) {
         case 1:
