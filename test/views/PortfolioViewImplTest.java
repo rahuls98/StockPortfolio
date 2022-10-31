@@ -29,12 +29,13 @@ public class PortfolioViewImplTest {
   @Test
   public void testDisplayActions() {
     String expectedOutput = ""
-            .concat("1. Create portfolio")
-            .concat("\n2. Get portfolio composition")
-            .concat("\n3. Get portfolio value")
-            .concat("\n4. Exit")
-            .concat("\n");
-    textBasedUI.displayActions();
+            .concat("1. Create portfolio\r\n")
+            .concat("2. Get portfolio composition\r\n")
+            .concat("3. Get portfolio value\r\n")
+            .concat("4. Exit\r\n");
+    String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
+            "Get portfolio value", "Exit"};
+    textBasedUI.displayActions(actions);
     assertEquals(expectedOutput, out.toString());
   }
 
@@ -62,9 +63,9 @@ public class PortfolioViewImplTest {
   public void testDisplayPortfolios() {
     String[] portfolios = new String[]{"Portfolio 1", "Portfolio 2", "Portfolio 3"};
     String expectedOutput = ""
-            .concat("1. Portfolio 1\n")
-            .concat("2. Portfolio 2\n")
-            .concat("3. Portfolio 3\n");
+            .concat("1. Portfolio 1\r\n")
+            .concat("2. Portfolio 2\r\n")
+            .concat("3. Portfolio 3\r\n");
     textBasedUI.displayPortfolios(portfolios);
     assertEquals(expectedOutput, out.toString());
   }
@@ -93,12 +94,12 @@ public class PortfolioViewImplTest {
     HashMap<String, Integer> stockQuantities = new HashMap<>();
     stockQuantities.put("AAPL", 10);
     String expectedOutput = ""
-            .concat("Portfolio: ").concat(portfolioName).concat("\n")
-            .concat("---------------------------\n")
-            .concat("Stock       |  Quantity    \n")
-            .concat("---------------------------\n")
-            .concat("AAPL        |  10          \n")
-            .concat("---------------------------\n");
+            .concat("Portfolio: ").concat(portfolioName).concat("\r\n")
+            .concat("---------------------------\r\n")
+            .concat("Stock       |  Quantity    \r\n")
+            .concat("---------------------------\r\n")
+            .concat("AAPL        |  10          \r\n")
+            .concat("---------------------------\r\n");
     textBasedUI.displayPortfolioComposition(portfolioName, stockQuantities);
     assertEquals(expectedOutput, out.toString());
   }
