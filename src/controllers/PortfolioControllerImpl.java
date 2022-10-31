@@ -6,6 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import entities.Portfolio;
@@ -39,7 +40,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     this.model = model;
     this.view = view;
     this.user = user;
-    this.input = new Scanner(input);
+    this.input = new Scanner(input).useDelimiter("\n");
     this.output = out;
   }
 
@@ -50,8 +51,7 @@ public class PortfolioControllerImpl implements PortfolioController {
               "Get portfolio value", "Exit"};
       view.displayActions(actions);
       this.output.print("Enter action: ");
-      int choice = this.input.nextInt();
-      //TODO: Handle non int
+      int choice = this.getIntegerFromUser();
       switch (choice) {
         case 1:
           this.createPortfolio();
@@ -71,28 +71,53 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
   }
 
+  /**
+   * Loops if User enters a non Integer, prompting to try again,
+   * Else breaks and return Int.
+   * @return User entered Integer.
+   */
+  private int getIntegerFromUser() {
+    int choice;
+    while (true) {
+      try {
+        choice = this.input.nextInt();
+        break;
+      } catch (Exception e) {
+        //To Consume the new Line entered by user.
+        this.input.nextLine();
+        System.out.println("Enter Valid Integer:");
+      }
+    }
+    return choice;
+  }
+
   private void createPortfolio() {
     Portfolio portfolio = null;
     while (true) {
       String[] actions = new String[]{"Enter manually", "Load from file"};
       view.displayActions(actions);
       this.output.print("Select action: ");
-      int choice = this.input.nextInt();
+      int choice = this.getIntegerFromUser();
       switch (choice) {
         case 1:
           this.output.print("\nEnter portfolio name: ");
           String portfolioName = this.input.next();
+          while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
+            System.out.print("Portfolio Exists, Enter new name:");
+            portfolioName = this.input.next();
+          }
           portfolio = new Portfolio(portfolioName);
           this.output.print("Enter number of stocks: ");
-          int n = this.input.nextInt();
+          int n = this.getIntegerFromUser();;
           while (n <= 0) {
-            this.output.println("Enter a valid number of Stocks ");
-            n = this.input.nextInt();
+            this.output.print("Enter a valid number of Stocks: ");
+            n = this.getIntegerFromUser();;
           }
           String stockName;
           int stockQuantity;
           Stock stock;
           for (int i = 0; i < n; i++) {
+            //TODO: deal with same stock again
             this.output.print("Stock " + (i + 1) + " ticker: ");
             stockName = this.input.next();
             while (!(model.isValidTicker(stockName))) {
@@ -132,7 +157,7 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private void getPortfolioValue() {
     String[] portfolios = model.getPortfolios();
-    if( portfolios.length == 0) {
+    if (portfolios.length == 0) {
       this.output.println("No portfolios to display, Try entering portfolios first");
       return;
     }
