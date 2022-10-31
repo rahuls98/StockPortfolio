@@ -1,6 +1,0 @@
-<portfolio title="test desktop 16">
-	<stocks>
-		<stock quantity="46" symbol="tesla"/>
-		<stock quantity="46" symbol="google"/>
-	</stocks>
-</portfolio>
