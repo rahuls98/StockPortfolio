@@ -43,4 +43,6 @@ public interface PortfolioModel {
   Boolean isValidTicker(String ticker);
 
   Portfolio readPortfolioFromXml(String pathToXml);
+
+  boolean isValidDate(String date);
 }

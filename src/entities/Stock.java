@@ -44,25 +44,15 @@ public class Stock {
   /**
    * Description of method.
    *
-   * @param prices desc.
-   */
-  public void setPrices(HashMap<String, Float[]> prices) {
-    this.prices = prices;
-  }
-
-  /**
-   * Description of method.
-   *
    * @param date desc.
    * @return desc.
    */
   public float getPriceOnDate(String date) {
-    // todo : validate date
+    int closingValue = 3;
     if (!(prices.containsKey(date))) {
       APIModel model = new APIModelImpl();
-      prices = model.callStockApi(this.ticker);
+      this.prices = model.callStockApi(this.ticker);
     }
-    // todo : create variable to indicate what [3] is, example: closingValue =
-    return prices.get(date)[3];
+    return this.prices.get(date)[closingValue];
   }
 }

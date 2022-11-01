@@ -6,6 +6,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,5 +95,17 @@ public class PortfolioModelImpl implements PortfolioModel {
       portfolioObj.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
     }
     return portfolioObj;
+  }
+
+  @Override
+  public boolean isValidDate(String date) {
+//    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+    try {
+      LocalDate.parse(date, formatter);
+    } catch (DateTimeParseException e) {
+      return false;
+    }
+    return true;
   }
 }

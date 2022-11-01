@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Random;
 
 import entities.User;
 import models.PortfolioModel;
@@ -41,6 +42,20 @@ public class PortfolioControllerImplTest {
     this.view = new PortfolioViewImpl(new PrintStream(out));
   }
 
+  private String genRandomString() {
+    int leftLimit = 97; // letter 'a'
+    int rightLimit = 122; // letter 'z'
+    int targetStringLength = 10;
+    Random random = new Random();
+    StringBuilder buffer = new StringBuilder(targetStringLength);
+    for (int i = 0; i < targetStringLength; i++) {
+      int randomLimitedInt = leftLimit + (int)
+              (random.nextFloat() * (rightLimit - leftLimit + 1));
+      buffer.append((char) randomLimitedInt);
+    }
+    String generatedString = buffer.toString();
+    return generatedString;
+  }
   private String prepareString(String s) {
     return s.replace("\r", "").replace("\n", "");
   }
@@ -114,14 +129,16 @@ public class PortfolioControllerImplTest {
   // testGo with input action create portfolio
   @Test
   public void testGoWithCreatePortfolioRegularFlow() {
-    InputStream input = new ByteArrayInputStream("1\n1\ntestFromJunit4\n1\nAAPL\n1\n4\n".getBytes());
+    String generatedString = this.genRandomString();
+    String s = "1\n1\n"+ generatedString +"\n1\nAAPL\n1\n4\n";
+    InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "1. Create portfolio2." +
             " Get portfolio composition3. Get portfolio value4." +
             " ExitEnter action: 1. Enter manually2. Load from fileSelect action:" +
             " Enter portfolio name: Enter number of stocks: Stock 1 ticker: Quantity : N" +
-            "ew portfolio (testFromJunit4) has been recorded!1. Create portfolio2. G" +
+            "ew portfolio ("+generatedString+") has been recorded!1. Create portfolio2. G" +
             "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -129,7 +146,9 @@ public class PortfolioControllerImplTest {
   // test create portfolio invalid submenu
   @Test
   public void testGoWithCreatePortfolioInvalidFlow() {
-    InputStream input = new ByteArrayInputStream("1\n1\ntestFromJunit1\n-1\n1\nAAPL\n1\n4\n".getBytes());
+    String generatedString = this.genRandomString();
+    String s = "1\n1\n" + generatedString + "\n-1\n1\nAAPL\n1\n4\n";
+    InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "1. Create portfolio2." +
@@ -137,7 +156,7 @@ public class PortfolioControllerImplTest {
             " ExitEnter action: 1. Enter manually2. Load from fileSelect action:" +
             " Enter portfolio name: Enter number of stocks: Enter a valid number of Stocks:" +
             " Stock 1 ticker: Quantity : N" +
-            "ew portfolio (testFromJunit1) has been recorded!1. Create portfolio2. G" +
+            "ew portfolio ("+generatedString+") has been recorded!1. Create portfolio2. G" +
             "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -169,16 +188,36 @@ public class PortfolioControllerImplTest {
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
-  // todo : test portFolioValue
+  // test portFolioValue
   @Test
   public void testPortfolioValue() {
     InputStream input = new ByteArrayInputStream("3\n1\n2022-10-31\n4\n".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio2. Get portfolio composition3. " +
-            "Get portfolio value4. ExitEnter action: 1. Enter manually2. " +
-            "Load from fileSelect action: Path to XML: New portfolio (Test from BJ File) has been recorded!1. " +
-            "Create portfolio2. Get portfolio composition3. Get portfolio value4. ExitEnter action: ";
+    String expectedOutput = "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
+            " ExitEnter action: 1. testFromJunit42. a3. kynudxzlvw4. uvmvdzkyis5. testFromJunit26. " +
+            "testFromJunit37. ahuqaivyuc8. -19. Test from BJ File10. testFromJunit1Select Portfolio: " +
+            "Enter the date for which you want the valuePortfolio: testFromJunit4---------------" +
+            "------------Stock       |  Value       ---------------------------AAPL        |  153.34 " +
+            "     ---------------------------Total value of portfolio on is 153.34001. Create" +
+            " portfolio2. Get portfolio composition3. Get portfolio value4. ExitEnter action: ";
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  // test portFolioValue
+  @Test
+  public void testPortfolioValueWeekend() {
+    InputStream input = new ByteArrayInputStream("3\n1\n2022-10-30\n4\n".getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    controller.go();
+    String expectedOutput = "1. Create portfolio2. Get portfolio composition3. Get portfolio value" +
+            "4. ExitEnter action: 1. testFromJunit42. a3. kynudxzlvw4. uvmvdzkyis5. testFromJunit26." +
+            " testFromJunit37. ahuqaivyuc8. -19. Test from BJ File10. testFromJunit1Select Portfolio" +
+            ": Enter the date for which you want the valueEntered day is a weekendCalculating Value " +
+            "on Friday before the weekend on 2022-10-28Portfolio: testFromJunit4-------------------" +
+            "--------Stock       |  Value       ---------------------------AAPL        |  155.74    " +
+            "  ---------------------------Total value of portfolio on is 155.74001. Create portfolio" +
+            "2. Get portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 

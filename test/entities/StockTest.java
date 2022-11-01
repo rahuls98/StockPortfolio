@@ -43,13 +43,17 @@ public class StockTest {
   }
 
   @Test
-  public void testGetPrices() {
+  public void testGetPricesInitial() {
     HashMap<String, Float[]> prices = stock.getPrices();
     assertEquals(0, prices.size());
   }
 
-  // todo : testSetPrices
-  // todo : testSetPricesWithInvalidInput
-  // todo : testGetPriceOnDate
-  // todo : testGetPriceOnDateWithInvalidInput
+  @Test
+  public void testGetPricesAfterCallingAPI() {
+    assertEquals(153.3400,stock.getPriceOnDate("2022-10-31"), 0.01);
+    assertEquals(144.8000,stock.getPriceOnDate("2022-10-27"), 0.01);
+    assertEquals(155.7400,stock.getPriceOnDate("2022-10-28"), 0.01);
+    HashMap<String, Float[]> prices = stock.getPrices();
+    assertEquals(5788, prices.size());
+  }
 }

@@ -184,8 +184,11 @@ public class PortfolioControllerImpl implements PortfolioController {
   private String getDate() {
     //TODO: Perform Validation on input date.
     this.output.println("Enter the date for which you want the value");
-    Scanner sc = new Scanner(System.in).useDelimiter("\n");
-    String strDate = sc.next();
+    String strDate = this.input.next();
+    while (!(this.model.isValidDate(strDate))) {
+      this.output.println("Invalid date, Try again:");
+      strDate = this.input.next();
+    }
     LocalDate date = LocalDate.parse(strDate);
     DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK));
     if ((day == DayOfWeek.SUNDAY) || (day == DayOfWeek.SATURDAY)) {
