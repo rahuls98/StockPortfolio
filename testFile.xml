@@ -1,0 +1,6 @@
+<portfolio title="Test from BJ File">
+    <stocks>
+        <stock quantity="2" symbol="GOOG"/>
+        <stock quantity="2" symbol="AAPL"/>
+    </stocks>
+</portfolio>
