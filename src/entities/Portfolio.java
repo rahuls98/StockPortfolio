@@ -16,7 +16,9 @@ public class Portfolio {
    * Description of constructor.
    */
   public Portfolio(String name) {
-    // TODO : handle null, empty, invalid strings
+    if (name == null || name.equals("")) {
+      throw new IllegalArgumentException("Portfolio name cannot be empty!");
+    }
     this.name = name;
     this.stocks = new HashMap<>();
     this.lastPossibleValue = "0";
@@ -39,6 +41,12 @@ public class Portfolio {
    */
   public void addStock(Stock stock, int quantity) {
     // TODO : validate ticker, quantity for neg, 0, fractional
+    if (stock == null) {
+      throw new IllegalArgumentException("Stock cannot be null!");
+    }
+    if (quantity < 0) {
+      throw new IllegalArgumentException("Quantity cannot be negative!");
+    }
     stocks.put(stock, quantity);
   }
 

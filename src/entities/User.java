@@ -15,8 +15,10 @@ public class User {
    *
    * @param name desc.
    */
-  public User(String name) {
-    // TODO : validate usernames for invalid characters, null, empty strings
+  public User(String name) throws IllegalArgumentException {
+    if (name == null || name.equals("")) {
+      throw new IllegalArgumentException("Username cannot be empty!");
+    }
     this.name = name;
     this.portfolios = new HashMap<>();
   }
@@ -36,7 +38,9 @@ public class User {
    * @param portfolio desc.
    */
   public void addPortfolio(Portfolio portfolio) {
-    // TODO : validate not null
+    if (portfolio == null) {
+      throw new IllegalArgumentException("Null portfolio not allowed!");
+    }
     portfolios.put(portfolio.getName(), portfolio);
   }
 

@@ -16,7 +16,9 @@ public class Stock {
    * Description of constructor.
    */
   public Stock(String ticker) {
-    // todo : handle null, empty, invalid strings
+    if (ticker == null || ticker.equals("")) {
+      throw new IllegalArgumentException("Ticker cannot be empty!");
+    }
     this.ticker = ticker;
     this.prices = new HashMap<>();
   }
