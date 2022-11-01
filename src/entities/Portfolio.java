@@ -36,6 +36,15 @@ public class Portfolio {
   /**
    * Description of method.
    *
+   * @return desc.
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * Description of method.
+   *
    * @param stock desc.
    * @param quantity desc.
    */

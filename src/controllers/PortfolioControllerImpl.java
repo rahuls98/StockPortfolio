@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.DayOfWeek;
@@ -46,11 +47,14 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   @Override
   public void go() {
+    this.output.println("\nPlease enter the menu item number when requested.");
+    String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
+            "Get portfolio value", "Exit"};
     while (true) {
-      String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
-              "Get portfolio value", "Exit"};
+      this.output.println();
+      this.output.println("What would you like to do?");
       view.displayActions(actions);
-      this.output.print("Enter action: ");
+      this.output.print("Select action: ");
       int choice = this.getIntegerFromUser();
       switch (choice) {
         case 1:
@@ -65,7 +69,7 @@ public class PortfolioControllerImpl implements PortfolioController {
         case 4:
           return;
         default:
-          this.output.println("\nInvalid choice\n");
+          this.output.print("\nInvalid choice, please try again!\n");
           break;
       }
     }
@@ -85,7 +89,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       } catch (Exception e) {
         //To Consume the new Line entered by user.
         this.input.nextLine();
-        this.output.println("Enter Valid Integer:");
+        this.output.print("Please enter a valid integer value: ");
       }
     }
     return choice;
@@ -94,76 +98,115 @@ public class PortfolioControllerImpl implements PortfolioController {
   private void createPortfolio() {
     Portfolio portfolio = null;
     while (true) {
-      String[] actions = new String[]{"Enter manually", "Load from file"};
+      String[] actions = new String[]{"Enter manually", "Load from file", "Go back"};
+      this.output.println();
+      this.output.println("How would you like to enter the portfolio details?");
       view.displayActions(actions);
       this.output.print("Select action: ");
       int choice = this.getIntegerFromUser();
       switch (choice) {
         case 1:
-          this.output.print("\nEnter portfolio name: ");
-          String portfolioName = this.input.next();
-          while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
-            System.out.print("Portfolio Exists, Enter new name:");
-            portfolioName = this.input.next();
-          }
-          portfolio = new Portfolio(portfolioName);
-          this.output.print("Enter number of stocks: ");
-          int n = this.getIntegerFromUser();;
-          while (n <= 0) {
-            this.output.print("Enter a valid number of Stocks: ");
-            n = this.getIntegerFromUser();;
-          }
-          String stockName;
-          int stockQuantity;
-          Stock stock;
-          for (int i = 0; i < n; i++) {
-            //TODO: deal with same stock again
-            this.output.print("Stock " + (i + 1) + " ticker: ");
-            stockName = this.input.next();
-            while (!(model.isValidTicker(stockName))) {
-              this.output.println("Enter Valid Ticker Name: ");
-              stockName = this.input.next();
-            }
-            this.output.print("Quantity : ");
-            stockQuantity = this.input.nextInt();
-            // TODO : Validate not 0, negative, fractional
-            stock = new Stock(stockName);
-            portfolio.addStock(stock, stockQuantity);
-          }
-          user.addPortfolio(portfolio);
-          model.addPortfolio(user);
-          this.output.println("\nNew portfolio (" + portfolio.getName() + ") has been recorded!");
+          this.createPortfolioManually();
           return;
         case 2:
-          this.output.print("Path to XML: ");
-          String pathToXml = this.input.next();
-          portfolio = model.readPortfolioFromXml(pathToXml);
-          // todo : check if portfolio with same name already exists
-          user.addPortfolio(portfolio);
-          model.addPortfolio(user);
-          this.output.println("\nNew portfolio (" + portfolio.getName() + ") has been recorded!");
+          this.createPortfolioFromFile();
+          return;
+        case 3:
           return;
         default:
-          this.output.println("Invalid choice");
+          this.output.print("Invalid choice, please try again!\n");
           break;
       }
     }
   }
 
+  private void createPortfolioManually() {
+    Portfolio portfolio = null;
+    this.output.println();
+    this.output.print("Enter portfolio name: ");
+    String portfolioName = this.input.next();
+    while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
+      this.output.print("This portfolio already exists, please enter another name: ");
+      portfolioName = this.input.next();
+    }
+    portfolio = new Portfolio(portfolioName);
+    this.output.print("Enter number of stocks: ");
+    int n = this.getIntegerFromUser();;
+    while (n <= 0) {
+      this.output.print("Please enter a valid number of stocks: ");
+      n = this.getIntegerFromUser();;
+    }
+    String stockName;
+    int stockQuantity;
+    Stock stock;
+    for (int i = 0; i < n; i++) {
+      //TODO: deal with same stock again
+      this.output.print("Stock " + (i + 1) + " ticker: ");
+      stockName = this.input.next();
+      while (!(model.isValidTicker(stockName))) {
+        this.output.print("Please enter a valid ticker name: ");
+        stockName = this.input.next();
+      }
+      this.output.print("Quantity : ");
+      stockQuantity = this.getIntegerFromUser();;
+      while (stockQuantity <= 0) {
+        this.output.print("Please enter a valid quantity: ");
+        stockQuantity = this.getIntegerFromUser();;
+      }
+      stock = new Stock(stockName);
+      portfolio.addStock(stock, stockQuantity);
+    }
+    user.addPortfolio(portfolio);
+    model.addPortfolio(user);
+    this.output.print("New portfolio (" + portfolio.getName() + ") has been recorded!\n");
+  }
+
+  private void createPortfolioFromFile() {
+    // todo : check for tickers and quantities within XML
+    Portfolio portfolio = null;
+    this.output.println();
+    this.output.print("Enter path to XML: ");
+    String pathToXml = this.input.next();
+    File file = new File(pathToXml);
+    while (!file.exists()) {
+      this.output.print("No such file exists! Please enter a valid path: ");
+      pathToXml = this.input.next();
+      file = new File(pathToXml);
+    }
+    portfolio = model.readPortfolioFromXml(pathToXml);
+    String portfolioName = portfolio.getName();
+    while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
+      this.output.print("This portfolio already exists! Please try another name: ");
+      portfolioName = this.input.next();
+    }
+    portfolio.setName(portfolioName);
+    user.addPortfolio(portfolio);
+    model.addPortfolio(user);
+    this.output.print("\nNew portfolio (" + portfolio.getName() + ") has been recorded!\n");
+  }
+
   private void getComposition() {
     String[] portfolios = model.getPortfolios();
+    if (portfolios.length == 0) {
+      this.output.println("\nYou have no portfolios currently!");
+      return;
+    }
+    this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
+    this.output.println();
     view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName).getStockQuantities());
   }
 
   private void getPortfolioValue() {
     String[] portfolios = model.getPortfolios();
     if (portfolios.length == 0) {
-      this.output.println("No portfolios to display, Try entering portfolios first");
+      this.output.println("\nYou have no portfolios currently!");
       return;
     }
+    this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
     String date = this.getDate();
+    this.output.println();
     view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
     this.output.println("Total value of portfolio on is " + String.format("%.4f",
             model.getPortfolioTotal(portfolioName, date)));
@@ -171,10 +214,10 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
     view.displayPortfolios(portfolios);
-    this.output.print("Select Portfolio: ");
+    this.output.print("Select portfolio: ");
     int choice = this.input.nextInt();
     while ((choice <= 0) || (choice > portfolios.length)) {
-      this.output.println("Enter a valid number for Portfolio ");
+      this.output.print("Please make a valid entry from the choices above: ");
       choice = this.input.nextInt();
     }
     String portfolioName = portfolios[choice - 1];
@@ -183,22 +226,22 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private String getDate() {
     //TODO: Perform Validation on input date.
-    this.output.println("Enter the date for which you want the value");
+    this.output.print("Enter the date for which you want the value: ");
     String strDate = this.input.next();
     while (!(this.model.isValidDate(strDate))) {
-      this.output.println("Invalid date, Try again:");
+      this.output.print("Please enter a valid date: ");
       strDate = this.input.next();
     }
     LocalDate date = LocalDate.parse(strDate);
     DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK));
     if ((day == DayOfWeek.SUNDAY) || (day == DayOfWeek.SATURDAY)) {
-      this.output.println("Entered day is a weekend");
+      this.output.println("\nEntered day is a weekend.");
       if (day == DayOfWeek.SATURDAY) {
         date = date.minusDays(1);
       } else {
         date = date.minusDays(2);
       }
-      this.output.println("Calculating Value on Friday before the weekend on " + date.toString());
+      this.output.println("Calculating value for the previous Friday (" + date.toString() + ")");
     }
     return date.toString();
   }

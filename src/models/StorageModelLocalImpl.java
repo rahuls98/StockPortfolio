@@ -4,10 +4,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +40,6 @@ class StorageModelLocalImpl implements StorageModel {
   @Override
   public User readUser(String userName) {
     File newFile = new File(pathToLocalStorage);
-    //TODO: Return null if user not in local Storage
     if (newFile.length() == 0) {
       return null;
     }
@@ -54,7 +51,9 @@ class StorageModelLocalImpl implements StorageModel {
 
   @Override
   public void writeUser(User user) {
-    // todo : user not null
+    if (user == null) {
+      throw new IllegalArgumentException("User cannot be null!");
+    }
     FileModelXmlImpl xmlHandler = new FileModelXmlImpl();
     xmlHandler.readFile(pathToLocalStorage);
     Document document = this.addUserToXml(user, xmlHandler.getDocument());
