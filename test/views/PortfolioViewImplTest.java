@@ -95,12 +95,12 @@ public class PortfolioViewImplTest {
     HashMap<String, Integer> stockQuantities = new HashMap<>();
     stockQuantities.put("AAPL", 10);
     String expectedOutput = ""
-            .concat("Portfolio: ").concat(portfolioName).concat("\r\n")
-            .concat("---------------------------\r\n")
-            .concat("Stock       |  Quantity    \r\n")
-            .concat("---------------------------\r\n")
-            .concat("AAPL        |  10          \r\n")
-            .concat("---------------------------\r\n");
+            .concat("Portfolio: ").concat(portfolioName).concat("\n")
+            .concat("---------------------------\n")
+            .concat("Stock       |  Quantity    \n")
+            .concat("---------------------------\n")
+            .concat("AAPL        |  10          \n")
+            .concat("---------------------------\n");
     textBasedUI.displayPortfolioComposition(portfolioName, stockQuantities);
     assertEquals(expectedOutput, out.toString());
   }

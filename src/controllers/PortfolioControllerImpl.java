@@ -85,7 +85,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       } catch (Exception e) {
         //To Consume the new Line entered by user.
         this.input.nextLine();
-        System.out.println("Enter Valid Integer:");
+        this.output.println("Enter Valid Integer:");
       }
     }
     return choice;
@@ -184,7 +184,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   private String getDate() {
     //TODO: Perform Validation on input date.
     this.output.println("Enter the date for which you want the value");
-    Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in).useDelimiter("\n");
     String strDate = sc.next();
     LocalDate date = LocalDate.parse(strDate);
     DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK));
