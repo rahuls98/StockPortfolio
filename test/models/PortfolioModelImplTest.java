@@ -27,13 +27,8 @@ import static org.junit.Assert.assertFalse;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PortfolioModelImplTest {
-  private OutputStream out;
-  private String userName;
 
-  private InputStream input;
-  private User defaultUser;
   private PortfolioModel model;
-  private PortfolioView view;
 
   @Before
   public void setUp() {
@@ -41,14 +36,14 @@ public class PortfolioModelImplTest {
     if (file.exists()) {
       file.delete();
     }
-    this.out = new ByteArrayOutputStream();
-    this.userName = "Test";
+    OutputStream out = new ByteArrayOutputStream();
+    String userName = "Test";
     try {
       this.model = new PortfolioModelImpl(userName);
     } catch (Exception e) {
       e.printStackTrace();
     }
-    this.view = new PortfolioViewImpl(new PrintStream(out));
+    PortfolioView view = new PortfolioViewImpl(new PrintStream(out));
     String testPortfolio = "testPortfolio";
     String s = "1\n1\n" + testPortfolio + "\n2\nAAPL\n2\nGOOG\n2\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());

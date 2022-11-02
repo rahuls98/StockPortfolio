@@ -67,6 +67,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     return this.tickerSet.contains(ticker);
   }
 
+  @Override
   public Portfolio loadPortfolioFromXml(String pathToFile) {
     try {
       int quantity;
@@ -101,6 +102,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     }
   }
 
+  @Override
   public String loadPortfolioNameFromXML(String pathToFile) {
     try {
       FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();

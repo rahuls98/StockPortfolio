@@ -14,14 +14,12 @@ import java.util.stream.IntStream;
  */
 class APIModelImpl implements APIModel {
 
-  private HashMap<String, HashMap<String, String[]>> priceMap;
   private final String alphaVantageKey;
 
   /**
    * Returns an object of APIModelImpl.
    */
   public APIModelImpl() {
-    this.priceMap = new HashMap<>();
     this.alphaVantageKey = "0KD9ZFT8VD5QTNLQ";
   }
 

@@ -45,8 +45,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   @Override
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
-    String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
-            "Get portfolio value", "Exit"};
+    String[] actions = new String[]{"Create portfolio", "Get portfolio composition", "Get " +
+        "portfolio value", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
