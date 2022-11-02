@@ -22,6 +22,7 @@ import views.PortfolioView;
 import views.PortfolioViewImpl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PortfolioControllerImplTest {
@@ -34,8 +35,12 @@ public class PortfolioControllerImplTest {
 
   @Before
   public void setUp() {
+    File file = new File("localStorage.xml");
+    if (file.exists()) {
+      file.delete();
+    }
     this.out = new ByteArrayOutputStream();
-    this.userName = "default";
+    this.userName = genRandomString();
     this.defaultUser = new User(userName);
     try {
       this.model = new PortfolioModelImpl(userName);
@@ -43,10 +48,6 @@ public class PortfolioControllerImplTest {
       e.printStackTrace();
     }
     this.view = new PortfolioViewImpl(new PrintStream(out));
-    File file = new File("localStorage.xml");
-    if (file.exists()) {
-      file.delete();
-    }
   }
 
   @After
@@ -68,8 +69,7 @@ public class PortfolioControllerImplTest {
               (random.nextFloat() * (rightLimit - leftLimit + 1));
       buffer.append((char) randomLimitedInt);
     }
-    String generatedString = buffer.toString();
-    return generatedString;
+    return buffer.toString();
   }
 
   private String prepareString(String s) {
@@ -77,7 +77,41 @@ public class PortfolioControllerImplTest {
   }
 
   // todo : testPortfolioControllerImplInstantiation
-  // todo : testPortfolioControllerImplInstantiationWithInvalidInput
+  //testPortfolioControllerImplInstantiationWithInvalidInput
+  @Test
+  public void testInvalidInput() {
+    try {
+      PortfolioController controller = new PortfolioControllerImpl(null, view, defaultUser, input, new PrintStream(out));
+      fail("Should Throw Exception");
+    } catch (IllegalArgumentException e) {
+      //do nothing
+    }
+    try {
+      PortfolioController controller = new PortfolioControllerImpl(model, null, defaultUser, input, new PrintStream(out));
+      fail("Should Throw Exception");
+    } catch (IllegalArgumentException e) {
+      //do nothing
+    }
+    try {
+      PortfolioController controller = new PortfolioControllerImpl(model, view, null, input, new PrintStream(out));
+      fail("Should Throw Exception");
+    } catch (IllegalArgumentException e) {
+      //do nothing
+    }
+    try {
+      PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, null, new PrintStream(out));
+      fail("Should Throw Exception");
+    } catch (IllegalArgumentException e) {
+      //do nothing
+    }
+    try {
+      PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, null);
+      fail("Should Throw Exception");
+    } catch (IllegalArgumentException e) {
+      //do nothing
+    }
+  }
+
   // testGo shows starting menu
   @Test
   public void testStartingMenu() {
@@ -93,14 +127,13 @@ public class PortfolioControllerImplTest {
 
   // testGo action input with non int action
   @Test
-  public void testInputWithNonIntAction() throws FileNotFoundException {
+  public void testInputWithNonIntAction()  {
     InputStream input = new ByteArrayInputStream("a\n4\n".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?1. Create portfolio2. Get portfolio composition" +
             "3. Get portfolio value4. ExitSelect action: Please enter a valid integer value: ";
-
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
 
   }
@@ -117,7 +150,24 @@ public class PortfolioControllerImplTest {
             "What would you like to do?1. Create portfolio2. Get portfolio composition" +
             "3. Get portfolio value4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
-    ;
+  }
+
+  //testGo action with non int choice
+  @Test
+  public void testNonIntChoice() {
+    InputStream input = new ByteArrayInputStream("a\n4\n".getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    controller.go();
+    String expectedOutput = "Please enter the menu item number when requested.\n" +
+            "\n" +
+            "What would you like to do?\n" +
+            "1. Create portfolio\n" +
+            "2. Get portfolio composition\n" +
+            "3. Get portfolio value\n" +
+            "4. Exit\n" +
+            "Select action: \n" +
+            "Please enter a valid integer value: \n";
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   // testGo with Exit
@@ -227,6 +277,32 @@ public class PortfolioControllerImplTest {
             "1. Enter manually" +
             "2. Load from file" +
             "3. Go backSelect action: Enter path to XML: New portfolio (TestFile) has been recorded!" +
+            "What would you like to do?" +
+            "1. Create portfolio" +
+            "2. Get portfolio composition" +
+            "3. Get portfolio value" +
+            "4. ExitSelect action: ";
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  //  test create portfolio with not existing portfolio path
+  @Test
+  public void testGoWithCreatePortfolioWithIllegalPath() {
+    InputStream input = new ByteArrayInputStream("1\n2\ntestFile1.xml\ntestFile.xml\n4\n".getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    controller.go();
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?" +
+            "1. Create portfolio" +
+            "2. Get portfolio composition" +
+            "3. Get portfolio value" +
+            "4. ExitSelect action: " +
+            "How would you like to enter the portfolio details?" +
+            "1. Enter manually" +
+            "2. Load from file" +
+            "3. Go backSelect action: Enter path to XML:" +
+            " No such file exists! Please enter a valid path:" +
+            " New portfolio (TestFile) has been recorded!" +
             "What would you like to do?" +
             "1. Create portfolio" +
             "2. Get portfolio composition" +

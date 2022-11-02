@@ -35,7 +35,9 @@ public class PortfolioControllerImpl implements PortfolioController {
    */
   public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user,
                                  InputStream input, PrintStream out) {
-    // TODO : handle nulls
+    if((model == null) || (view == null) || (user == null) || (input == null) || (out == null)) {
+      throw new IllegalArgumentException("Null Values not allowed");
+    }
     this.model = model;
     this.view = view;
     this.user = user;

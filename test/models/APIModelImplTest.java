@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -22,7 +23,9 @@ public class APIModelImplTest {
   public void testGetStockPrices() {
     HashMap<String, Float[]> prices = model.getStockPrices("AAPL");
     assertFalse(prices.isEmpty());
-    // todo : get prices from postman and compare for a few dates
+    assertEquals(150.6500, prices.get("2022-11-01")[3], 0.01f);
+    assertEquals(153.3400, prices.get("2022-10-31")[3], 0.01f);
+    assertEquals(151.0000, prices.get("2022-07-19")[3], 0.01f);
   }
 
   @Test
@@ -30,5 +33,6 @@ public class APIModelImplTest {
     HashSet<String> set = model.getValidTickers();
     assertTrue(set.size() > 0);
     assertFalse(set.contains("RXF"));
+    assertTrue(set.contains("AAPL"));
   }
 }
