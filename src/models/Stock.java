@@ -2,9 +2,6 @@ package models;
 
 import java.util.HashMap;
 
-import models.APIModel;
-import models.APIModelImpl;
-
 /**
  * Represents a Stock that has a unique ticker symbol and varying prices on different dates.
  */

@@ -5,25 +5,24 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
- * Represents a class that manages stock portfolios for different users using an XML file storage.
+ * Represents a class that manages all the functionalities of a stock portfolio application for
+ * different users using an XML file storage.
  */
 public class PortfolioModelImpl implements PortfolioModel {
 
-  private User user;
-  private StorageModel store;
-  private HashSet<String> tickerSet;
+  private final User user;
+  private final StorageModel store;
+  private final HashSet<String> tickerSet;
 
   /**
-   * Represents an object of the PortfolioModelImpl class.
+   * Returns an object of the PortfolioModelImpl class.
    *
    * @param userName The user whose portfolio is to be managed.
    */
@@ -39,15 +38,8 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public void addPortfolio(User user) {
-    if (this.user.getName().equals(user.getName())) {
-      for (Map.Entry<String, Portfolio> entry : user.getPortfolios().entrySet()) {
-        this.user.addPortfolio(entry.getValue());
-      }
-    } else {
-      this.user = user;
-    }
-    this.store.writeUser(this.user);
+  public void addPortfolio(String portfolioName) {
+    this.user.addPortfolio(new Portfolio(portfolioName));
   }
 
   @Override
@@ -135,11 +127,6 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public void addPortfolio2(String portfolioName) {
-    this.user.addPortfolio(new Portfolio(portfolioName));
-  }
-
-  @Override
   public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
     Stock stock = new Stock(stockTicker);
     this.getPortfolio(portfolioName).addStock(stock, stockQuantity);
@@ -157,11 +144,6 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public String getPortfolioName(Portfolio portfolio) {
-    return portfolio.getName();
-  }
-
-  @Override
   public HashSet<String> getStockTickersInPortfolio(String portfolioName) {
     return this.getPortfolio(portfolioName).getStockNames();
   }
@@ -170,6 +152,4 @@ public class PortfolioModelImpl implements PortfolioModel {
   public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName) {
     return this.getPortfolio(portfolioName).getStockQuantities();
   }
-
-
 }

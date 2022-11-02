@@ -7,8 +7,8 @@ import java.util.HashMap;
  */
 class User {
 
-  private String name;
-  private HashMap<String, Portfolio> portfolios;
+  private final String name;
+  private final HashMap<String, Portfolio> portfolios;
 
   /**
    * Returns an object of User.

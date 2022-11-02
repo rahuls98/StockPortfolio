@@ -10,8 +10,7 @@ import java.util.Map;
 class Portfolio {
 
   private String name;
-  private HashMap<Stock, Integer> stocks;
-  private String lastPossibleValue;
+  private final HashMap<Stock, Integer> stocks;
 
   /**
    * Returns an object of Portfolio.
@@ -24,7 +23,6 @@ class Portfolio {
     }
     this.name = name;
     this.stocks = new HashMap<>();
-    this.lastPossibleValue = "0";
   }
 
   /**

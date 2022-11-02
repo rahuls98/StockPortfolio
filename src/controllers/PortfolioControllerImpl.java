@@ -123,7 +123,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.print("This portfolio already exists, please enter another name: ");
       portfolioName = this.input.next();
     }
-    this.model.addPortfolio2(portfolioName);
+    this.model.addPortfolio(portfolioName);
     this.output.print("Enter number of stocks: ");
     int n = this.getIntegerFromUser();
     while (n <= 0) {

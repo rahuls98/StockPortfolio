@@ -6,7 +6,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 class StorageModelLocalImpl implements StorageModel {
 
   private final String pathToLocalStorage;
-  private ArrayList<User> users;
+  private final ArrayList<User> users;
 
   /**
    * Returns an object of the XML file storage mechanism.

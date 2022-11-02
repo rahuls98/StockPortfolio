@@ -2,7 +2,7 @@ package models;
 
 /**
  * Represents classes that interact with storage mechanisms, for example: file storages,
- * databases, etc., and defines required associated operations.
+ * databases, etc., and the required associated operations.
  */
 interface StorageModel {
 
