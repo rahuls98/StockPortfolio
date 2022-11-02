@@ -74,7 +74,6 @@ public class PortfolioControllerImplTest {
     return s.replace("\r", "").replace("\n", "");
   }
 
-  // todo : testPortfolioControllerImplInstantiation
   //testPortfolioControllerImplInstantiationWithInvalidInput
   @Test
   public void testInvalidInput() {

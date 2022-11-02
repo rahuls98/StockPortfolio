@@ -69,5 +69,6 @@ public class PortfolioTest {
   }
 
   // todo : testGetValue
+
   // todo : testGetTotalComp
 }

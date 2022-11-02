@@ -42,7 +42,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     this.model = model;
     this.view = view;
     this.userName = userName;
-    this.input = new Scanner(input).useDelimiter("\n");
+    this.input = new Scanner(input);
     this.output = out;
   }
 
@@ -221,7 +221,6 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private String getDate() {
-    //TODO: Perform Validation on input date.
     this.output.print("Enter the date for which you want the value: ");
     String strDate = this.input.next();
     while (!(this.model.isValidDate(strDate))) {

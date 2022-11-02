@@ -54,6 +54,6 @@ public class StockTest {
     assertEquals(144.8000,stock.getPriceOnDate("2022-10-27"), 0.01);
     assertEquals(155.7400,stock.getPriceOnDate("2022-10-28"), 0.01);
     HashMap<String, Float[]> prices = stock.getPrices();
-    assertEquals(5788, prices.size());
+    assertEquals(5789, prices.size());
   }
 }
