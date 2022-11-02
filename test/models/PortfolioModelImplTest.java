@@ -2,25 +2,27 @@ package models;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
 import views.PortfolioView;
 import views.PortfolioViewImpl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PortfolioModelImplTest {
   private OutputStream out;
   private String userName;
@@ -38,7 +40,6 @@ public class PortfolioModelImplTest {
     }
     this.out = new ByteArrayOutputStream();
     this.userName = "Test";
-    this.defaultUser = new User(userName);
     try {
       this.model = new PortfolioModelImpl(userName);
     } catch (Exception e) {

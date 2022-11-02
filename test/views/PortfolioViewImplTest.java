@@ -21,6 +21,10 @@ public class PortfolioViewImplTest {
     this.textBasedUI = new PortfolioViewImpl(new PrintStream(out));
   }
 
+  private String prepareString(String s) {
+    return s.replace("\r", "").replace("\n", "");
+  }
+
   @Test
   public void testPortfolioViewInstantiation() {
     assertTrue(textBasedUI instanceof PortfolioView);
@@ -102,7 +106,7 @@ public class PortfolioViewImplTest {
             .concat("AAPL        |  10          \n")
             .concat("---------------------------\n");
     textBasedUI.displayPortfolioComposition(portfolioName, stockQuantities);
-    assertEquals(expectedOutput, out.toString());
+    assertEquals(prepareString(expectedOutput),prepareString(out.toString()));
   }
 
   @Test
@@ -136,6 +140,5 @@ public class PortfolioViewImplTest {
             .concat("AAPL        |  106.5       \n")
             .concat("---------------------------\n");
     textBasedUI.displayPortfolioValue(portfolioName, portfolioValues);
-    assertEquals(expectedOutput, out.toString());
-  }
+    assertEquals(prepareString(expectedOutput),prepareString(out.toString()));  }
 }
