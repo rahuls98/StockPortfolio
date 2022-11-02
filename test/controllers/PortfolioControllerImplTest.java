@@ -19,7 +19,6 @@ import views.PortfolioView;
 import views.PortfolioViewImpl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class PortfolioControllerImplTest {
   private OutputStream out;
@@ -218,5 +217,4 @@ public class PortfolioControllerImplTest {
             "2. Get portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
-
 }

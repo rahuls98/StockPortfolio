@@ -18,7 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Represents a storage model that uses XML as its storage mechanism.
  */
-class StorageModelLocalImpl implements StorageModel {
+public class StorageModelLocalImpl implements StorageModel {
 
   private final String pathToLocalStorage;
   private ArrayList<User> users;
