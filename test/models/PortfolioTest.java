@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import models.Portfolio;
-import models.Stock;
+import entities.Portfolio;
+import entities.Stock;
 
 import static org.junit.Assert.*;
 

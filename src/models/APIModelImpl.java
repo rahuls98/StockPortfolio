@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.IntStream;
 
-class APIModelImpl implements APIModel {
+public class APIModelImpl implements APIModel {
 
   private HashMap<String, HashMap<String, String[]>> priceMap;
   private final String alphaVantageKey;

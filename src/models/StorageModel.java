@@ -1,5 +1,7 @@
 package models;
 
+import entities.User;
+
 /**
  * Represents classes that interact with storage mechanisms, for example: file storages,
  * databases, etc., and defines required associated operations.

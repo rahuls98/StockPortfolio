@@ -9,9 +9,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import models.Portfolio;
-import models.Stock;
-import models.User;
+import entities.Portfolio;
+import entities.Stock;
+import entities.User;
 import models.PortfolioModel;
 import views.PortfolioView;
 

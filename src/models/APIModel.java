@@ -6,7 +6,7 @@ import java.util.HashSet;
 /**
  * Represents classes that provides APIs to fetch stock related data.
  */
-interface APIModel {
+public interface APIModel {
 
   /**
    * Returns prices of a stock on particular dates.

@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import entities.Portfolio;
+import entities.Stock;
+import entities.User;
+
 /**
  * Represents a class that manages stock portfolios for different users using an XML file storage.
  */
