@@ -72,7 +72,8 @@ public class PortfolioControllerImplTest {
   }
 
   private String prepareString(String s) {
-    return s.replace("\r", "").replace("\n", "");
+    return s.replace("\r", "")
+            .replace("\n", "");
   }
 
   @Test
