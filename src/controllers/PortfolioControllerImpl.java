@@ -26,10 +26,10 @@ public class PortfolioControllerImpl implements PortfolioController {
   /**
    * Returns a PortfolioController object.
    *
-   * @param model    Object of the PortfolioModel.
-   * @param view     Object of the PortfolioView.
-   * @param input    Where to receive the program inputs from.
-   * @param out      Where to push outputs to.
+   * @param model Object of the PortfolioModel.
+   * @param view  Object of the PortfolioView.
+   * @param input Where to receive the program inputs from.
+   * @param out   Where to push outputs to.
    */
   public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, InputStream input,
                                  PrintStream out) {
@@ -46,7 +46,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
     String[] actions = new String[]{"Create portfolio", "Get portfolio composition", "Get " +
-        "portfolio value", "Exit"};
+            "portfolio value", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -224,7 +224,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   private String getDate() {
     this.output.print("Enter the date for which you want the value: ");
     String strDate = this.input.next();
-    while (!(this.model.isValidDate(strDate))) {
+    while ((!(this.model.isValidDate(strDate))) ||
+            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0)) {
       this.output.print("Please enter a valid date: ");
       strDate = this.input.next();
     }
