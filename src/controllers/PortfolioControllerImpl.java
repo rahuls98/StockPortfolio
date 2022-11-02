@@ -225,7 +225,8 @@ public class PortfolioControllerImpl implements PortfolioController {
     this.output.print("Enter the date for which you want the value: ");
     String strDate = this.input.next();
     while ((!(this.model.isValidDate(strDate))) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0)) {
+            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0) ||
+            (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)) {
       this.output.print("Please enter a valid date: ");
       strDate = this.input.next();
     }
