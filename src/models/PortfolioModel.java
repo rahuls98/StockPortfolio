@@ -1,9 +1,7 @@
 package models;
 
 import java.util.HashMap;
-
-import entities.Portfolio;
-import entities.User;
+import java.util.HashSet;
 
 /**
  * Represents classes that manage stock portfolios and all their associated functionalities.
@@ -66,6 +64,8 @@ public interface PortfolioModel {
    */
   Portfolio loadPortfolioFromXml(String pathToXml);
 
+  String loadPortfolioNameFromXML(String pathToXml);
+
   /**
    * Checks if a given date is valid or not.
    *
@@ -73,4 +73,12 @@ public interface PortfolioModel {
    * @return True if date is valid, False if not.
    */
   boolean isValidDate(String date);
+
+  void addPortfolio2(String portfolioName);
+  void addStock(String portfolioName, String stockTicker, int stockQuantity);
+  void addPortfolioToUser(Portfolio portfolio, String portfolioName);
+  void persist();
+  String getPortfolioName(Portfolio portfolio);
+  HashSet<String> getStockTickersInPortfolio(String portfolioName);
+  HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName);
 }

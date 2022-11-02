@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Random;
 
-import entities.User;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;
@@ -28,7 +27,6 @@ public class PortfolioControllerImplTest {
   private OutputStream out;
   private String userName;
   private InputStream input;
-  private User defaultUser;
   private PortfolioModel model;
   private PortfolioView view;
 
@@ -36,7 +34,6 @@ public class PortfolioControllerImplTest {
   public void setUp() {
     this.out = new ByteArrayOutputStream();
     this.userName = "default";
-    this.defaultUser = new User(userName);
     try {
       this.model = new PortfolioModelImpl(userName);
     } catch (Exception e) {
@@ -82,7 +79,8 @@ public class PortfolioControllerImplTest {
   @Test
   public void testStartingMenu() {
     InputStream input = new ByteArrayInputStream("4".getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input,
+            new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?1. Create portfolio2." +
@@ -95,7 +93,7 @@ public class PortfolioControllerImplTest {
   @Test
   public void testInputWithNonIntAction() throws FileNotFoundException {
     InputStream input = new ByteArrayInputStream("a\n4\n".getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?1. Create portfolio2. Get portfolio composition" +
@@ -109,7 +107,7 @@ public class PortfolioControllerImplTest {
   @Test
   public void testInvalidChoice() {
     InputStream input = new ByteArrayInputStream("6\n4\n".getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?1. Create portfolio2. Get portfolio composition" +
@@ -124,7 +122,7 @@ public class PortfolioControllerImplTest {
   @Test
   public void testGoWithExit() {
     InputStream input = new ByteArrayInputStream("4".getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?1. Create portfolio" +
@@ -139,7 +137,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?1. Create portfolio2. Get portfolio composition" +
@@ -158,7 +156,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n-1\n1\nAAPL\n1\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested.What would you" +
             " like to do?1. Create portfolio2. Get portfolio composition3. Get portfolio value" +
@@ -176,7 +174,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\na\n1\nAAPL\n1\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested.\n" +
             "\n" +
@@ -215,7 +213,7 @@ public class PortfolioControllerImplTest {
   @Test
   public void testGoWithCreatePortfolioWithPath() {
     InputStream input = new ByteArrayInputStream("1\n2\ntestFile.xml\n4\n".getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?" +
@@ -241,7 +239,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n2\n1\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?" +
@@ -270,7 +268,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-10-31\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?" +
@@ -299,7 +297,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n202222-10-31\n2022-10-31\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?" +
@@ -329,7 +327,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-10-30\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, new PrintStream(out));
     controller.go();
     String expectedOutput = "Please enter the menu item number when requested." +
             "What would you like to do?" +

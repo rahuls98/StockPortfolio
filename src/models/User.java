@@ -1,11 +1,11 @@
-package entities;
+package models;
 
 import java.util.HashMap;
 
 /**
  * Represents a User having a unique username and multiple portfolios.
  */
-public class User {
+class User {
 
   private String name;
   private HashMap<String, Portfolio> portfolios;

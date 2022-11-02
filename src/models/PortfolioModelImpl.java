@@ -13,10 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import entities.Portfolio;
-import entities.Stock;
-import entities.User;
-
 /**
  * Represents a class that manages stock portfolios for different users using an XML file storage.
  */
@@ -105,6 +101,16 @@ public class PortfolioModelImpl implements PortfolioModel {
     return portfolioObj;
   }
 
+  public String loadPortfolioNameFromXML(String pathToFile) {
+    FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
+    xmlFileHandler.readFile(pathToFile);
+    Document document = xmlFileHandler.getDocument();
+    NodeList nodeList = document.getElementsByTagName("portfolio");
+    Node portfolioNode = nodeList.item(0);
+    Element portfolioElement = (Element) portfolioNode;
+    return portfolioElement.getAttribute("title");
+  }
+
   @Override
   public boolean isValidDate(String date) {
     DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
@@ -115,4 +121,43 @@ public class PortfolioModelImpl implements PortfolioModel {
     }
     return true;
   }
+
+  @Override
+  public void addPortfolio2(String portfolioName) {
+    this.user.addPortfolio(new Portfolio(portfolioName));
+  }
+
+  @Override
+  public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
+    Stock stock = new Stock(stockTicker);
+    this.getPortfolio(portfolioName).addStock(stock, stockQuantity);
+  }
+
+  @Override
+  public void addPortfolioToUser(Portfolio portfolio, String portfolioName) {
+    portfolio.setName(portfolioName);
+    this.user.addPortfolio(portfolio);
+  }
+
+  @Override
+  public void persist() {
+    this.store.writeUser(this.user);
+  }
+
+  @Override
+  public String getPortfolioName(Portfolio portfolio) {
+    return portfolio.getName();
+  }
+
+  @Override
+  public HashSet<String> getStockTickersInPortfolio(String portfolioName) {
+    return this.getPortfolio(portfolioName).getStockNames();
+  }
+
+  @Override
+  public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName) {
+    return this.getPortfolio(portfolioName).getStockQuantities();
+  }
+
+
 }

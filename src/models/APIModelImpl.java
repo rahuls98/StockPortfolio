@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 /**
  * Represents a class that provides APIs to fetch stock related data.
  */
-public class APIModelImpl implements APIModel {
+class APIModelImpl implements APIModel {
 
   private HashMap<String, HashMap<String, String[]>> priceMap;
   private final String alphaVantageKey;
