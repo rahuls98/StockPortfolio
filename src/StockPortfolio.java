@@ -4,7 +4,6 @@ import java.io.PrintStream;
 
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
-import entities.User;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;
@@ -15,13 +14,12 @@ import views.PortfolioViewImpl;
  */
 public class StockPortfolio {
   public static void main(String[] args) throws IOException {
-    String userName = "default";
+    String userName = "Main";
     InputStream input = System.in;
     PrintStream out = System.out;
-    User defaultUser = new User(userName);
     PortfolioModel model = new PortfolioModelImpl(userName);
     PortfolioView view = new PortfolioViewImpl(out);
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, out);
+    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, out);
     controller.go();
   }
 }

@@ -14,8 +14,6 @@ import java.io.PrintStream;
 
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
-import entities.Portfolio;
-import entities.User;
 import views.PortfolioView;
 import views.PortfolioViewImpl;
 
@@ -48,7 +46,7 @@ public class PortfolioModelImplTest {
     String testPortfolio = "testPortfolio";
     String s = "1\n1\n" + testPortfolio + "\n2\nAAPL\n1\nGOOG\n1\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
+    PortfolioController controller = new PortfolioControllerImpl(model, view, testPortfolio, input, new PrintStream(out));
     controller.go();
   }
 

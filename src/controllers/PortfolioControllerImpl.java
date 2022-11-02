@@ -9,9 +9,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import entities.Portfolio;
-import entities.Stock;
-import entities.User;
 import models.PortfolioModel;
 import views.PortfolioView;
 
@@ -23,27 +20,28 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private final PortfolioModel model;
   private final PortfolioView view;
-  private final User user;
+  private final String userName;
   private final Scanner input;
   private final PrintStream output;
 
   /**
    * Returns a PortfolioController object.
    *
-   * @param model Object of the PortfolioModel.
-   * @param view  Object of the PortfolioView.
-   * @param user  Current user.
-   * @param input Where to receive the program inputs from.
-   * @param out   Where to push outputs to.
+   * @param model    Object of the PortfolioModel.
+   * @param view     Object of the PortfolioView.
+   * @param userName Current user.
+   * @param input    Where to receive the program inputs from.
+   * @param out      Where to push outputs to.
    */
-  public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user,
+  public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, String userName,
                                  InputStream input, PrintStream out) {
-    if((model == null) || (view == null) || (user == null) || (input == null) || (out == null)) {
+    if ((model == null) || (view == null) || (userName == null) || (userName.isEmpty())
+            || (input == null) || (out == null)) {
       throw new IllegalArgumentException("Null Values not allowed");
     }
     this.model = model;
     this.view = view;
-    this.user = user;
+    this.userName = userName;
     this.input = new Scanner(input).useDelimiter("\n");
     this.output = out;
   }
@@ -94,7 +92,6 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createPortfolio() {
-    Portfolio portfolio = null;
     while (true) {
       String[] actions = new String[]{"Enter manually", "Load from file", "Go back"};
       this.output.println();
@@ -119,7 +116,6 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createPortfolioManually() {
-    Portfolio portfolio = null;
     this.output.println();
     this.output.print("Enter portfolio name: ");
     String portfolioName = this.input.next();
@@ -127,18 +123,15 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.print("This portfolio already exists, please enter another name: ");
       portfolioName = this.input.next();
     }
-    portfolio = new Portfolio(portfolioName);
+    this.model.addPortfolio2(portfolioName);
     this.output.print("Enter number of stocks: ");
     int n = this.getIntegerFromUser();
-    ;
     while (n <= 0) {
       this.output.print("Please enter a valid number of stocks: ");
       n = this.getIntegerFromUser();
-      ;
     }
     String stockName;
     int stockQuantity;
-    Stock stock;
     for (int i = 0; i < n; i++) {
       this.output.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
@@ -152,19 +145,16 @@ public class PortfolioControllerImpl implements PortfolioController {
         this.output.print("Please enter a valid quantity: ");
         stockQuantity = this.getIntegerFromUser();
       }
-      if (portfolio.getStockNames().contains(stockName)) {
+      if (this.model.getStockTickersInPortfolio(portfolioName).contains(stockName)) {
         i--;
       }
-      stock = new Stock(stockName);
-      portfolio.addStock(stock, stockQuantity);
+      this.model.addStock(portfolioName, stockName, stockQuantity);
     }
-    user.addPortfolio(portfolio);
-    model.addPortfolio(user);
-    this.output.print("\nNew portfolio (" + portfolio.getName() + ") has been recorded!\n");
+    this.model.persist();
+    this.output.print("\nNew portfolio (" + portfolioName + ") has been recorded!\n");
   }
 
   private void createPortfolioFromFile() {
-    Portfolio portfolio = null;
     this.output.println();
     this.output.print("Enter path to XML: ");
     String pathToXml = this.input.next();
@@ -174,21 +164,20 @@ public class PortfolioControllerImpl implements PortfolioController {
       pathToXml = this.input.next();
       file = new File(pathToXml);
     }
+    String portfolioName;
     try {
-      portfolio = model.loadPortfolioFromXml(pathToXml);
+      portfolioName = this.model.loadPortfolioNameFromXML(pathToXml);
     } catch (IllegalArgumentException e) {
       this.output.println("\nXML File Invalid");
       return;
     }
-    String portfolioName = portfolio.getName();
     while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
       this.output.print("This portfolio already exists! Please try another name: ");
       portfolioName = this.input.next();
     }
-    portfolio.setName(portfolioName);
-    user.addPortfolio(portfolio);
-    model.addPortfolio(user);
-    this.output.print("\nNew portfolio (" + portfolio.getName() + ") has been recorded!\n");
+    this.model.addPortfolioToUser(this.model.loadPortfolioFromXml(pathToXml), portfolioName);
+    this.model.persist();
+    this.output.print("\nNew portfolio (" + portfolioName + ") has been recorded!\n");
   }
 
   private void getComposition() {
@@ -200,7 +189,8 @@ public class PortfolioControllerImpl implements PortfolioController {
     this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
     this.output.println();
-    view.displayPortfolioComposition(portfolioName, model.getPortfolio(portfolioName).getStockQuantities());
+    view.displayPortfolioComposition(portfolioName,
+            this.model.getStockQuantitiesInPortfolio(portfolioName));
   }
 
   private void getPortfolioValue() {

@@ -1,4 +1,4 @@
-package entities;
+package models;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ import models.APIModelImpl;
 /**
  * Represents a Stock that has a unique ticker symbol and varying prices on different dates.
  */
-public class Stock {
+class Stock {
   private final String ticker;
   private HashMap<String, Float[]> prices;
 

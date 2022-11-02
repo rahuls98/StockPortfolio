@@ -15,14 +15,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import entities.Portfolio;
-import entities.Stock;
-import entities.User;
-
 /**
  * Represents a storage model that uses XML as its storage mechanism.
  */
-public class StorageModelLocalImpl implements StorageModel {
+class StorageModelLocalImpl implements StorageModel {
 
   private final String pathToLocalStorage;
   private ArrayList<User> users;

@@ -1,15 +1,13 @@
-package entities;
+package models;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import entities.Stock;
-
 /**
  * Represents a Portfolio having multiple stocks and their quantities.
  */
-public class Portfolio {
+class Portfolio {
 
   private String name;
   private HashMap<Stock, Integer> stocks;
