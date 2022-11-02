@@ -1,6 +1,6 @@
-<po title="TestFile">
+<portfolio title="TestFile">
     <stocks>
         <stock quantity="2" symbol="GOOG"/>
         <stock quantity="2" symbol="AAPL"/>
     </stocks>
-</po>
+</portfolio>
