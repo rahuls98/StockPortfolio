@@ -2,6 +2,9 @@ package models;
 
 import java.util.HashMap;
 
+import entities.Portfolio;
+import entities.User;
+
 /**
  * Represents classes that manage stock portfolios and all their associated functionalities.
  */
