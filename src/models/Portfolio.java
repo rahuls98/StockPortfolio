@@ -4,10 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import models.Stock;
-
 /**
- * Description of class.
+ * Represents a Portfolio having multiple stocks and their quantities.
  */
 public class Portfolio {
 
@@ -16,9 +14,11 @@ public class Portfolio {
   private String lastPossibleValue;
 
   /**
-   * Description of constructor.
+   * Returns an object of Portfolio.
+   *
+   * @param name Name of the portfolio
    */
-  public Portfolio(String name) {
+  public Portfolio(String name) throws IllegalArgumentException {
     if (name == null || name.equals("")) {
       throw new IllegalArgumentException("Portfolio name cannot be empty!");
     }
@@ -28,28 +28,28 @@ public class Portfolio {
   }
 
   /**
-   * Description of method.
+   * Retrieves the name of the portfolio.
    *
-   * @return desc.
+   * @return Portfolio name.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Description of method.
+   * Sets the name of the portfolio.
    *
-   * @return desc.
+   * @param name Name to set.
    */
   public void setName(String name) {
     this.name = name;
   }
 
   /**
-   * Description of method.
+   * Adds a new stock and its quantity to the portfolio.
    *
-   * @param stock desc.
-   * @param quantity desc.
+   * @param stock Stock to add.
+   * @param quantity Quantity of the stock.
    */
   public void addStock(Stock stock, int quantity) {
     if (stock == null) {
@@ -62,18 +62,18 @@ public class Portfolio {
   }
 
   /**
-   * Description of method.
+   * Returns the contents of the portfolio.
    *
-   * @return desc.
+   * @return Portfolio contents.
    */
   public HashMap<Stock, Integer> getStocks() {
     return stocks;
   }
 
   /**
-   * Description of method.
+   * Returns all the stocks in the portfolio and their quantities.
    *
-   * @return desc.
+   * @return Portfolio stocks and quantities.
    */
   public HashMap<String, Integer> getStockQuantities() {
     HashMap<String, Integer> map = new HashMap<>();
@@ -84,10 +84,10 @@ public class Portfolio {
   }
 
   /**
-   * Description of method.
+   * Retrieves the stocks of the portfolio and their values on a given date.
    *
-   * @param date desc.
-   * @return desc.
+   * @param date Date to retrieve values for.
+   * @return Stocks their values on the given date.
    */
   public HashMap<String, Float> getValue(String date) {
     HashMap<String, Float> portfolioValueMap = new HashMap<>();
@@ -109,10 +109,10 @@ public class Portfolio {
   }
 
   /**
-   * Description of method.
+   * Retrieves the total value of the portfolio on a given date.
    *
-   * @param date desc.
-   * @return desc.
+   * @param date Date to retrieve total value for.
+   * @return Total value of the portfolio.
    */
   public float getTotalComp(String date) {
     float total = 0.00f;
@@ -122,6 +122,11 @@ public class Portfolio {
     return total;
   }
 
+  /**
+   * Retrieves names of all stocks in the portfolio.
+   *
+   * @return Tickers of all stocks in portfolio.
+   */
   public HashSet<String> getStockNames() {
     HashSet<String> map = new HashSet<>();
     for(Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {

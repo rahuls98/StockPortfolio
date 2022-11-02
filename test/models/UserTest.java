@@ -1,12 +1,9 @@
-package entities;
+package models;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-
-import models.Portfolio;
-import models.User;
 
 import static org.junit.Assert.*;
 

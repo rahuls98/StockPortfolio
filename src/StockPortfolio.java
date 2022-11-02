@@ -15,7 +15,7 @@ import views.PortfolioViewImpl;
  */
 public class StockPortfolio {
   public static void main(String[] args) throws IOException {
-    String userName = "default";
+    String userName = "test";
     InputStream input = System.in;
     PrintStream out = System.out;
     User defaultUser = new User(userName);

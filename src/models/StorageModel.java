@@ -1,21 +1,22 @@
 package models;
 
 /**
- * Description of interface.
+ * Represents classes that interact with storage mechanisms, for example: file storages,
+ * databases, etc., and defines required associated operations.
  */
 interface StorageModel {
 
   /**
-   * Description of method.
+   * Retrieves a user from storage by username.
    *
-   * @return desc.
+   * @return User object containing all the user's portfolios and stocks.
    */
   User readUser(String userName);
 
   /**
-   * Description of method.
+   * Inserts/Modifies an existing user in storage.
    *
-   * @param user desc.
+   * @param user User to insert/update.
    */
   void writeUser(User user);
 }

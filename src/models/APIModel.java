@@ -4,18 +4,23 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * Represents the functionality of a class that
- * is used to fetch data from models.Stock API.
+ * Represents classes that provides APIs to fetch stock related data.
  */
-public interface APIModel {
+interface APIModel {
 
   /**
-   * Makes a call to models.Stock API and gets price.
-   * @param ticker Ticker of company.
-   * @return String of all Values from today to 2014.
+   * Returns prices of a stock on particular dates.
+   *
+   * @param ticker Ticker symbol of the stock.
+   * @return All prices for the stock on particular dates (back to 2014).
    */
-  HashMap<String, Float[]> callStockApi(String ticker);
+  HashMap<String, Float[]> getStockPrices(String ticker);
 
-  HashSet<String> callTickerApi();
+  /**
+   * Returns a set of all valid ticker symbols.
+   *
+   * @return All valid ticker symbols.
+   */
+  HashSet<String> getValidTickers();
 }
 

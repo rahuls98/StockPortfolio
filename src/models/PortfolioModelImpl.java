@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- * Description of class.
+ * Represents a class that manages stock portfolios for different users using an XML file storage.
  */
 public class PortfolioModelImpl implements PortfolioModel {
 
@@ -23,15 +23,15 @@ public class PortfolioModelImpl implements PortfolioModel {
   private HashSet<String> tickerSet;
 
   /**
-   * Description of constructor.
+   * Represents an object of the PortfolioModelImpl class.
    *
-   * @param userName desc.
+   * @param userName The user whose portfolio is to be managed.
    */
   public PortfolioModelImpl(String userName) throws IOException {
     this.store = new StorageModelLocalImpl();
     this.user = this.store.readUser(userName);
     APIModel model = new APIModelImpl();
-    tickerSet = model.callTickerApi();
+    tickerSet = model.getValidTickers();
   }
 
   @Override
@@ -47,8 +47,8 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public Portfolio getPortfolio(String name) {
-    return this.user.getPortfolios().get(name);
+  public Portfolio getPortfolio(String portfolioName) {
+    return this.user.getPortfolios().get(portfolioName);
   }
 
   @Override
@@ -57,13 +57,13 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public HashMap<String, Float> getPortfolioValues(String name, String date) {
-    return this.user.getPortfolios().get(name).getValue(date);
+  public HashMap<String, Float> getPortfolioValues(String portfolioName, String date) {
+    return this.user.getPortfolios().get(portfolioName).getValue(date);
   }
 
   @Override
-  public Float getPortfolioTotal(String name, String date) {
-    return this.user.getPortfolios().get(name).getTotalComp(date);
+  public Float getPortfolioTotal(String portfolioName, String date) {
+    return this.user.getPortfolios().get(portfolioName).getTotalComp(date);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     return this.tickerSet.contains(ticker);
   }
 
-  public Portfolio readPortfolioFromXml(String pathToFile) {
+  public Portfolio loadPortfolioFromXml(String pathToFile) {
     int quantity;
     FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
     xmlFileHandler.readFile(pathToFile);
