@@ -36,7 +36,7 @@ public interface PortfolioModel {
    * Retrieves all the values of all stocks in a portfolio on a particular date.
    *
    * @param portfolioName Name of the portfolio.
-   * @param date Date to get the values for.
+   * @param date          Date to get the values for.
    * @return All stocks in the portfolio and their values on the given date.
    */
   HashMap<String, Float> getPortfolioValues(String portfolioName, String date);
@@ -45,7 +45,7 @@ public interface PortfolioModel {
    * Retrieves the total value of a portfolio on a particular date.
    *
    * @param portfolioName Name of the portfolio.
-   * @param date Date to get the total value for.
+   * @param date          Date to get the total value for.
    * @return Total value of the portfolio on the given date.
    */
   Float getPortfolioTotal(String portfolioName, String date);

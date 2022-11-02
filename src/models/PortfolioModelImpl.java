@@ -88,7 +88,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     for (int j = 0; j < stockList.getLength(); j++) {
       Node stockNode = stockList.item(j);
       Element stockElement = (Element) stockNode;
-      if(!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
+      if (!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
         throw new IllegalArgumentException("Invalid Ticker");
       }
       try {

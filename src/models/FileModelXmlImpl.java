@@ -17,11 +17,17 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+/**
+ * Represents a class that performs file related operations on XML files.
+ */
 class FileModelXmlImpl implements FileModel {
 
   private final DocumentBuilder builder;
   private Document document;
 
+  /**
+   * Returns an object of FileModelXmlImpl.
+   */
   public FileModelXmlImpl() {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     try {

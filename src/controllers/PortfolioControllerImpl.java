@@ -16,7 +16,8 @@ import models.PortfolioModel;
 import views.PortfolioView;
 
 /**
- * Description of class.
+ * Represents a controller class that manages a portfolio. It takes user inputs, performs
+ * operations based on those inputs, and provides outputs.
  */
 public class PortfolioControllerImpl implements PortfolioController {
 
@@ -27,11 +28,13 @@ public class PortfolioControllerImpl implements PortfolioController {
   private final PrintStream output;
 
   /**
-   * Description of constructor.
+   * Returns a PortfolioController object.
    *
-   * @param model desc.
-   * @param view  desc.
-   * @param user  desc.
+   * @param model Object of the PortfolioModel.
+   * @param view  Object of the PortfolioView.
+   * @param user  Current user.
+   * @param input Where to receive the program inputs from.
+   * @param out   Where to push outputs to.
    */
   public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, User user,
                                  InputStream input, PrintStream out) {
@@ -75,12 +78,6 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
   }
 
-  /**
-   * Loops if User enters a non Integer, prompting to try again,
-   * Else breaks and return Int.
-   *
-   * @return User entered Integer.
-   */
   private int getIntegerFromUser() {
     int choice;
     while (true) {
