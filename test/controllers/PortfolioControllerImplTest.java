@@ -54,6 +54,7 @@ public class PortfolioControllerImplTest {
     String generatedString = buffer.toString();
     return generatedString;
   }
+
   private String prepareString(String s) {
     return s.replace("\r", "").replace("\n", "");
   }
@@ -124,11 +125,12 @@ public class PortfolioControllerImplTest {
             "Enter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
+
   // testGo with input action create portfolio
   @Test
   public void testGoWithCreatePortfolioRegularFlow() {
     String generatedString = this.genRandomString();
-    String s = "1\n1\n"+ generatedString +"\n1\nAAPL\n1\n4\n";
+    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
@@ -136,7 +138,7 @@ public class PortfolioControllerImplTest {
             " Get portfolio composition3. Get portfolio value4." +
             " ExitEnter action: 1. Enter manually2. Load from fileSelect action:" +
             " Enter portfolio name: Enter number of stocks: Stock 1 ticker: Quantity : N" +
-            "ew portfolio ("+generatedString+") has been recorded!1. Create portfolio2. G" +
+            "ew portfolio (" + generatedString + ") has been recorded!1. Create portfolio2. G" +
             "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -154,10 +156,11 @@ public class PortfolioControllerImplTest {
             " ExitEnter action: 1. Enter manually2. Load from fileSelect action:" +
             " Enter portfolio name: Enter number of stocks: Enter a valid number of Stocks:" +
             " Stock 1 ticker: Quantity : N" +
-            "ew portfolio ("+generatedString+") has been recorded!1. Create portfolio2. G" +
+            "ew portfolio (" + generatedString + ") has been recorded!1. Create portfolio2. G" +
             "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
+
   //  test create portfolio non int submenu
   @Test
   public void testGoWithCreatePortfolioInvalidNonIntFlow() {
@@ -173,6 +176,7 @@ public class PortfolioControllerImplTest {
             "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
+
   //  test create portfolio with existing portfolio path
   @Test
   public void testGoWithCreatePortfolioWithPath() {

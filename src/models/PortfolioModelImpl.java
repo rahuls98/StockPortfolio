@@ -36,7 +36,6 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   @Override
   public void addPortfolio(User user) {
-    // TODO: user not null
     if (this.user.getName().equals(user.getName())) {
       for (Map.Entry<String, Portfolio> entry : user.getPortfolios().entrySet()) {
         this.user.addPortfolio(entry.getValue());

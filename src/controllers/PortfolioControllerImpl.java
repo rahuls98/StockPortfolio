@@ -141,7 +141,6 @@ public class PortfolioControllerImpl implements PortfolioController {
     int stockQuantity;
     Stock stock;
     for (int i = 0; i < n; i++) {
-      //TODO: deal with same stock again
       this.output.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
       while (!(model.isValidTicker(stockName))) {
@@ -166,7 +165,6 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createPortfolioFromFile() {
-    // todo : check for tickers and quantities within XML
     Portfolio portfolio = null;
     this.output.println();
     this.output.print("Enter path to XML: ");
