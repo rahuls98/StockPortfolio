@@ -8,7 +8,7 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 /**
- * Description of class.
+ * Test suite for the User.
  */
 public class UserTest {
 

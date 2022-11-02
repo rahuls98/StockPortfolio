@@ -9,9 +9,13 @@ import views.PortfolioView;
 import views.PortfolioViewImpl;
 
 /**
- * Main entry point of the Stock Portfolio application.
+ * Entry point of the Stock Portfolio application.
  */
 public class StockPortfolio {
+
+  /**
+   * Main method of the Stock Portfolio application.
+   */
   public static void main(String[] args) {
     String userName = "main";
     InputStream input = System.in;
@@ -24,7 +28,7 @@ public class StockPortfolio {
       return;
     }
     PortfolioView view = new PortfolioViewImpl(out);
-    PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, out);
-    controller.go();
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input, out);
+    controller.run();
   }
 }

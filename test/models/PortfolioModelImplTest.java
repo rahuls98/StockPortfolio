@@ -22,6 +22,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+/**
+ * Test suite for the PortfolioModelImpl.
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PortfolioModelImplTest {
   private OutputStream out;
@@ -49,8 +52,9 @@ public class PortfolioModelImplTest {
     String testPortfolio = "testPortfolio";
     String s = "1\n1\n" + testPortfolio + "\n2\nAAPL\n2\nGOOG\n2\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, testPortfolio, input, new PrintStream(out));
-    controller.go();
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
   }
 
   @After
@@ -76,20 +80,26 @@ public class PortfolioModelImplTest {
 
   @Test
   public void testGetPortfolioValues() {
-    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-31").get("AAPL")
+    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-31")
+                    .get("AAPL")
             , 306.67, 0.01f);
-    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-31").get("GOOG")
+    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-31")
+                    .get("GOOG")
             , 189.32, 0.01f);
-    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-25").get("AAPL")
+    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-25")
+                    .get("AAPL")
             , 304.67, 0.01f);
-    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-25").get("GOOG")
+    assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-25")
+                    .get("GOOG")
             , 209.86, 0.01f);
   }
 
   @Test
   public void testGetPortfolioTotal() {
-    assertEquals(model.getPortfolioTotal("testPortfolio", "2022-10-31"), 496.0, 0.01f);
-    assertEquals(model.getPortfolioTotal("testPortfolio", "2022-10-25"), 514.53, 0.01f);
+    assertEquals(model.getPortfolioTotal("testPortfolio", "2022-10-31"),
+            496.0, 0.01f);
+    assertEquals(model.getPortfolioTotal("testPortfolio", "2022-10-25"),
+            514.53, 0.01f);
   }
 
   @Test

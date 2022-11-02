@@ -5,10 +5,12 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test suite for the Portfolio.
+ */
 public class PortfolioTest {
 
   private Portfolio portfolio;
@@ -70,7 +72,6 @@ public class PortfolioTest {
     }
   }
 
-  //testGetTotalComp
   @Test
   public void testGetTotalCompOnPortfolio() {
     this.portfolio.addStock(new Stock("AAPL"), 2);
@@ -78,7 +79,6 @@ public class PortfolioTest {
     assertEquals(this.portfolio.getTotalComp("2022-10-31"), 496.0, 0.01f);
   }
 
-  //testGetValue
   @Test
   public void testGetValueOnPortfolio() {
     this.portfolio.addStock(new Stock("AAPL"), 2);
@@ -91,7 +91,6 @@ public class PortfolioTest {
             0.01f);
   }
 
-  //testGetStocks
   @Test
   public void testGetStocks() {
     this.portfolio.addStock(new Stock("AAPL"), 2);
@@ -102,7 +101,6 @@ public class PortfolioTest {
     assertEquals(stockNames, this.portfolio.getStockNames());
   }
 
-  //testGetStockQuantities
   @Test
   public void testGetStockQuantities() {
     this.portfolio.addStock(new Stock("AAPL"), 2);
@@ -112,5 +110,4 @@ public class PortfolioTest {
     stockQuantities.put("GOOG", 2);
     assertEquals(stockQuantities, this.portfolio.getStockQuantities());
   }
-
 }

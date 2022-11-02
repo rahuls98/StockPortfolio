@@ -10,6 +10,9 @@ import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test suite for the PortfolioViewImpl.
+ */
 public class PortfolioViewImplTest {
 
   private OutputStream out;
@@ -22,7 +25,8 @@ public class PortfolioViewImplTest {
   }
 
   private String prepareString(String s) {
-    return s.replace("\r", "").replace("\n", "");
+    return s.replace("\r", "").
+            replace("\n", "");
   }
 
   @Test
@@ -41,7 +45,7 @@ public class PortfolioViewImplTest {
     String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
             "Get portfolio value", "Exit"};
     textBasedUI.displayActions(actions);
-    assertEquals(expectedOutput, out.toString());
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
@@ -72,7 +76,7 @@ public class PortfolioViewImplTest {
             .concat("2. Portfolio 2\r\n")
             .concat("3. Portfolio 3\r\n");
     textBasedUI.displayPortfolios(portfolios);
-    assertEquals(expectedOutput, out.toString());
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
@@ -106,7 +110,7 @@ public class PortfolioViewImplTest {
             .concat("AAPL        |  10          \n")
             .concat("---------------------------\n");
     textBasedUI.displayPortfolioComposition(portfolioName, stockQuantities);
-    assertEquals(prepareString(expectedOutput),prepareString(out.toString()));
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
@@ -140,5 +144,6 @@ public class PortfolioViewImplTest {
             .concat("AAPL        |  106.5       \n")
             .concat("---------------------------\n");
     textBasedUI.displayPortfolioValue(portfolioName, portfolioValues);
-    assertEquals(prepareString(expectedOutput),prepareString(out.toString()));  }
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
 }

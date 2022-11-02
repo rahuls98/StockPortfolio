@@ -8,7 +8,7 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 /**
- * Description of class
+ * Test suite for the Stock.
  */
 public class StockTest {
 
@@ -36,7 +36,6 @@ public class StockTest {
     }
   }
 
-  // todo : testGetTicker
   @Test
   public void testGetTicker() {
     assertEquals("AAPL", stock.getTicker());
@@ -50,8 +49,8 @@ public class StockTest {
 
   @Test
   public void testGetPricesAfterCallingAPI() {
-    assertEquals(153.3400,stock.getPriceOnDate("2022-10-31"), 0.01);
-    assertEquals(144.8000,stock.getPriceOnDate("2022-10-27"), 0.01);
-    assertEquals(155.7400,stock.getPriceOnDate("2022-10-28"), 0.01);
+    assertEquals(153.3400, stock.getPriceOnDate("2022-10-31"), 0.01);
+    assertEquals(144.8000, stock.getPriceOnDate("2022-10-27"), 0.01);
+    assertEquals(155.7400, stock.getPriceOnDate("2022-10-28"), 0.01);
   }
 }

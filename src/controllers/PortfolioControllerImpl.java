@@ -20,7 +20,6 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private final PortfolioModel model;
   private final PortfolioView view;
-  private final String userName;
   private final Scanner input;
   private final PrintStream output;
 
@@ -29,25 +28,22 @@ public class PortfolioControllerImpl implements PortfolioController {
    *
    * @param model    Object of the PortfolioModel.
    * @param view     Object of the PortfolioView.
-   * @param userName Current user.
    * @param input    Where to receive the program inputs from.
    * @param out      Where to push outputs to.
    */
-  public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, String userName,
-                                 InputStream input, PrintStream out) {
-    if ((model == null) || (view == null) || (userName == null) || (userName.isEmpty())
-            || (input == null) || (out == null)) {
+  public PortfolioControllerImpl(PortfolioModel model, PortfolioView view, InputStream input,
+                                 PrintStream out) {
+    if ((model == null) || (view == null) || (input == null) || (out == null)) {
       throw new IllegalArgumentException("Null Values not allowed");
     }
     this.model = model;
     this.view = view;
-    this.userName = userName;
     this.input = new Scanner(input);
     this.output = out;
   }
 
   @Override
-  public void go() {
+  public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
     String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
             "Get portfolio value", "Exit"};

@@ -9,6 +9,8 @@ public interface PortfolioView {
 
   /**
    * Displays all actions that can be performed by the user.
+   *
+   * @param actions List of actions to display.
    */
   void displayActions(String[] actions);
 

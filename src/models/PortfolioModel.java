@@ -84,7 +84,7 @@ public interface PortfolioModel {
    * Adds a stock and its quantity to a given portfolio.
    *
    * @param portfolioName Name of the portfolio to add the stock to.
-   * @param stockTicker Ticker symbol of the stock to add.
+   * @param stockTicker   Ticker symbol of the stock to add.
    * @param stockQuantity Quantity of the stock to add.
    */
   void addStock(String portfolioName, String stockTicker, int stockQuantity);
@@ -92,7 +92,7 @@ public interface PortfolioModel {
   /**
    * Adds a portfolio to the current user.
    *
-   * @param portfolio Portfolio to add.
+   * @param portfolio     Portfolio to add.
    * @param portfolioName Name of the portfolio to add.
    */
   void addPortfolioToUser(Portfolio portfolio, String portfolioName);
