@@ -9,10 +9,8 @@ public interface PortfolioView {
 
   /**
    * Displays all actions that can be performed by the user.
-   *
-   * @return
    */
-  Object displayActions(String[] actions);
+  void displayActions(String[] actions);
 
   /**
    * Displays list of saved portfolios.
@@ -30,10 +28,10 @@ public interface PortfolioView {
   void displayPortfolioComposition(String name, HashMap<String, Integer> stockQuantities);
 
   /**
-   * Description of method.
+   * Displays the value of a single portfolio.
    *
-   * @param name            desc.
-   * @param portfolioValues desc.
+   * @param name            Name of the portfolio.
+   * @param portfolioValues Contents of the portfolio with their values.
    */
   void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues);
 }

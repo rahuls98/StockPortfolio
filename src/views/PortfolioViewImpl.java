@@ -12,18 +12,17 @@ public class PortfolioViewImpl implements PortfolioView {
   private final PrintStream out;
 
   /**
-   * Description of constructor.
+   * Returns an object of the PortfolioViewImpl class.
    */
   public PortfolioViewImpl(PrintStream out) {
     this.out = out;
   }
 
   @Override
-  public Object displayActions(String[] actions) {
+  public void displayActions(String[] actions) {
     for (int i = 0; i < actions.length; i++) {
       this.out.println((i + 1) + ". " + actions[i]);
     }
-    return null;
   }
 
   @Override

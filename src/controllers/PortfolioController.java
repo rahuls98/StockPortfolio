@@ -1,13 +1,13 @@
 package controllers;
 
 /**
- * Description of interface.
+ * Represents classes that control the program flow based on user-interaction.
  */
 public interface PortfolioController {
 
   /**
-   * Description of method.
+   * Runner of the controller that requests for user input, performs operations based on the
+   * inputs, and displays the corresponding responses.
    */
   void go();
-
 }

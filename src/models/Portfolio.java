@@ -48,7 +48,7 @@ public class Portfolio {
   /**
    * Adds a new stock and its quantity to the portfolio.
    *
-   * @param stock Stock to add.
+   * @param stock    Stock to add.
    * @param quantity Quantity of the stock.
    */
   public void addStock(Stock stock, int quantity) {
@@ -129,7 +129,7 @@ public class Portfolio {
    */
   public HashSet<String> getStockNames() {
     HashSet<String> map = new HashSet<>();
-    for(Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
+    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
       map.add(entry.getKey().getTicker());
     }
     return map;

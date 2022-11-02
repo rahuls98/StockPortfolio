@@ -140,7 +140,7 @@ public class StorageModelLocalImpl implements StorageModel {
     Document document = docBuilder.newDocument();
     Element rootElement = document.createElement("users");
     document.appendChild(rootElement);
-    for (User userObj: this.users) {
+    for (User userObj : this.users) {
       Element user = document.createElement("user");
       rootElement.appendChild(user);
       user.setAttribute("name", userObj.getName());
