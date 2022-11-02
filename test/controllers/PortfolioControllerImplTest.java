@@ -448,6 +448,40 @@ public class PortfolioControllerImplTest {
   }
 
   @Test
+  public void testPortfolioValueForInvalidTomorrowDateAfterCreate() {
+    String generatedString = this.genRandomString();
+    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-11-03\n2022-10-31\n4\n";
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?" +
+            "1. Create portfolio" +
+            "2. Get portfolio composition" +
+            "3. Get portfolio value" +
+            "4. ExitSelect action: How would you like to enter the portfolio details?" +
+            "1. Enter manually" +
+            "2. Load from file" +
+            "3. Go backSelect action: Enter portfolio name: Enter number of stocks: Stock 1 " +
+            "ticker" +
+            ": Quantity : New portfolio (" + generatedString + ") has been recorded!" +
+            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
+            "3. Get portfolio value4. ExitSelect action: Which portfolio would you like to " +
+            "explore?" +
+            "1. " + generatedString + "Select portfolio: Enter the date for which you want the " +
+            "value:" +
+            " Please enter a valid date: " +
+            "Portfolio: " + generatedString + "---------------------------Stock       |  " +
+            "Value      " +
+            " ---------------------------AAPL        |  153.34      -------------------" +
+            "--------Total value of portfolio on is 153.3400What would you like to do?" +
+            "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
+            " ExitSelect action: ";
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  @Test
   public void testPortfolioValueForWeekendAfterCreate() {
     String generatedString = this.genRandomString();
     String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-10-30\n4\n";
