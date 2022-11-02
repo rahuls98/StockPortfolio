@@ -26,7 +26,7 @@ class StorageModelLocalImpl implements StorageModel {
   /**
    * Returns an object of the XML file storage mechanism.
    */
-  public StorageModelLocalImpl() throws IOException {
+  public StorageModelLocalImpl() throws Exception {
     this.pathToLocalStorage = "./localStorage.xml";
     this.users = new ArrayList<>();
     try {
@@ -39,8 +39,8 @@ class StorageModelLocalImpl implements StorageModel {
         Document document = xmlHandler.getDocument();
         this.xmlToUsers(document);
       }
-    } catch (IOException e) {
-      throw new IOException(e);
+    } catch (Exception e) {
+      throw e;
     }
   }
 
@@ -105,27 +105,31 @@ class StorageModelLocalImpl implements StorageModel {
     xmlHandler.writeFile(this.pathToLocalStorage);
   }
 
-  private void xmlToUsers(Document document) {
-    NodeList userList = document.getElementsByTagName("user");
-    for (int i = 0; i < userList.getLength(); i++) {
-      Node userNode = userList.item(i);
-      Element userElement = (Element) userNode;
-      User user = new User(userElement.getAttribute("name"));
-      NodeList portfolioList = userElement.getElementsByTagName("portfolio");
-      for (int j = 0; j < portfolioList.getLength(); j++) {
-        Node portfolioNode = portfolioList.item(j);
-        Element portfolioElement = (Element) portfolioNode;
-        Portfolio portfolio = new Portfolio(portfolioElement.getAttribute("title"));
-        NodeList stockList = portfolioElement.getElementsByTagName("stock");
-        for (int k = 0; k < stockList.getLength(); k++) {
-          Node stockNode = stockList.item(k);
-          Element stockElement = (Element) stockNode;
-          Stock stock = new Stock(stockElement.getAttribute("symbol"));
-          portfolio.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
+  private void xmlToUsers(Document document) throws Exception {
+    try {
+      NodeList userList = document.getElementsByTagName("user");
+      for (int i = 0; i < userList.getLength(); i++) {
+        Node userNode = userList.item(i);
+        Element userElement = (Element) userNode;
+        User user = new User(userElement.getAttribute("name"));
+        NodeList portfolioList = userElement.getElementsByTagName("portfolio");
+        for (int j = 0; j < portfolioList.getLength(); j++) {
+          Node portfolioNode = portfolioList.item(j);
+          Element portfolioElement = (Element) portfolioNode;
+          Portfolio portfolio = new Portfolio(portfolioElement.getAttribute("title"));
+          NodeList stockList = portfolioElement.getElementsByTagName("stock");
+          for (int k = 0; k < stockList.getLength(); k++) {
+            Node stockNode = stockList.item(k);
+            Element stockElement = (Element) stockNode;
+            Stock stock = new Stock(stockElement.getAttribute("symbol"));
+            portfolio.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
+          }
+          user.addPortfolio(portfolio);
         }
-        user.addPortfolio(portfolio);
+        this.users.add(user);
       }
-      this.users.add(user);
+    } catch (Exception e) {
+      throw e;
     }
   }
 

@@ -167,15 +167,20 @@ public class PortfolioControllerImpl implements PortfolioController {
     String portfolioName;
     try {
       portfolioName = this.model.loadPortfolioNameFromXML(pathToXml);
-    } catch (IllegalArgumentException e) {
-      this.output.println("\nXML File Invalid");
+    } catch (Exception e) {
+      this.output.println("\nXML File Invalid!");
       return;
     }
     while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
       this.output.print("This portfolio already exists! Please try another name: ");
       portfolioName = this.input.next();
     }
-    this.model.addPortfolioToUser(this.model.loadPortfolioFromXml(pathToXml), portfolioName);
+    try {
+      this.model.addPortfolioToUser(this.model.loadPortfolioFromXml(pathToXml), portfolioName);
+    } catch (Exception e) {
+      this.output.println("\nXML File Invalid!");
+      return;
+    }
     this.model.persist();
     this.output.print("\nNew portfolio (" + portfolioName + ") has been recorded!\n");
   }
