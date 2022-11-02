@@ -48,8 +48,8 @@ directory. Follow the given instructions hereon.
     portfolioSample.xml
     <portfolio title="Portfolio_2">
         <stocks>
-            <stock quantity="V" symbol="20"/>
-            <stock quantity="AAPL" symbol="10"/>
+            <stock symbol="V" quantity="20" />
+            <stock symbol="AAPL" quantity="10" />
         </stocks>
     </portfolio>
 
@@ -75,5 +75,5 @@ directory. Follow the given instructions hereon.
 
 4) To view the total value of any portfolio, enter 3 on the main menu. You will be asked to select
 a portfolio for which you want the value for, along with a date. Date format is YYYY-MM-DD.
-Currently, the supported date range is [2011-03-02, Previous date] (Both inclusive). Current and
+Currently, the supported date range is [2011-03-02, Yesterday's date] (Both inclusive). Current and
 future dates are not handled.

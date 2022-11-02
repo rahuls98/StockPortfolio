@@ -1,6 +1,6 @@
-<portfolio title="">
+<portfolio title="portfolio_1">
     <stocks>
-        <stock quantity="" symbol=""/>
-        <stock quantity="" symbol=""/>
+        <stock symbol="AAPL" quantity="20" />
+        <stock symbol="GOOG" quantity="10" />
     </stocks>
 </portfolio>
