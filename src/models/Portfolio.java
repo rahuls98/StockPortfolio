@@ -1,7 +1,10 @@
-package entities;
+package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+
+import models.Stock;
 
 /**
  * Description of class.
@@ -120,5 +123,13 @@ public class Portfolio {
       total += entry.getValue();
     }
     return total;
+  }
+
+  public HashSet<String> getStockNames() {
+    HashSet<String> map = new HashSet<>();
+    for(Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
+      map.add(entry.getKey().getTicker());
+    }
+    return map;
   }
 }

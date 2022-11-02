@@ -5,6 +5,9 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+import models.Portfolio;
+import models.Stock;
+
 import static org.junit.Assert.*;
 
 public class PortfolioTest {
@@ -69,7 +72,5 @@ public class PortfolioTest {
   }
 
   // todo : testGetValue
-  // todo : testGetValueWithInvalidInput
   // todo : testGetTotalComp
-  // todo : testGetTotalCompWithInvalidInput
 }

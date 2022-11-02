@@ -1,7 +1,6 @@
 package controllers;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -10,10 +9,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import entities.Portfolio;
-import entities.Stock;
-import entities.User;
-import models.FileModelXmlImpl;
+import models.Portfolio;
+import models.Stock;
+import models.User;
 import models.PortfolioModel;
 import views.PortfolioView;
 
@@ -78,6 +76,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   /**
    * Loops if User enters a non Integer, prompting to try again,
    * Else breaks and return Int.
+   *
    * @return User entered Integer.
    */
   private int getIntegerFromUser() {
@@ -131,10 +130,12 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
     portfolio = new Portfolio(portfolioName);
     this.output.print("Enter number of stocks: ");
-    int n = this.getIntegerFromUser();;
+    int n = this.getIntegerFromUser();
+    ;
     while (n <= 0) {
       this.output.print("Please enter a valid number of stocks: ");
-      n = this.getIntegerFromUser();;
+      n = this.getIntegerFromUser();
+      ;
     }
     String stockName;
     int stockQuantity;
@@ -148,10 +149,13 @@ public class PortfolioControllerImpl implements PortfolioController {
         stockName = this.input.next();
       }
       this.output.print("Quantity : ");
-      stockQuantity = this.getIntegerFromUser();;
+      stockQuantity = this.getIntegerFromUser();
       while (stockQuantity <= 0) {
         this.output.print("Please enter a valid quantity: ");
-        stockQuantity = this.getIntegerFromUser();;
+        stockQuantity = this.getIntegerFromUser();
+      }
+      if (portfolio.getStockNames().contains(stockName)) {
+        i--;
       }
       stock = new Stock(stockName);
       portfolio.addStock(stock, stockQuantity);
@@ -173,7 +177,12 @@ public class PortfolioControllerImpl implements PortfolioController {
       pathToXml = this.input.next();
       file = new File(pathToXml);
     }
-    portfolio = model.readPortfolioFromXml(pathToXml);
+    try {
+      portfolio = model.readPortfolioFromXml(pathToXml);
+    } catch (IllegalArgumentException e) {
+      this.output.println("\nXML File Invalid");
+      return;
+    }
     String portfolioName = portfolio.getName();
     while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
       this.output.print("This portfolio already exists! Please try another name: ");

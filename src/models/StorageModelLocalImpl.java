@@ -14,10 +14,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import entities.Portfolio;
-import entities.Stock;
-import entities.User;
-
 /**
  * Description of class.
  */

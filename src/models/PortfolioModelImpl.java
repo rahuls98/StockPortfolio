@@ -6,19 +6,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-import entities.Portfolio;
-import entities.Stock;
-import entities.User;
 
 /**
  * Description of class.
@@ -80,6 +73,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   public Portfolio readPortfolioFromXml(String pathToFile) {
+    int quantity;
     FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
     xmlFileHandler.readFile(pathToFile);
     Document document = xmlFileHandler.getDocument();
@@ -91,8 +85,19 @@ public class PortfolioModelImpl implements PortfolioModel {
     for (int j = 0; j < stockList.getLength(); j++) {
       Node stockNode = stockList.item(j);
       Element stockElement = (Element) stockNode;
+      if(!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
+        throw new IllegalArgumentException("Invalid Ticker");
+      }
+      try {
+        quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
+        if (quantity <= 0) {
+          throw new IllegalArgumentException("Invalid Quantity");
+        }
+      } catch (NumberFormatException e) {
+        throw new IllegalArgumentException("Invalid Quantity");
+      }
       Stock stock = new Stock(stockElement.getAttribute("symbol"));
-      portfolioObj.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
+      portfolioObj.addStock(stock, quantity);
     }
     return portfolioObj;
   }

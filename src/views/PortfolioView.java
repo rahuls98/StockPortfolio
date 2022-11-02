@@ -2,8 +2,6 @@ package views;
 
 import java.util.HashMap;
 
-import entities.Portfolio;
-
 /**
  * Represents all operations associated to the user-view of the application.
  */

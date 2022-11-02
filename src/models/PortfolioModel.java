@@ -2,9 +2,6 @@ package models;
 
 import java.util.HashMap;
 
-import entities.Portfolio;
-import entities.User;
-
 /**
  * Description of interface.
  */

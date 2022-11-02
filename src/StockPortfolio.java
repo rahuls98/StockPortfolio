@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
-import entities.User;
+import models.User;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;

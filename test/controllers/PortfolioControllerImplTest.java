@@ -6,13 +6,12 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Random;
 
-import entities.User;
+import models.User;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;
