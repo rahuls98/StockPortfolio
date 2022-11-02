@@ -28,7 +28,6 @@ import static org.junit.Assert.fail;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PortfolioControllerImplTest {
   private OutputStream out;
-  private String userName;
   private InputStream input;
   private PortfolioModel model;
   private PortfolioView view;
@@ -40,7 +39,7 @@ public class PortfolioControllerImplTest {
       file.delete();
     }
     this.out = new ByteArrayOutputStream();
-    this.userName = genRandomString();
+    String userName = genRandomString();
 
     try {
       this.model = new PortfolioModelImpl(userName);
@@ -215,6 +214,7 @@ public class PortfolioControllerImplTest {
             "portfolio2. Get portfolio composition3. Get portfolio value4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
+
   @Test
   public void testGoWithCreatePortfolioWithFractional() {
     String generatedString = this.genRandomString();
@@ -244,7 +244,7 @@ public class PortfolioControllerImplTest {
             "Quantity : \n" +
             "Please enter a valid integer value: \n" +
             "\n" +
-            "New portfolio ("+generatedString+") has been recorded!\n" +
+            "New portfolio (" + generatedString + ") has been recorded!\n" +
             "\n" +
             "What would you like to do?\n" +
             "1. Create portfolio\n" +
