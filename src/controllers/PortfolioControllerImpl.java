@@ -162,7 +162,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
     user.addPortfolio(portfolio);
     model.addPortfolio(user);
-    this.output.print("New portfolio (" + portfolio.getName() + ") has been recorded!\n");
+    this.output.print("\nNew portfolio (" + portfolio.getName() + ") has been recorded!\n");
   }
 
   private void createPortfolioFromFile() {
@@ -178,7 +178,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       file = new File(pathToXml);
     }
     try {
-      portfolio = model.readPortfolioFromXml(pathToXml);
+      portfolio = model.loadPortfolioFromXml(pathToXml);
     } catch (IllegalArgumentException e) {
       this.output.println("\nXML File Invalid");
       return;

@@ -3,7 +3,7 @@ package models;
 import java.util.HashMap;
 
 /**
- * Description of class.
+ * Represents a User having a unique username and multiple portfolios.
  */
 public class User {
 
@@ -11,9 +11,9 @@ public class User {
   private HashMap<String, Portfolio> portfolios;
 
   /**
-   * Description of constructor.
+   * Returns an object of User.
    *
-   * @param name desc.
+   * @param name Unique username.
    */
   public User(String name) throws IllegalArgumentException {
     if (name == null || name.equals("")) {
@@ -24,18 +24,18 @@ public class User {
   }
 
   /**
-   * Description of method.
+   * Returns the username of the User.
    *
-   * @return desc.
+   * @return username.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Description of method.
+   * Adds a portfolio to the User.
    *
-   * @param portfolio desc.
+   * @param portfolio Portfolio to add.
    */
   public void addPortfolio(Portfolio portfolio) {
     if (portfolio == null) {
@@ -45,9 +45,9 @@ public class User {
   }
 
   /**
-   * Description of method.
+   * Returns all the portfolios of the User.
    *
-   * @return desc.
+   * @return Portfolios of the User.
    */
   public HashMap<String, Portfolio> getPortfolios() {
     return portfolios;

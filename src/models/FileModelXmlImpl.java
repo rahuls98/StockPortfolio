@@ -17,9 +17,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-public class FileModelXmlImpl implements FileModel {
+class FileModelXmlImpl implements FileModel {
 
-  private DocumentBuilder builder;
+  private final DocumentBuilder builder;
   private Document document;
 
   public FileModelXmlImpl() {
@@ -48,7 +48,7 @@ public class FileModelXmlImpl implements FileModel {
       tr.setOutputProperty(OutputKeys.INDENT, "yes");
       tr.setOutputProperty(OutputKeys.METHOD, "xml");
       tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      tr.transform(new DOMSource(document),
+      tr.transform(new DOMSource(this.document),
               new StreamResult(new FileOutputStream(pathToFile)));
     } catch (TransformerException | IOException te) {
       System.out.println(te.getMessage());

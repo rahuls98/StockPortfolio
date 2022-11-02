@@ -56,7 +56,7 @@ public class StorageModelLocalImplTest {
 
   @Test
   public void testRead() {
-    User user = localStorage.readUser("Test");
+    User user = localStorage.readUser("rahul");
     HashMap<String, Portfolio> portfolios = user.getPortfolios();
     for (Map.Entry<String, Portfolio> portfolio : portfolios.entrySet()) {
       for (Map.Entry<Stock, Integer> stock : portfolio.getValue().getStocks().entrySet()) {
@@ -68,7 +68,7 @@ public class StorageModelLocalImplTest {
 
   @Test
   public void testWrite() {
-    User user = new User("Test");
+    User user = new User("Test 2");
     Portfolio testPortfolio = new Portfolio("Test portfolio");
     Stock stockX = new Stock("X");
     Stock stockY = new Stock("Y");
