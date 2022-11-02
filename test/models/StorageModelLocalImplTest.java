@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -37,18 +38,7 @@ public class StorageModelLocalImplTest {
     if (localStorageFile.delete()) {
       setup();
       assertTrue(localStorageFile.exists());
-      assertEquals(0, localStorageFile.length());
-    } else {
-      fail();
-    }
-  }
-
-  @Test
-  public void testReadWithEmptyLocalStorage() {
-    File localStorageFile = new File("./localStorage.xml");
-    if (localStorageFile.delete()) {
-      setup();
-      assertNull(localStorage.readUser("Default"));
+      assertNotEquals(0, localStorageFile.length());
     } else {
       fail();
     }
@@ -56,14 +46,9 @@ public class StorageModelLocalImplTest {
 
   @Test
   public void testRead() {
-    User user = localStorage.readUser("rahul");
+    User user = localStorage.readUser("Test 2");
     HashMap<String, Portfolio> portfolios = user.getPortfolios();
-    for (Map.Entry<String, Portfolio> portfolio : portfolios.entrySet()) {
-      for (Map.Entry<Stock, Integer> stock : portfolio.getValue().getStocks().entrySet()) {
-        System.out.println(stock.getKey().getTicker());
-        System.out.println(stock.getValue());
-      }
-    }
+    assertEquals(2, portfolios.size());
   }
 
   @Test
@@ -87,5 +72,8 @@ public class StorageModelLocalImplTest {
     testPortfolio2.addStock(stockC, 46-10);
     user.addPortfolio(testPortfolio2);
     localStorage.writeUser(user);
+    localStorage.readUser("Test 2");
+    HashMap<String, Portfolio> portfolios = user.getPortfolios();
+    assertEquals(2, portfolios.size());
   }
 }

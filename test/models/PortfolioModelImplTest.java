@@ -13,7 +13,40 @@ public class PortfolioModelImplTest {
 
   @Before
   public void setUp() throws IOException {
-    model = new PortfolioModelImpl("default");
+    model = new PortfolioModelImpl("test");
+  }
+
+  @Test
+  public void testGetPortfolio() {
+    Portfolio portfolio = model.getPortfolio("P1");
+    assertEquals("P1", portfolio.getName());
+    assertEquals(2, portfolio.getStocks().size());
+  }
+
+  @Test
+  public void testGetPortfolios() {
+    String[] portfolios = model.getPortfolios();
+    assertEquals(2, portfolios.length);
+  }
+
+  @Test
+  public void testGetPortfolioValues() {
+    // todo : create hashmap from postman values and compare
+  }
+
+  @Test
+  public void testGetPortfolioTotal() {
+    // todo : create total from postman values and compare
+  }
+
+  @Test
+  public void testIsValidTickerTrueCase() {
+    assertTrue(model.isValidTicker("AAPL"));
+  }
+
+  @Test
+  public void testIsValidTickerFalseCase() {
+    assertFalse(model.isValidTicker("test"));
   }
 
   @Test

@@ -4,7 +4,7 @@ package models;
  * Represents classes that interact with storage mechanisms, for example: file storages,
  * databases, etc., and defines required associated operations.
  */
-interface StorageModel {
+public interface StorageModel {
 
   /**
    * Retrieves a user from storage by username.
