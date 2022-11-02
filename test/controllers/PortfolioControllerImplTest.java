@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,6 +40,8 @@ public class PortfolioControllerImplTest {
       e.printStackTrace();
     }
     this.view = new PortfolioViewImpl(new PrintStream(out));
+    File myObj = new File("localStorage.xml");
+    myObj.delete();
   }
 
   private String genRandomString() {
@@ -68,11 +71,10 @@ public class PortfolioControllerImplTest {
     InputStream input = new ByteArrayInputStream("4".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio\r\n" +
-            "2. Get portfolio composition\r\n" +
-            "3. Get portfolio value\r\n" +
-            "4. Exit\r\n" +
-            "Enter action: ";
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?1. Create portfolio2." +
+            " Get portfolio composition3. Get portfolio value4." +
+            " ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
@@ -82,11 +84,9 @@ public class PortfolioControllerImplTest {
     InputStream input = new ByteArrayInputStream("a\n4\n".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio\r\n" +
-            "2. Get portfolio composition\r\n" +
-            "3. Get portfolio value\r\n" +
-            "4. Exit\r\n" +
-            "Enter action: Enter Valid Integer:\n";
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
+            "3. Get portfolio value4. ExitSelect action: Please enter a valid integer value: ";
 
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
 
@@ -98,17 +98,11 @@ public class PortfolioControllerImplTest {
     InputStream input = new ByteArrayInputStream("6\n4\n".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio\r\n" +
-            "2. Get portfolio composition\r\n" +
-            "3. Get portfolio value\r\n" +
-            "4. Exit\r\n" +
-            "Enter action: \r\n" +
-            "Invalid choice\r\n\n" +
-            "1. Create portfolio\r\n" +
-            "2. Get portfolio composition\r\n" +
-            "3. Get portfolio value\r\n" +
-            "4. Exit\r\n" +
-            "Enter action: ";
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
+            "3. Get portfolio value4. ExitSelect action: Invalid choice, please try again!" +
+            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
+            "3. Get portfolio value4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
     ;
   }
@@ -119,11 +113,10 @@ public class PortfolioControllerImplTest {
     InputStream input = new ByteArrayInputStream("4".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio\r\n" +
-            "2. Get portfolio composition\r\n" +
-            "3. Get portfolio value\r\n" +
-            "4. Exit\r\n" +
-            "Enter action: ";
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?1. Create portfolio" +
+            "2. Get portfolio composition3. Get portfolio value" +
+            "4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
@@ -135,12 +128,14 @@ public class PortfolioControllerImplTest {
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio2." +
-            " Get portfolio composition3. Get portfolio value4." +
-            " ExitEnter action: 1. Enter manually2. Load from fileSelect action:" +
-            " Enter portfolio name: Enter number of stocks: Stock 1 ticker: Quantity : N" +
-            "ew portfolio (" + generatedString + ") has been recorded!1. Create portfolio2. G" +
-            "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
+    String expectedOutput = "Please enter the menu item number when requested." +
+            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
+            "3. Get portfolio value4. ExitSelect action: How would you like to enter the " +
+            "portfolio details?1. Enter manually2. Load from file3. Go backSelect " +
+            "action: Enter portfolio name: Enter number of stocks: Stock 1 ticker: Quantity : " +
+            "New portfolio ("+generatedString+") has been recorded!What would you like to do?" +
+            "1. Create portfolio2. Get portfolio composition3. Get portfolio value" +
+            "4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
@@ -152,13 +147,13 @@ public class PortfolioControllerImplTest {
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, defaultUser, input, new PrintStream(out));
     controller.go();
-    String expectedOutput = "1. Create portfolio2." +
-            " Get portfolio composition3. Get portfolio value4." +
-            " ExitEnter action: 1. Enter manually2. Load from fileSelect action:" +
-            " Enter portfolio name: Enter number of stocks: Enter a valid number of Stocks:" +
-            " Stock 1 ticker: Quantity : N" +
-            "ew portfolio (" + generatedString + ") has been recorded!1. Create portfolio2. G" +
-            "et portfolio composition3. Get portfolio value4. ExitEnter action: ";
+    String expectedOutput = "Please enter the menu item number when requested.What would you" +
+            " like to do?1. Create portfolio2. Get portfolio composition3. Get portfolio value" +
+            "4. ExitSelect action: How would you like to enter the portfolio details?1. Enter " +
+            "manually2. Load from file3. Go backSelect action: Enter portfolio name: Enter num" +
+            "ber of stocks: Please enter a valid number of stocks: Stock 1 ticker: Quantity : " +
+            "New portfolio ("+generatedString+") has been recorded!What would you like to do?1. Create " +
+            "portfolio2. Get portfolio composition3. Get portfolio value4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
