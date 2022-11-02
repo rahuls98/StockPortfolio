@@ -27,8 +27,12 @@ public class PortfolioModelImpl implements PortfolioModel {
    *
    * @param userName The user whose portfolio is to be managed.
    */
-  public PortfolioModelImpl(String userName) throws IOException {
-    this.store = new StorageModelLocalImpl();
+  public PortfolioModelImpl(String userName) throws Exception {
+    try {
+      this.store = new StorageModelLocalImpl();
+    } catch (Exception e) {
+      throw new Exception(e);
+    }
     this.user = this.store.readUser(userName);
     APIModel model = new APIModelImpl();
     tickerSet = model.getValidTickers();
@@ -72,43 +76,51 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   public Portfolio loadPortfolioFromXml(String pathToFile) {
-    int quantity;
-    FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
-    xmlFileHandler.readFile(pathToFile);
-    Document document = xmlFileHandler.getDocument();
-    NodeList nodeList = document.getElementsByTagName("portfolio");
-    Node portfolioNode = nodeList.item(0);
-    Element portfolioElement = (Element) portfolioNode;
-    Portfolio portfolioObj = new Portfolio(portfolioElement.getAttribute("title"));
-    NodeList stockList = portfolioElement.getElementsByTagName("stock");
-    for (int j = 0; j < stockList.getLength(); j++) {
-      Node stockNode = stockList.item(j);
-      Element stockElement = (Element) stockNode;
-      if (!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
-        throw new IllegalArgumentException("Invalid Ticker");
-      }
-      try {
-        quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
-        if (quantity <= 0) {
+    try {
+      int quantity;
+      FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
+      xmlFileHandler.readFile(pathToFile);
+      Document document = xmlFileHandler.getDocument();
+      NodeList nodeList = document.getElementsByTagName("portfolio");
+      Node portfolioNode = nodeList.item(0);
+      Element portfolioElement = (Element) portfolioNode;
+      Portfolio portfolioObj = new Portfolio(portfolioElement.getAttribute("title"));
+      NodeList stockList = portfolioElement.getElementsByTagName("stock");
+      for (int j = 0; j < stockList.getLength(); j++) {
+        Node stockNode = stockList.item(j);
+        Element stockElement = (Element) stockNode;
+        if (!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
+          throw new IllegalArgumentException("Invalid Ticker");
+        }
+        try {
+          quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
+          if (quantity <= 0) {
+            throw new IllegalArgumentException("Invalid Quantity");
+          }
+        } catch (NumberFormatException e) {
           throw new IllegalArgumentException("Invalid Quantity");
         }
-      } catch (NumberFormatException e) {
-        throw new IllegalArgumentException("Invalid Quantity");
+        Stock stock = new Stock(stockElement.getAttribute("symbol"));
+        portfolioObj.addStock(stock, quantity);
       }
-      Stock stock = new Stock(stockElement.getAttribute("symbol"));
-      portfolioObj.addStock(stock, quantity);
+      return portfolioObj;
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid XML!");
     }
-    return portfolioObj;
   }
 
   public String loadPortfolioNameFromXML(String pathToFile) {
-    FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
-    xmlFileHandler.readFile(pathToFile);
-    Document document = xmlFileHandler.getDocument();
-    NodeList nodeList = document.getElementsByTagName("portfolio");
-    Node portfolioNode = nodeList.item(0);
-    Element portfolioElement = (Element) portfolioNode;
-    return portfolioElement.getAttribute("title");
+    try {
+      FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
+      xmlFileHandler.readFile(pathToFile);
+      Document document = xmlFileHandler.getDocument();
+      NodeList nodeList = document.getElementsByTagName("portfolio");
+      Node portfolioNode = nodeList.item(0);
+      Element portfolioElement = (Element) portfolioNode;
+      return portfolioElement.getAttribute("title");
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid XML!");
+    }
   }
 
   @Override

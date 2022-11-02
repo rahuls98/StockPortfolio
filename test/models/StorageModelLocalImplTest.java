@@ -21,8 +21,8 @@ public class StorageModelLocalImplTest {
   public void setup() {
     try {
       localStorage = new StorageModelLocalImpl();
-    } catch (IOException e) {
-      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      System.out.println("Storage invalid/corrupted!");
     }
   }
 

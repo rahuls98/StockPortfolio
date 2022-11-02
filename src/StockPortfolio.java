@@ -10,14 +10,20 @@ import views.PortfolioView;
 import views.PortfolioViewImpl;
 
 /**
- * Description of class.
+ * Main entry point of the Stock Portfolio application.
  */
 public class StockPortfolio {
-  public static void main(String[] args) throws IOException {
-    String userName = "Main";
+  public static void main(String[] args) {
+    String userName = "main";
     InputStream input = System.in;
     PrintStream out = System.out;
-    PortfolioModel model = new PortfolioModelImpl(userName);
+    PortfolioModel model = null;
+    try {
+      model = new PortfolioModelImpl(userName);
+    } catch (Exception e) {
+      System.out.println("Storage invalid/corrupted!");
+      return;
+    }
     PortfolioView view = new PortfolioViewImpl(out);
     PortfolioController controller = new PortfolioControllerImpl(model, view, userName, input, out);
     controller.go();
