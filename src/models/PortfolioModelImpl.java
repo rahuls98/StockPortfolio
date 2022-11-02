@@ -36,7 +36,6 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   @Override
   public void addPortfolio(User user) {
-    // TODO: user not null
     if (this.user.getName().equals(user.getName())) {
       for (Map.Entry<String, Portfolio> entry : user.getPortfolios().entrySet()) {
         this.user.addPortfolio(entry.getValue());
@@ -104,7 +103,6 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   @Override
   public boolean isValidDate(String date) {
-//    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
     DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
     try {
       LocalDate.parse(date, formatter);

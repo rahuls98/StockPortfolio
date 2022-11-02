@@ -108,7 +108,6 @@ class StorageModelLocalImpl implements StorageModel {
   private Document addUserToXml(User userObj, Document document) {
     NodeList usersList = document.getElementsByTagName("users");
     Node usersNode = usersList.item(0);
-    // Element usersElement = (Element) usersNode;
     Element user = document.createElement("user");
     usersNode.appendChild(user);
     user.setAttribute("name", userObj.getName());

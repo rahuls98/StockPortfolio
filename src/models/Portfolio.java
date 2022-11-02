@@ -52,7 +52,6 @@ public class Portfolio {
    * @param quantity desc.
    */
   public void addStock(Stock stock, int quantity) {
-    // TODO : validate ticker, quantity for neg, 0, fractional
     if (stock == null) {
       throw new IllegalArgumentException("Stock cannot be null!");
     }
@@ -91,7 +90,6 @@ public class Portfolio {
    * @return desc.
    */
   public HashMap<String, Float> getValue(String date) {
-    // todo : date validation
     HashMap<String, Float> portfolioValueMap = new HashMap<>();
     int count = 0;
     for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
@@ -117,7 +115,6 @@ public class Portfolio {
    * @return desc.
    */
   public float getTotalComp(String date) {
-    // todo : date validation
     float total = 0.00f;
     for (Map.Entry<String, Float> entry : this.getValue(date).entrySet()) {
       total += entry.getValue();
