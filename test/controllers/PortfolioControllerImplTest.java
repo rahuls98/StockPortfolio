@@ -215,6 +215,45 @@ public class PortfolioControllerImplTest {
             "portfolio2. Get portfolio composition3. Get portfolio value4. ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
+  @Test
+  public void testGoWithCreatePortfolioWithFractional() {
+    String generatedString = this.genRandomString();
+    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1.5\n1\n4\n";
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
+    String expectedOutput = "Please enter the menu item number when requested.\n" +
+            "\n" +
+            "What would you like to do?\n" +
+            "1. Create portfolio\n" +
+            "2. Get portfolio composition\n" +
+            "3. Get portfolio value\n" +
+            "4. Exit\n" +
+            "Select action: \n" +
+            "\n" +
+            "How would you like to enter the portfolio details?\n" +
+            "1. Enter manually\n" +
+            "2. Load from file\n" +
+            "3. Go back\n" +
+            "Select action: \n" +
+            "\n" +
+            "Enter portfolio name: \n" +
+            "Enter number of stocks: \n" +
+            "Stock 1 ticker: \n" +
+            "Quantity : \n" +
+            "Please enter a valid integer value: \n" +
+            "\n" +
+            "New portfolio ("+generatedString+") has been recorded!\n" +
+            "\n" +
+            "What would you like to do?\n" +
+            "1. Create portfolio\n" +
+            "2. Get portfolio composition\n" +
+            "3. Get portfolio value\n" +
+            "4. Exit\n" +
+            "Select action: \n";
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
 
   @Test
   public void testGoWithCreatePortfolioInvalidNonIntFlow() {
