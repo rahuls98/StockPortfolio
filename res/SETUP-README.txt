@@ -8,8 +8,8 @@ directory. Follow the given instructions hereon.
     prompted to enter the name of the portfolio. As of now, spaces in the name are not supported.
     Please enter a character sequence with no spaces. You will also be asked to enter the number of
     stocks you want to add to this portfolio. The ticker symbol of each stock should be entered in
-    uppercase letters. Invalid tickers will be pointed out. Stock quantities must be positive
-    integer values.
+    uppercase letters. Invalid tickers will be pointed out (Allowed ticker - https://raw.githubusercontent.com/rreichel3/US-Stock-Symbols/main/all/all_tickers.txt).
+    Stock quantities must be positive integer values.
 
     Example flow:
     Please enter the menu item number when requested.
