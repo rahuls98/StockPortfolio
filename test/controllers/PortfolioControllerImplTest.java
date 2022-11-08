@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
 import java.util.Random;
 
 import models.PortfolioModel;
@@ -451,7 +452,9 @@ public class PortfolioControllerImplTest {
   @Test
   public void testPortfolioValueForInvalidTomorrowDateAfterCreate() {
     String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-11-03\n2022-10-31\n4\n";
+    LocalDate today = LocalDate.now();
+    LocalDate tomorrow = today.plusDays(1);
+    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n"+tomorrow.toString()+"\n2022-10-31\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));

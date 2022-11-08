@@ -1,5 +1,6 @@
 1) Run the .jar file, this will also create the dependent local storage XML file in the same
 directory. Follow the given instructions hereon.
+(java -jar .\StockPortfolio.jar)
 
 2) Portfolios can be created manually or by providing an XML file (format predefined and provided in
  the res folder) with the portfolio details. Enter 1 on the main menu to create a portfolio.
@@ -43,7 +44,7 @@ directory. Follow the given instructions hereon.
         - "title" in the portfolio node
         - "quantity" in the stock node
         - "symbol" in the stock node
-        Add/Remove stock nodes as required.
+        Add/Remove stock nodes as required. Please add this in the same directory as .JAR file and provide file name when asked.
 
     portfolioSample.xml
     <portfolio title="Portfolio_2">
@@ -76,4 +77,5 @@ directory. Follow the given instructions hereon.
 4) To view the total value of any portfolio, enter 3 on the main menu. You will be asked to select
 a portfolio for which you want the value for, along with a date. Date format is YYYY-MM-DD.
 Currently, the supported date range is [2011-03-02, Yesterday's date] (Both inclusive). Current and
-future dates are not handled.
+future dates are not handled. We are handling weekends by getting value for the previous friday.
+However, we are not handling public holidays and would be added in subsequent iterations.

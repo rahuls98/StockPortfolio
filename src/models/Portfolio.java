@@ -12,6 +12,10 @@ class Portfolio {
   private String name;
   private final HashMap<Stock, Integer> stocks;
 
+  HashMap<String,HashMap<Stock, Integer>> purchases;
+
+  HashMap<String,HashMap<Stock, Integer>> Snapshot;
+
   /**
    * Returns an object of Portfolio.
    *
