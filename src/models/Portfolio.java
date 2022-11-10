@@ -89,31 +89,25 @@ class Portfolio implements PortfolioInstanceModel {
    * @param date Date to retrieve values for.
    * @return Stocks their values on the given date.
    */
-//  public HashMap<String, Float> getValue(String date) {
-//    HashMap<String, Float> portfolioValueMap = new HashMap<>();
-//    int count = 0;
-//    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
-//      count += 1;
-//      Stock stock = entry.getKey();
-//      int quantity = entry.getValue();
-//      portfolioValueMap.put(stock.getTicker(), (stock.getPriceOnDate(date) * quantity));
-//      if ((count % 5) == 0) {
-//        try {
-//          Thread.sleep(60000);
-//        } catch (InterruptedException e) {
-//          throw new RuntimeException(e);
-//        }
-//      }
-//    }
-//    return portfolioValueMap;
-//  }
-
   public HashMap<String, Float> getValue(String date) {
     HashMap<String, Float> portfolioValueMap = new HashMap<>();
-    List<String> dates = new ArrayList<>();
-
+    int count = 0;
+    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
+      count += 1;
+      Stock stock = entry.getKey();
+      int quantity = entry.getValue();
+      portfolioValueMap.put(stock.getTicker(), (stock.getPriceOnDate(date) * quantity));
+      if ((count % 5) == 0) {
+        try {
+          Thread.sleep(60000);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
     return portfolioValueMap;
   }
+
 
   /**
    * Retrieves the total value of the portfolio on a given date.

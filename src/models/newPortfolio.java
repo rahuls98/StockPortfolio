@@ -11,6 +11,8 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   private ArrayList<Order> orderBook;
 
+  private HashMap<String, Stock> stocks;
+
   //TODO: REMOVE THIS!!!!
   public newPortfolio(String name, ArrayList<Order> ordBook) {
     this.name = name;
@@ -32,24 +34,25 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   }
 
-  public void buy(LocalDate date, HashMap<String, Integer> stocks) {
+  public void buy(LocalDate date, HashMap<String, Integer> stocks, float com) {
     //TODO: Validations
-    orderBook.add(new Order(Action.BUY, date, stocks));
+    orderBook.add(new Order(Action.BUY, date, stocks, com));
   }
 
-  public void sell(LocalDate date, HashMap<String, Integer> stocks) {
+  public Boolean sell(LocalDate date, HashMap<String, Integer> stocks, float com) {
     HashMap<String, Integer> composition = this.getStockQuantities();
     for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
       if (!(composition.containsKey(entry.getKey()))) {
         //Silently Fail, stock not in portfolio
-        return;
+        return false;
       }
       if (composition.get(entry.getKey()) < entry.getValue()) {
         //Silently fail, Quantity of sell action not in portfolio
-        return;
+        return false;
       }
     }
-    orderBook.add(new Order(Action.SELL, date, stocks));
+    orderBook.add(new Order(Action.SELL, date, stocks, com));
+    return true;
   }
 
   public Boolean isValidDate(LocalDate date) {
@@ -81,10 +84,9 @@ public class newPortfolio implements PortfolioInstanceModel {
   public ArrayList<Order> getOrderBookOnDate(LocalDate date) {
     ArrayList<Order> ordBook = new ArrayList<>();
     for (int i = 0; i < this.orderBook.size(); i++) {
-      if (date.compareTo(this.orderBook.get(i).getDate()) < 0) {
-        break;
+      if (date.compareTo(this.orderBook.get(i).getDate()) >= 0) {
+        ordBook.add(this.orderBook.get(i));
       }
-      ordBook.add(this.orderBook.get(i));
     }
     return ordBook;
   }
@@ -118,6 +120,8 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   @Override
   public HashMap<String, Float> getValue(String date) {
+    HashMap<String, Float> values = new HashMap<>();
+    HashMap
     return null;
   }
 

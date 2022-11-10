@@ -17,7 +17,7 @@ public class newPortfolioTest {
     ArrayList<Order> init = new ArrayList<>();
     HashMap<String, Integer> stocks = new HashMap<>();
     stocks.put("GOOG", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 11, 8), stocks));
+    init.add(new Order(Action.BUY, LocalDate.of(2022, 11, 8), stocks, 1));
     portfolio = new newPortfolio("test1", init);
   }
 
@@ -32,7 +32,7 @@ public class newPortfolioTest {
   public void testAdd() {
     HashMap<String, Integer> stocks = new HashMap<>();
     stocks.put("AAPL", 1);
-    this.portfolio.buy(LocalDate.of(2022, 11, 9), stocks);
+    this.portfolio.buy(LocalDate.of(2022, 11, 9), stocks, 1);
     HashMap<String, Integer> comp = new HashMap<>();
     comp.put("GOOG", 1);
     comp.put("AAPL", 1);
@@ -43,7 +43,7 @@ public class newPortfolioTest {
   public void testSellInvalidQuantity() {
     HashMap<String, Integer> stocks = new HashMap<>();
     stocks.put("AAPL", 1);
-    this.portfolio.sell(LocalDate.of(2022, 11, 9), stocks);
+    this.portfolio.sell(LocalDate.of(2022, 11, 9), stocks, 1);
     HashMap<String, Integer> comp = new HashMap<>();
     comp.put("GOOG", 1);
     assertEquals(comp, this.portfolio.getStockQuantities());
@@ -53,8 +53,8 @@ public class newPortfolioTest {
   public void testSellValidQuantity() {
     HashMap<String, Integer> stocks = new HashMap<>();
     stocks.put("AAPL", 1);
-    this.portfolio.buy(LocalDate.of(2022, 11, 9), stocks);
-    this.portfolio.sell(LocalDate.of(2022, 11, 9), stocks);
+    this.portfolio.buy(LocalDate.of(2022, 11, 9), stocks, 1);
+    this.portfolio.sell(LocalDate.of(2022, 11, 9), stocks, 1);
     HashMap<String, Integer> comp = new HashMap<>();
     comp.put("GOOG", 1);
     assertEquals(comp, this.portfolio.getStockQuantities());
@@ -65,13 +65,13 @@ public class newPortfolioTest {
     ArrayList<Order> init = new ArrayList<>();
     HashMap<String, Integer> stocks1 = new HashMap<>();
     stocks1.put("GOOG", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 6, 1), stocks1));
+    init.add(new Order(Action.BUY, LocalDate.of(2022, 6, 1), stocks1, 1));
     HashMap<String, Integer> stock2 = new HashMap<>();
     stock2.put("AAPL", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 6, 15), stock2));
+    init.add(new Order(Action.BUY, LocalDate.of(2022, 6, 15), stock2, 1));
     HashMap<String, Integer> stocks3 = new HashMap<>();
     stocks3.put("AAPL", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 7, 1), stocks3));
+    init.add(new Order(Action.BUY, LocalDate.of(2022, 7, 1), stocks3, 1));
     newPortfolio p1 = new newPortfolio("test1", init);
 
     HashMap<String, Integer> comp = new HashMap<>();

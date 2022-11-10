@@ -7,12 +7,15 @@ public class Order {
   private Action action;
   private LocalDate date;
   private HashMap<String, Integer> stocks;
+  private float commission;
 
-  public Order(Action e, LocalDate d, HashMap<String, Integer> s) {
+  public Order(Action e, LocalDate d, HashMap<String, Integer> s, float c) {
     this.action = e;
     this.date = d;
     this.stocks = s;
+    this.commission = c;
   }
+
   public Action getAction() {
     return this.action;
   }
@@ -23,5 +26,9 @@ public class Order {
 
   public HashMap<String, Integer> getStocks() {
     return stocks;
+  }
+
+  public float getCommission() {
+    return this.commission;
   }
 }
