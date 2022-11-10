@@ -117,7 +117,7 @@ class StorageModelLocalImpl implements StorageModel {
         for (int j = 0; j < portfolioList.getLength(); j++) {
           Node portfolioNode = portfolioList.item(j);
           Element portfolioElement = (Element) portfolioNode;
-          Portfolio portfolio = new Portfolio(portfolioElement.getAttribute("title"));
+          PortfolioInstanceModel portfolio = new newPortfolio(portfolioElement.getAttribute("title"));
           NodeList orderList = portfolioElement.getElementsByTagName("order");
           for (int k = 0; k < orderList.getLength(); k++) {
             Node orderNode = orderList.item(k);
@@ -128,15 +128,17 @@ class StorageModelLocalImpl implements StorageModel {
             float commission = Float.parseFloat(orderElement.getAttribute("commission"));
             Order order = new Order(orderAction, LocalDate.parse(date), commission);
             NodeList stockList = portfolioElement.getElementsByTagName("stock");
+            HashMap<String, Integer> stocks = new HashMap<>();
             for (int l = 0; l < stockList.getLength(); l++) {
               Node stockNode = stockList.item(l);
               Element stockElement = (Element) stockNode;
-              order.addStock(stockElement.getAttribute("symbol"),
+              stocks.put(stockElement.getAttribute("symbol"),
                       Integer.parseInt(stockElement.getAttribute("quantity")));
             }
-            // TODO : add order to portfolio
+            order.addStocks(stocks);
+            portfolio.placeOrder(order);
           }
-          user.addPortfolio(portfolio);
+          user.addNewPortfolio(portfolio);
         }
         this.users.add(user);
       }
@@ -162,7 +164,7 @@ class StorageModelLocalImpl implements StorageModel {
       user.setAttribute("name", userObj.getName());
       Element portfolios = document.createElement("portfolios");
       user.appendChild(portfolios);
-      for (Map.Entry<String, Portfolio> portfoliosObj : userObj.getPortfolios().entrySet()) {
+      for (Map.Entry<String, PortfolioInstanceModel> portfoliosObj : userObj.getPortfolios().entrySet()) {
         Element portfolio = document.createElement("portfolio");
         portfolios.appendChild(portfolio);
         portfolio.setAttribute("title", portfoliosObj.getKey());

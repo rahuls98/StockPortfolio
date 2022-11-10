@@ -43,7 +43,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public Portfolio getPortfolio(String portfolioName) {
+  public PortfolioInstanceModel getPortfolio(String portfolioName) {
     return this.user.getPortfolios().get(portfolioName);
   }
 

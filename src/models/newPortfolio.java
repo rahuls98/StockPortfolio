@@ -34,6 +34,7 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   }
 
+  @Override
   public Boolean placeOrder(Order o) {
     if(o.getAction() == Action.BUY) {
       orderBook.add(o);
@@ -165,5 +166,10 @@ public class newPortfolio implements PortfolioInstanceModel {
   @Override
   public HashSet<String> getStockNames() {
     return null;
+  }
+
+  @Override
+  public String toString() {
+    return this.name;
   }
 }

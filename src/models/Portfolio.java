@@ -135,4 +135,10 @@ class Portfolio implements PortfolioInstanceModel {
     }
     return map;
   }
+
+  // TODO : handle later with a new interface that extends old one
+  @Override
+  public Boolean placeOrder(Order o) {
+    return null;
+  }
 }

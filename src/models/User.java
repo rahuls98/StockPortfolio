@@ -8,7 +8,7 @@ import java.util.HashMap;
 class User {
 
   private final String name;
-  private final HashMap<String, Portfolio> portfolios;
+  private final HashMap<String, PortfolioInstanceModel> portfolios;
 
   /**
    * Returns an object of User.
@@ -44,12 +44,19 @@ class User {
     portfolios.put(portfolio.getName(), portfolio);
   }
 
+  public void addNewPortfolio(PortfolioInstanceModel portfolio) {
+    if (portfolio == null) {
+      throw new IllegalArgumentException("Null portfolio not allowed!");
+    }
+    portfolios.put(portfolio.getName(), portfolio);
+  }
+
   /**
    * Returns all the portfolios of the User.
    *
    * @return Portfolios of the User.
    */
-  public HashMap<String, Portfolio> getPortfolios() {
-    return portfolios;
+  public HashMap<String, PortfolioInstanceModel> getPortfolios() {
+    return this.portfolios;
   }
 }
