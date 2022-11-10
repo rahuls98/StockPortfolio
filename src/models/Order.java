@@ -13,4 +13,15 @@ public class Order {
     this.date = d;
     this.stocks = s;
   }
+  public Action getAction() {
+    return this.action;
+  }
+
+  public LocalDate getDate() {
+    return this.date;
+  }
+
+  public HashMap<String, Integer> getStocks() {
+    return stocks;
+  }
 }

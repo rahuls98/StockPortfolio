@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class newPortfolio implements PortfolioInstanceModel {
   private String name;
@@ -32,17 +33,30 @@ public class newPortfolio implements PortfolioInstanceModel {
   }
 
   public void buy(LocalDate date, HashMap<String, Integer> stocks) {
+    //TODO: Validations
     orderBook.add(new Order(Action.BUY, date, stocks));
   }
 
   public void sell(LocalDate date, HashMap<String, Integer> stocks) {
-    //TODO: Validation to check if stock exists
+    HashMap<String, Integer> composition = this.getStockQuantities();
+    for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
+      if (!(composition.containsKey(entry.getKey()))) {
+        //Silently Fail, stock not in portfolio
+        return;
+      }
+      if (composition.get(entry.getKey()) < entry.getValue()) {
+        //Silently fail, Quantity of sell action not in portfolio
+        return;
+      }
+    }
     orderBook.add(new Order(Action.SELL, date, stocks));
   }
 
   public Boolean isValidDate(LocalDate date) {
-    //TODO: Check if date is in chronological order
-    return null;
+    if (this.orderBook.isEmpty()) {
+      return true;
+    }
+    return (this.orderBook.get(this.orderBook.size() - 1).getDate().compareTo(date) <= 0);
   }
 
   @Override
@@ -57,7 +71,49 @@ public class newPortfolio implements PortfolioInstanceModel {
    */
   @Override
   public HashMap<String, Integer> getStockQuantities() {
-    return null;
+    return getComposition(this.orderBook);
+  }
+
+  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d) {
+    return getComposition(this.getOrderBookOnDate(d));
+  }
+
+  public ArrayList<Order> getOrderBookOnDate(LocalDate date) {
+    ArrayList<Order> ordBook = new ArrayList<>();
+    for (int i = 0; i < this.orderBook.size(); i++) {
+      if (date.compareTo(this.orderBook.get(i).getDate()) < 0) {
+        break;
+      }
+      ordBook.add(this.orderBook.get(i));
+    }
+    return ordBook;
+  }
+
+  public HashMap<String, Integer> getComposition(ArrayList<Order> orders) {
+    HashMap<String, Integer> composition = new HashMap<>();
+    //Add stocks
+    for (int i = 0; i < orders.size(); i++) {
+      if (orders.get(i).getAction() == Action.BUY) {
+        for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+          if (!(composition.containsKey(entry.getKey()))) {
+            composition.put(entry.getKey(), 0);
+          }
+          composition.put(entry.getKey(), composition.get(entry.getKey()) + 1);
+        }
+      }
+    }
+    //Subtract sell stocks
+    for (int i = 0; i < orders.size(); i++) {
+      if (orders.get(i).getAction() == Action.SELL) {
+        for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+          composition.put(entry.getKey(), composition.get(entry.getKey()) - 1);
+          if (composition.get(entry.getKey()) == 0) {
+            composition.remove(entry.getKey());
+          }
+        }
+      }
+    }
+    return composition;
   }
 
   @Override
