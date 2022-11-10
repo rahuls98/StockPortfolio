@@ -1,20 +1,18 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Represents a Portfolio having multiple stocks and their quantities.
  */
-class Portfolio {
+class Portfolio implements PortfolioInstanceModel {
 
   private String name;
   private final HashMap<Stock, Integer> stocks;
-
-  HashMap<String,HashMap<Stock, Integer>> purchases;
-
-  HashMap<String,HashMap<Stock, Integer>> Snapshot;
 
   /**
    * Returns an object of Portfolio.
@@ -91,22 +89,29 @@ class Portfolio {
    * @param date Date to retrieve values for.
    * @return Stocks their values on the given date.
    */
+//  public HashMap<String, Float> getValue(String date) {
+//    HashMap<String, Float> portfolioValueMap = new HashMap<>();
+//    int count = 0;
+//    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
+//      count += 1;
+//      Stock stock = entry.getKey();
+//      int quantity = entry.getValue();
+//      portfolioValueMap.put(stock.getTicker(), (stock.getPriceOnDate(date) * quantity));
+//      if ((count % 5) == 0) {
+//        try {
+//          Thread.sleep(60000);
+//        } catch (InterruptedException e) {
+//          throw new RuntimeException(e);
+//        }
+//      }
+//    }
+//    return portfolioValueMap;
+//  }
+
   public HashMap<String, Float> getValue(String date) {
     HashMap<String, Float> portfolioValueMap = new HashMap<>();
-    int count = 0;
-    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
-      count += 1;
-      Stock stock = entry.getKey();
-      int quantity = entry.getValue();
-      portfolioValueMap.put(stock.getTicker(), (stock.getPriceOnDate(date) * quantity));
-      if ((count % 5) == 0) {
-        try {
-          Thread.sleep(60000);
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
-    }
+    List<String> dates = new ArrayList<>();
+
     return portfolioValueMap;
   }
 
