@@ -20,6 +20,7 @@ class APIModelImpl implements APIModel {
    * Returns an object of APIModelImpl.
    */
   public APIModelImpl() {
+    // this.alphaVantageKey = "0KD9ZFT8VD5QTNLQ";
     this.alphaVantageKey = "J0PBHB2BXB1ILYHK";
   }
 

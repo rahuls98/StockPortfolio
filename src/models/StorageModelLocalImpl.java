@@ -116,6 +116,13 @@ class StorageModelLocalImpl implements StorageModel {
           Node portfolioNode = portfolioList.item(j);
           Element portfolioElement = (Element) portfolioNode;
           Portfolio portfolio = new Portfolio(portfolioElement.getAttribute("title"));
+          NodeList orderList = portfolioElement.getElementsByTagName("order");
+          for (int k = 0; k < orderList.getLength(); k++) {
+            Node orderNode = orderList.item(k);
+            Element orderElement = (Element) orderNode;
+          }
+
+
           NodeList stockList = portfolioElement.getElementsByTagName("stock");
           for (int k = 0; k < stockList.getLength(); k++) {
             Node stockNode = stockList.item(k);

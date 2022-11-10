@@ -1,6 +1,16 @@
 <portfolio title="Portfolio2">
-	<stocks>
-		<stock quantity="20" symbol="V"/>
-		<stock quantity="10" symbol="AAPL"/>
-	</stocks>
+	<orders>
+		<order action="BUY" date="">
+			<stocks>
+				<stock quantity="20" symbol="V"/>
+				<stock quantity="10" symbol="AAPL"/>
+			</stocks>
+		</order>
+		<order action="SELL" date="">
+			<stocks>
+				<stock quantity="20" symbol="V"/>
+				<stock quantity="10" symbol="AAPL"/>
+			</stocks>
+		</order>
+	</orders>
 </portfolio>
