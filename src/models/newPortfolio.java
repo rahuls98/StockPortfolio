@@ -117,17 +117,32 @@ public class newPortfolio implements PortfolioInstanceModel {
     }
     return composition;
   }
-
   @Override
   public HashMap<String, Float> getValue(String date) {
     HashMap<String, Float> values = new HashMap<>();
-    HashMap
-    return null;
+    HashMap<String, Integer> comp = this.getStockCompositionOnDate(LocalDate.parse(date));
+    for(Map.Entry<String, Integer> entry: comp.entrySet()) {
+      if (!(values.containsKey(entry.getKey()))){
+        values.put(entry.getKey(), 0f);
+      }
+      if(!(this.stocks.containsKey(entry.getKey()))) {
+        this.stocks.put(entry.getKey(), new Stock(entry.getKey()));
+      }
+      values.put(entry.getKey(),
+              (values.get(entry.getKey()) +
+                      (entry.getValue() *
+                              this.stocks.get(entry.getKey()).getPriceOnDate(date))));
+    }
+    return values;
   }
 
   @Override
   public float getTotalComp(String date) {
-    return 0;
+    float total = 0.00f;
+    for (Map.Entry<String, Float> entry : this.getValue(date).entrySet()) {
+      total += entry.getValue();
+    }
+    return total;
   }
 
   @Override
