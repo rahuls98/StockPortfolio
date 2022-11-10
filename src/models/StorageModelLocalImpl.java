@@ -6,6 +6,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -120,15 +122,19 @@ class StorageModelLocalImpl implements StorageModel {
           for (int k = 0; k < orderList.getLength(); k++) {
             Node orderNode = orderList.item(k);
             Element orderElement = (Element) orderNode;
-          }
-
-
-          NodeList stockList = portfolioElement.getElementsByTagName("stock");
-          for (int k = 0; k < stockList.getLength(); k++) {
-            Node stockNode = stockList.item(k);
-            Element stockElement = (Element) stockNode;
-            Stock stock = new Stock(stockElement.getAttribute("symbol"));
-            portfolio.addStock(stock, Integer.parseInt(stockElement.getAttribute("quantity")));
+            String action = orderElement.getAttribute("action");
+            Action orderAction = (action == "BUY") ? Action.BUY : Action.SELL;
+            String date = orderElement.getAttribute("date");
+            float commission = Float.parseFloat(orderElement.getAttribute("commission"));
+            Order order = new Order(orderAction, LocalDate.parse(date), commission);
+            NodeList stockList = portfolioElement.getElementsByTagName("stock");
+            for (int l = 0; l < stockList.getLength(); l++) {
+              Node stockNode = stockList.item(l);
+              Element stockElement = (Element) stockNode;
+              order.addStock(stockElement.getAttribute("symbol"),
+                      Integer.parseInt(stockElement.getAttribute("quantity")));
+            }
+            // TODO : add order to portfolio
           }
           user.addPortfolio(portfolio);
         }

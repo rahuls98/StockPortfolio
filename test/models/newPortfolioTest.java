@@ -17,7 +17,9 @@ public class newPortfolioTest {
     ArrayList<Order> init = new ArrayList<>();
     HashMap<String, Integer> stocks = new HashMap<>();
     stocks.put("GOOG", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 11, 8), stocks, 1));
+    Order order = new Order(Action.BUY, LocalDate.of(2022, 11, 8), 1);
+    order.addStocks(stocks);
+    init.add(order);
     portfolio = new newPortfolio("test1", init);
   }
 
@@ -65,13 +67,19 @@ public class newPortfolioTest {
     ArrayList<Order> init = new ArrayList<>();
     HashMap<String, Integer> stocks1 = new HashMap<>();
     stocks1.put("GOOG", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 6, 1), stocks1, 1));
+    Order order = new Order(Action.BUY, LocalDate.of(2022, 6, 1), 1);
+    order.addStocks(stocks1);
+    init.add(order);
     HashMap<String, Integer> stock2 = new HashMap<>();
     stock2.put("AAPL", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 6, 15), stock2, 1));
+    order = new Order(Action.BUY, LocalDate.of(2022, 6, 15), 1);
+    order.addStocks(stock2);
+    init.add(order);
     HashMap<String, Integer> stocks3 = new HashMap<>();
     stocks3.put("AAPL", 1);
-    init.add(new Order(Action.BUY, LocalDate.of(2022, 7, 1), stocks3, 1));
+    order = new Order(Action.BUY, LocalDate.of(2022, 7, 1), 1);
+    order.addStocks(stocks3);
+    init.add(order);
     newPortfolio p1 = new newPortfolio("test1", init);
 
     HashMap<String, Integer> comp = new HashMap<>();

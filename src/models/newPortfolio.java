@@ -36,7 +36,9 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   public void buy(LocalDate date, HashMap<String, Integer> stocks, float com) {
     //TODO: Validations
-    orderBook.add(new Order(Action.BUY, date, stocks, com));
+    Order order = new Order(Action.BUY, date, com);
+    order.addStocks(stocks);
+    orderBook.add(order);
   }
 
   public Boolean sell(LocalDate date, HashMap<String, Integer> stocks, float com) {
@@ -51,7 +53,9 @@ public class newPortfolio implements PortfolioInstanceModel {
         return false;
       }
     }
-    orderBook.add(new Order(Action.SELL, date, stocks, com));
+    Order order = new Order(Action.SELL, date, com);
+    order.addStocks(stocks);
+    orderBook.add(order);
     return true;
   }
 
