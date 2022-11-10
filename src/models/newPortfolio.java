@@ -13,10 +13,10 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   private HashMap<String, Stock> stocks;
 
-  //TODO: REMOVE THIS!!!!
-  public newPortfolio(String name, ArrayList<Order> ordBook) {
+  public newPortfolio(String name) {
     this.name = name;
-    this.orderBook = ordBook;
+    this.orderBook = new ArrayList<>();
+    this.stocks = new HashMap<>();
   }
 
   @Override
@@ -34,28 +34,22 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   }
 
-  public void buy(LocalDate date, HashMap<String, Integer> stocks, float com) {
+  public void buy(Order o) {
     //TODO: Validations
-    Order order = new Order(Action.BUY, date, com);
-    order.addStocks(stocks);
-    orderBook.add(order);
+    orderBook.add(o);
   }
 
-  public Boolean sell(LocalDate date, HashMap<String, Integer> stocks, float com) {
+  public Boolean sell(Order o) {
     HashMap<String, Integer> composition = this.getStockQuantities();
-    for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
+    for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
       if (!(composition.containsKey(entry.getKey()))) {
-        //Silently Fail, stock not in portfolio
         return false;
       }
       if (composition.get(entry.getKey()) < entry.getValue()) {
-        //Silently fail, Quantity of sell action not in portfolio
         return false;
       }
     }
-    Order order = new Order(Action.SELL, date, com);
-    order.addStocks(stocks);
-    orderBook.add(order);
+    orderBook.add(o);
     return true;
   }
 
