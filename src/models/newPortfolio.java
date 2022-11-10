@@ -34,24 +34,43 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   }
 
-  public void buy(Order o) {
-    //TODO: Validations
-    orderBook.add(o);
+  public Boolean placeOrder(Order o) {
+    if(o.getAction() == Action.BUY) {
+      orderBook.add(o);
+      return true;
+    } else {
+      HashMap<String, Integer> composition = this.getStockQuantities();
+      for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
+        if (!(composition.containsKey(entry.getKey()))) {
+          return false;
+        }
+        if (composition.get(entry.getKey()) < entry.getValue()) {
+          return false;
+        }
+      }
+      orderBook.add(o);
+      return true;
+    }
   }
 
-  public Boolean sell(Order o) {
-    HashMap<String, Integer> composition = this.getStockQuantities();
-    for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
-      if (!(composition.containsKey(entry.getKey()))) {
-        return false;
-      }
-      if (composition.get(entry.getKey()) < entry.getValue()) {
-        return false;
-      }
-    }
-    orderBook.add(o);
-    return true;
-  }
+//  public void buy(Order o) {
+//    //TODO: Validations
+//    orderBook.add(o);
+//  }
+//
+//  public Boolean sell(Order o) {
+//    HashMap<String, Integer> composition = this.getStockQuantities();
+//    for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
+//      if (!(composition.containsKey(entry.getKey()))) {
+//        return false;
+//      }
+//      if (composition.get(entry.getKey()) < entry.getValue()) {
+//        return false;
+//      }
+//    }
+//    orderBook.add(o);
+//    return true;
+//  }
 
   public Boolean isValidDate(LocalDate date) {
     if (this.orderBook.isEmpty()) {
