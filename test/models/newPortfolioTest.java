@@ -124,4 +124,29 @@ public class newPortfolioTest {
     assertEquals(vals, p1.getValue("2022-07-18"));
 
   }
+
+  @Test
+  public void testGetCostBasis() {
+    HashMap<String, Integer> stocks1 = new HashMap<>();
+    stocks1.put("AAPL", 1);
+    HashMap<String, Integer> stocks2 = new HashMap<>();
+    stocks2.put("GOOG", 1);
+    HashMap<String, Integer> stocks3 = new HashMap<>();
+    stocks3.put("GOOG", 1);
+    Order o1 = new Order(Action.BUY, LocalDate.of(2022, 10, 07), 10.00f);
+    o1.addStocks(stocks1);
+    Order o2 = new Order(Action.BUY, LocalDate.of(2022, 10, 13), 20.00f);
+    o2.addStocks(stocks2);
+    Order o3 = new Order(Action.SELL, LocalDate.of(2022, 10, 17), 10.00f);
+    o3.addStocks(stocks3);
+    newPortfolio port = new newPortfolio("test1");
+    port.placeOrder(o1); //Buy 1 AAPL on 7th October - 140.09
+    port.placeOrder(o2); //Buy 1 GOOG on 13th October - 99.71
+    port.placeOrder(o3);//Sell 1 GOOG on 17th October
+
+    assertEquals(0.00f, port.getCostBasis(LocalDate.parse("2022-09-01")), 0.01);
+    assertEquals(150.09f, port.getCostBasis(LocalDate.parse("2022-10-07")), 0.01);
+    assertEquals((150.09f + 99.71 + 20), port.getCostBasis(LocalDate.parse("2022-10-13")), 0.01);
+    assertEquals((150.09f + 99.71 + 20 + 10), port.getCostBasis(LocalDate.parse("2022-10-18")), 0.01);
+  }
 }

@@ -37,7 +37,7 @@ class User {
    *
    * @param portfolio Portfolio to add.
    */
-  public void addPortfolio(Portfolio portfolio) {
+  public void addPortfolio(PortfolioInstanceModel portfolio) {
     if (portfolio == null) {
       throw new IllegalArgumentException("Null portfolio not allowed!");
     }

@@ -31,7 +31,7 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   @Override
   public void addStock(Stock stock, int quantity) {
-
+    return;
   }
 
   @Override
@@ -76,11 +76,18 @@ public class newPortfolio implements PortfolioInstanceModel {
   public float getCostBasis(LocalDate date) {
     ArrayList<Order> ordBook = this.getOrderBookOnDate(date);
     float costBasis = 0.00f;
-    for(int i = 0; i < ordBook.size(); i++) {
+    for (int i = 0; i < ordBook.size(); i++) {
       costBasis += ordBook.get(i).getCommission();
-
+      if (ordBook.get(i).getAction() == Action.BUY) {
+        for (Map.Entry<String, Integer> stock : ordBook.get(i).getStocks().entrySet()) {
+          if (!(this.stocks.containsKey(stock.getKey()))) {
+            this.stocks.put(stock.getKey(), new Stock(stock.getKey()));
+          }
+          //The cost of the stock on the purchase date.
+          costBasis += (stock.getValue() * this.stocks.get(stock.getKey()).getPriceOnDate(ordBook.get(i).getDate().toString()));
+        }
+      }
     }
-
     return costBasis;
   }
 
@@ -169,8 +176,13 @@ public class newPortfolio implements PortfolioInstanceModel {
 
   @Override
   public float getTotalComp(String date) {
+    return 0;
+  }
+
+
+  public Float getTotalValue(HashMap<String, Float> comp) {
     float total = 0.00f;
-    for (Map.Entry<String, Float> entry : this.getValue(date).entrySet()) {
+    for (Map.Entry<String, Float> entry : comp.entrySet()) {
       total += entry.getValue();
     }
     return total;

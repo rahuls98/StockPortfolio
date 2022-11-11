@@ -37,9 +37,14 @@ public class PortfolioModelImpl implements PortfolioModel {
     tickerSet = model.getValidTickers();
   }
 
+  //
+//  @Override
+//  public void addPortfolio(String portfolioName) {
+//    this.user.addPortfolio(new Portfolio(portfolioName));
+//  }
   @Override
   public void addPortfolio(String portfolioName) {
-    this.user.addPortfolio(new Portfolio(portfolioName));
+    this.user.addPortfolio(new newPortfolio(portfolioName));
   }
 
   @Override
@@ -59,7 +64,8 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   @Override
   public Float getPortfolioTotal(String portfolioName, String date) {
-    return this.user.getPortfolios().get(portfolioName).getTotalComp(date);
+    return this.user.getPortfolios().get(portfolioName).getTotalValue(
+            this.user.getPortfolios().get(portfolioName).getValue(date));
   }
 
   @Override
@@ -132,6 +138,10 @@ public class PortfolioModelImpl implements PortfolioModel {
   public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
     Stock stock = new Stock(stockTicker);
     this.getPortfolio(portfolioName).addStock(stock, stockQuantity);
+  }
+
+  public void addOrder(String portfolioName, Order o) {
+    this.user.getPortfolios().get(portfolioName).placeOrder(o);
   }
 
   @Override

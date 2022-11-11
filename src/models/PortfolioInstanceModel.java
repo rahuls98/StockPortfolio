@@ -69,4 +69,6 @@ public interface PortfolioInstanceModel {
   public HashSet<String> getStockNames();
 
   public Boolean placeOrder(Order o);
+
+  public Float getTotalValue(HashMap<String, Float> values);
 }

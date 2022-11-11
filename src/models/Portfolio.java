@@ -141,4 +141,9 @@ class Portfolio implements PortfolioInstanceModel {
   public Boolean placeOrder(Order o) {
     return null;
   }
+
+  @Override
+  public Float getTotalValue(HashMap<String, Float> values) {
+    return null;
+  }
 }
