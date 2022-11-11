@@ -67,4 +67,6 @@ public interface PortfolioInstanceModel {
    * @return Tickers of all stocks in portfolio.
    */
   public HashSet<String> getStockNames();
+
+  public Boolean placeOrder(Order o);
 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -46,9 +47,18 @@ public class StorageModelLocalImplTest {
 
   @Test
   public void testRead() {
-    User user = localStorage.readUser("Test 2");
-    HashMap<String, Portfolio> portfolios = user.getPortfolios();
-    assertEquals(2, portfolios.size());
+    User user = localStorage.readUser("main");
+    HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
+    /*
+    for (Map.Entry<String, PortfolioInstanceModel> portfolioEntry: portfolios.entrySet()) {
+      System.out.println(portfolioEntry.getKey());
+      HashMap<String, Float> values = portfolioEntry.getValue().getValue("2022-10-05");
+      for (Map.Entry<String, Float> valueEntry: values.entrySet()) {
+        System.out.println(valueEntry.getKey() + " " + valueEntry.getValue());
+      }
+    }
+    */
+    // assertEquals(2, portfolios.size());
   }
 
   @Test
@@ -73,7 +83,7 @@ public class StorageModelLocalImplTest {
     user.addPortfolio(testPortfolio2);
     localStorage.writeUser(user);
     localStorage.readUser("Test 2");
-    HashMap<String, Portfolio> portfolios = user.getPortfolios();
+    HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
     assertEquals(2, portfolios.size());
   }
 }

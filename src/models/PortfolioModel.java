@@ -21,7 +21,7 @@ public interface PortfolioModel {
    * @param portfolioName Name of the portfolio to retrieve.
    * @return Portfolio object with all of its stocks and quantities.
    */
-  Portfolio getPortfolio(String portfolioName);
+  PortfolioInstanceModel getPortfolio(String portfolioName);
 
   /**
    * Retrieves the names of all portfolios of the current user.

@@ -46,7 +46,7 @@ public class UserTest {
 
   @Test
   public void testGetPortfolios() {
-    HashMap<String, Portfolio> portfolios = user.getPortfolios();
+    HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
     assertEquals(0, portfolios.size());
   }
 
@@ -54,7 +54,7 @@ public class UserTest {
   public void testAddPortfolio() {
     Portfolio portfolio = new Portfolio("portfolio");
     user.addPortfolio(portfolio);
-    HashMap<String, Portfolio> portfolios = user.getPortfolios();
+    HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
     assertEquals(1, portfolios.entrySet().size());
     assertTrue(portfolios.containsKey("portfolio"));
   }
