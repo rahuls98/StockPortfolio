@@ -35,7 +35,7 @@ public class newPortfolio implements PortfolioInstanceModel {
   }
 
   public Boolean placeOrder(Order o) {
-    if(o.getAction() == Action.BUY) {
+    if (o.getAction() == Action.BUY) {
       orderBook.add(o);
       return true;
     } else {
@@ -71,6 +71,17 @@ public class newPortfolio implements PortfolioInstanceModel {
 //    orderBook.add(o);
 //    return true;
 //  }
+
+  public float getCostBasis(LocalDate date) {
+    ArrayList<Order> ordBook = this.getOrderBookOnDate(date);
+    float costBasis = 0.00f;
+    for(int i = 0; i < ordBook.size(); i++) {
+      costBasis += ordBook.get(i).getCommission();
+
+    }
+
+    return costBasis;
+  }
 
   public Boolean isValidDate(LocalDate date) {
     if (this.orderBook.isEmpty()) {
@@ -134,15 +145,16 @@ public class newPortfolio implements PortfolioInstanceModel {
     }
     return composition;
   }
+
   @Override
   public HashMap<String, Float> getValue(String date) {
     HashMap<String, Float> values = new HashMap<>();
     HashMap<String, Integer> comp = this.getStockCompositionOnDate(LocalDate.parse(date));
-    for(Map.Entry<String, Integer> entry: comp.entrySet()) {
-      if (!(values.containsKey(entry.getKey()))){
+    for (Map.Entry<String, Integer> entry : comp.entrySet()) {
+      if (!(values.containsKey(entry.getKey()))) {
         values.put(entry.getKey(), 0f);
       }
-      if(!(this.stocks.containsKey(entry.getKey()))) {
+      if (!(this.stocks.containsKey(entry.getKey()))) {
         this.stocks.put(entry.getKey(), new Stock(entry.getKey()));
       }
       values.put(entry.getKey(),
