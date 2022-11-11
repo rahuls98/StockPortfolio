@@ -123,11 +123,11 @@ class StorageModelLocalImpl implements StorageModel {
             Node orderNode = orderList.item(k);
             Element orderElement = (Element) orderNode;
             String action = orderElement.getAttribute("action");
-            Action orderAction = (action == "BUY") ? Action.BUY : Action.SELL;
+            Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
             String date = orderElement.getAttribute("date");
             float commission = Float.parseFloat(orderElement.getAttribute("commission"));
             Order order = new Order(orderAction, LocalDate.parse(date), commission);
-            NodeList stockList = portfolioElement.getElementsByTagName("stock");
+            NodeList stockList = orderElement.getElementsByTagName("stock");
             HashMap<String, Integer> stocks = new HashMap<>();
             for (int l = 0; l < stockList.getLength(); l++) {
               Node stockNode = stockList.item(l);
@@ -136,7 +136,9 @@ class StorageModelLocalImpl implements StorageModel {
                       Integer.parseInt(stockElement.getAttribute("quantity")));
             }
             order.addStocks(stocks);
-            portfolio.placeOrder(order);
+            if (!portfolio.placeOrder(order)) {
+              throw new RuntimeException("Invalid order book");
+            }
           }
           user.addNewPortfolio(portfolio);
         }

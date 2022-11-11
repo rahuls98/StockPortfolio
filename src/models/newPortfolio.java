@@ -129,7 +129,8 @@ public class newPortfolio implements PortfolioInstanceModel {
           if (!(composition.containsKey(entry.getKey()))) {
             composition.put(entry.getKey(), 0);
           }
-          composition.put(entry.getKey(), composition.get(entry.getKey()) + 1);
+//          composition.put(entry.getKey(), composition.get(entry.getKey()) + 1);
+          composition.put(entry.getKey(), composition.get(entry.getKey()) + entry.getValue());
         }
       }
     }
@@ -137,8 +138,8 @@ public class newPortfolio implements PortfolioInstanceModel {
     for (int i = 0; i < orders.size(); i++) {
       if (orders.get(i).getAction() == Action.SELL) {
         for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
-          composition.put(entry.getKey(), composition.get(entry.getKey()) - 1);
-          if (composition.get(entry.getKey()) == 0) {
+          composition.put(entry.getKey(), composition.get(entry.getKey()) - entry.getValue());
+          if (composition.get(entry.getKey()) <= 0) {
             composition.remove(entry.getKey());
           }
         }
