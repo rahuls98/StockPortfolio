@@ -53,6 +53,28 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
+  public void addOrderToPortfolio(String portfolio, Order o) {
+    this.user.getPortfolios().get(portfolio).placeOrder(o);
+  }
+
+  @Override
+  public Float getCostBasis(String portfolioName, String date) {
+    return this.getPortfolio(portfolioName).getCostBasis(LocalDate.parse(date));
+  }
+
+  @Override
+  public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
+    Order o;
+    if (action.equals("BUY")) {
+      o = new Order(Action.BUY, LocalDate.parse(date), c);
+    } else {
+      o = new Order(Action.SELL, LocalDate.parse(date), c);
+    }
+    o.addStocks(stocks);
+    return o;
+  }
+
+  @Override
   public String[] getPortfolios() {
     return this.user.getPortfolios().keySet().toArray(new String[0]);
   }
@@ -161,7 +183,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName) {
-    return this.getPortfolio(portfolioName).getStockQuantities();
+  public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date) {
+    return this.getPortfolio(portfolioName).getStockCompositionOnDate(LocalDate.parse(date));
   }
 }

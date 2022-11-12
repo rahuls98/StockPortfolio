@@ -36,4 +36,6 @@ public interface PortfolioView {
    * @param portfolioValues Contents of the portfolio with their values.
    */
   void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues);
+
+  void displayCostBasis(String name, String date, Float costBasis);
 }

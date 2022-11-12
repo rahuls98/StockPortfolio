@@ -1,5 +1,6 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,4 +72,6 @@ public interface PortfolioInstanceModel {
   public Boolean placeOrder(Order o);
 
   public Float getTotalValue(HashMap<String, Float> values);
+  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d);
+  public float getCostBasis(LocalDate date);
 }

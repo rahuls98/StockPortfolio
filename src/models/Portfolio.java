@@ -1,5 +1,6 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -145,5 +146,15 @@ class Portfolio implements PortfolioInstanceModel {
   @Override
   public Float getTotalValue(HashMap<String, Float> values) {
     return null;
+  }
+
+  @Override
+  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d) {
+    return null;
+  }
+
+  @Override
+  public float getCostBasis(LocalDate date) {
+    return 0;
   }
 }

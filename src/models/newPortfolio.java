@@ -54,7 +54,7 @@ public class newPortfolio implements PortfolioInstanceModel {
     }
   }
 
-//  public void buy(Order o) {
+  //  public void buy(Order o) {
 //    //TODO: Validations
 //    orderBook.add(o);
 //  }
@@ -72,7 +72,7 @@ public class newPortfolio implements PortfolioInstanceModel {
 //    orderBook.add(o);
 //    return true;
 //  }
-
+  @Override
   public float getCostBasis(LocalDate date) {
     ArrayList<Order> ordBook = this.getOrderBookOnDate(date);
     float costBasis = 0.00f;
@@ -113,6 +113,7 @@ public class newPortfolio implements PortfolioInstanceModel {
     return getComposition(this.orderBook);
   }
 
+  @Override
   public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d) {
     return getComposition(this.getOrderBookOnDate(d));
   }
