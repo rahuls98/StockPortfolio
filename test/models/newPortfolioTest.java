@@ -124,4 +124,31 @@ public class newPortfolioTest {
     assertEquals(vals, p1.getValue("2022-07-18"));
 
   }
+
+  @Test
+  public void testDateRangeSplitter() {
+    Order o1 = new Order(Action.BUY, LocalDate.of(2022, 10, 1), 1);
+    HashMap<String, Integer> stocks1 = new HashMap<>();
+    stocks1.put("GOOG", 10);
+    o1.addStocks(stocks1);
+    Order o2 = new Order(Action.BUY, LocalDate.of(2022, 10, 2), 1);
+    HashMap<String, Integer> stock2 = new HashMap<>();
+    stock2.put("AAPL", 60);
+    o2.addStocks(stock2);
+    Order o3 = new Order(Action.BUY, LocalDate.of(2022, 10, 15), 1);
+    HashMap<String, Integer> stocks3 = new HashMap<>();
+    stocks3.put("AAPL", 23);
+    o3.addStocks(stocks3);
+    Order o4 = new Order(Action.BUY, LocalDate.of(2022, 10, 18), 1);
+    HashMap<String, Integer> stocks4 = new HashMap<>();
+    stocks4.put("AAPL", 123);
+    o4.addStocks(stocks4);
+    newPortfolio p1 = new newPortfolio("test1");
+    p1.placeOrder(o1);
+    p1.placeOrder(o2);
+    p1.placeOrder(o3);
+    p1.placeOrder(o4);
+
+    p1.dateRangeSplitter();
+  }
 }

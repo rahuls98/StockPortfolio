@@ -1,10 +1,14 @@
 package models;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class newPortfolio implements PortfolioInstanceModel {
   private String name;
@@ -184,5 +188,97 @@ public class newPortfolio implements PortfolioInstanceModel {
   @Override
   public String toString() {
     return this.name;
+  }
+
+  private static int findGCD(int a, int b){
+    if (b == 0)
+      return a;
+    return findGCD(b, a%b);
+  }
+
+  public void dateRangeSplitter() {
+    try {
+      LocalDate ld1 = LocalDate.of(2021, 10, 4);
+      LocalDate ld2 = LocalDate.of(2022, 11, 7);
+      long diff = (ld2.toEpochDay() - ld1.toEpochDay());
+      if (diff < 4) {
+        System.out.println("Error!");
+        return;
+      }
+      int interval = 4;
+      for (int k = 30; k >= 4; k--) {
+        if (diff % k == 0) {
+          interval = k;
+          break;
+        }
+      }
+      diff = diff / interval;
+      int i;
+      int j = 0;
+      LocalDate date = null;
+      ArrayList<Float> values = new ArrayList<>();
+      TreeMap<String, Float> dateMapper = new TreeMap<>();
+      for (i = 0; i < interval; i++) {
+        j = 0;
+        date = LocalDate.ofEpochDay(ld1.toEpochDay() + (diff * i));
+        if (date.isAfter(ld2)) {
+          break;
+        }
+        boolean flag = true;
+        while (true) {
+          try {
+            this.getValue(date.toString());
+            break;
+          } catch (NullPointerException e) {
+            j++;
+            date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + (diff * i));
+            if (date.isAfter(ld2)) {
+              flag = false;
+              break;
+            }
+          }
+        }
+        if (flag) {
+          HashMap<String, Float> hm = this.getValue(date.toString());
+          float total = 0;
+          for (Map.Entry<String, Float> mapEntry: hm.entrySet()) {
+            total += mapEntry.getValue();
+          }
+          values.add(total);
+          dateMapper.put(date.toString(), total);
+        } else {
+          break;
+        }
+      }
+      date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + (diff * i));
+      if (!date.isAfter(ld2)) {
+        HashMap<String, Float> hm = this.getValue(date.toString());
+        float total = 0;
+        for (Map.Entry<String, Float> mapEntry: hm.entrySet()) {
+          total += mapEntry.getValue();
+        }
+        values.add(total);
+        dateMapper.put(date.toString(), total);
+      }
+      float min = Integer.MAX_VALUE;
+      for (float val : values) {
+        if (val == 0) {
+          continue;
+        }
+        if (val < min) {
+          min = val;
+        }
+      }
+      System.out.println("Scale: * = $" + (int)min);
+      for (Map.Entry<String, Float> mapEntry : dateMapper.entrySet()) {
+        System.out.print(mapEntry.getKey() + ": ");
+        for (int b = 0; b < (int)(mapEntry.getValue() / min); b++) {
+          System.out.print("*");
+        }
+        System.out.println();
+      }
+    } catch (DateTimeException e) {
+      System.out.println(e.getMessage());
+    }
   }
 }
