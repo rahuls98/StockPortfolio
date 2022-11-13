@@ -149,7 +149,7 @@ public class newPortfolioTest {
     p1.placeOrder(o3);
     p1.placeOrder(o4);
 
-    p1.dateRangeSplitter();
+    //p1.dateRangeSplitter();
   }
 
   @Test

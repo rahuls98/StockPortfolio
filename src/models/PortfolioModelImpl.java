@@ -186,4 +186,9 @@ public class PortfolioModelImpl implements PortfolioModel {
   public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date) {
     return this.getPortfolio(portfolioName).getStockCompositionOnDate(LocalDate.parse(date));
   }
+
+  @Override
+  public void getPerformance(String portfolioName, String date1, String date2) {
+    this.getPortfolio(portfolioName).dateRangeSplitter(date1, date2);
+  }
 }

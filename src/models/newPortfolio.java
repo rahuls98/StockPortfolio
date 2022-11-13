@@ -209,10 +209,11 @@ public class newPortfolio implements PortfolioInstanceModel {
     return findGCD(b, a%b);
   }
 
-  public void dateRangeSplitter() {
+  @Override
+  public void dateRangeSplitter(String date1, String date2) {
     try {
-      LocalDate ld1 = LocalDate.of(2021, 10, 4);
-      LocalDate ld2 = LocalDate.of(2022, 11, 7);
+      LocalDate ld1 = LocalDate.parse(date1);
+      LocalDate ld2 = LocalDate.parse(date2);
       long diff = (ld2.toEpochDay() - ld1.toEpochDay());
       if (diff < 4) {
         System.out.println("Error!");
@@ -284,6 +285,8 @@ public class newPortfolio implements PortfolioInstanceModel {
       }
       System.out.println("Scale: * = $" + (int)min);
       for (Map.Entry<String, Float> mapEntry : dateMapper.entrySet()) {
+        // LocalDate ld = LocalDate.parse(mapEntry.getKey());
+        // System.out.print(ld.getMonth().toString().substring(0,3) + ", " + ld.getYear() + ": ");
         System.out.print(mapEntry.getKey() + ": ");
         for (int b = 0; b < (int)(mapEntry.getValue() / min); b++) {
           System.out.print("*");
@@ -293,5 +296,10 @@ public class newPortfolio implements PortfolioInstanceModel {
     } catch (DateTimeException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  @Override
+  public ArrayList<Order> getOrderBook() {
+    return this.orderBook;
   }
 }

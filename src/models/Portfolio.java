@@ -157,4 +157,10 @@ class Portfolio implements PortfolioInstanceModel {
   public float getCostBasis(LocalDate date) {
     return 0;
   }
+
+  @Override
+  public ArrayList<Order> getOrderBook() {return null;}
+
+  @Override
+  public void dateRangeSplitter(String date1, String date2) {}
 }

@@ -6,7 +6,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,14 +169,24 @@ class StorageModelLocalImpl implements StorageModel {
         Element portfolio = document.createElement("portfolio");
         portfolios.appendChild(portfolio);
         portfolio.setAttribute("title", portfoliosObj.getKey());
-        Element stocks = document.createElement("stocks");
-        portfolio.appendChild(stocks);
-        HashMap<Stock, Integer> portfolioStocks = portfoliosObj.getValue().getStocks();
-        for (Map.Entry<Stock, Integer> stocksObj : portfolioStocks.entrySet()) {
-          Element stock = document.createElement("stock");
-          stock.setAttribute("symbol", stocksObj.getKey().getTicker());
-          stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
-          stocks.appendChild(stock);
+        Element orders = document.createElement("orders");
+        portfolio.appendChild(orders);
+        ArrayList<Order> orderBook = portfoliosObj.getValue().getOrderBook();
+        for (Order orderObj: orderBook) {
+          Element order = document.createElement("order");
+          order.setAttribute("action", orderObj.getAction().name());
+          order.setAttribute("date", orderObj.getDate().toString());
+          order.setAttribute("commission", Float.toString(orderObj.getCommission()));
+          Element stocks = document.createElement("stocks");
+          order.appendChild(stocks);
+          HashMap<String, Integer> orderStocks = orderObj.getStocks();
+          for (Map.Entry<String, Integer> stocksObj : orderStocks.entrySet()) {
+            Element stock = document.createElement("stock");
+            stock.setAttribute("symbol", stocksObj.getKey());
+            stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
+            stocks.appendChild(stock);
+          }
+          orders.appendChild(order);
         }
       }
     }

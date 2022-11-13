@@ -136,4 +136,6 @@ public interface PortfolioModel {
   public void addOrderToPortfolio(String portfolio, Order o);
 
   public Float getCostBasis(String portfolioName, String date);
+
+  public void getPerformance(String portfolioName, String date1, String date2);
 }

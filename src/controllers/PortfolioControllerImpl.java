@@ -47,7 +47,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
     String[] actions = new String[]{"Create Order", "Get portfolio composition", "Get " +
-            "portfolio value", "Get Cost Basis", "Exit"};
+            "portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -71,6 +71,9 @@ public class PortfolioControllerImpl implements PortfolioController {
           //Get Cost Basis
           break;
         case 5:
+          this.getPerformance();
+          break;
+        case 6:
           return;
         default:
           this.output.print("\nInvalid choice, please try again!\n");
@@ -308,6 +311,15 @@ public class PortfolioControllerImpl implements PortfolioController {
 //    view.displayPortfolioComposition(portfolioName,
 //            this.model.getStockQuantitiesInPortfolio(portfolioName, date));
     view.displayCostBasis(portfolioName, date, model.getCostBasis(portfolioName, date));
+  }
+
+  private void getPerformance() {
+    String portfolioName = this.displayPortfoliosAndTakeUserInput(model.getPortfolios());
+    this.output.print("Enter lower date: ");
+    String d1 = this.getDateFromUser();
+    this.output.print("Enter upper date: ");
+    String d2 = this.getDateFromUser();
+    this.model.getPerformance(portfolioName, d1, d2);
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
