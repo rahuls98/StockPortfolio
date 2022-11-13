@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import models.PortfolioModel;
@@ -45,8 +46,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   @Override
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
-    String[] actions = new String[]{"Create portfolio", "Get portfolio composition", "Get " +
-            "portfolio value", "Exit"};
+    String[] actions = new String[]{"Create Order", "Get portfolio composition", "Get " +
+            "portfolio value", "Get Cost Basis", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -55,7 +56,9 @@ public class PortfolioControllerImpl implements PortfolioController {
       int choice = this.getIntegerFromUser();
       switch (choice) {
         case 1:
-          this.createPortfolio();
+//          this.createPortfolio();
+          this.createOrder();
+          //Make Transaction
           break;
         case 2:
           this.getComposition();
@@ -64,6 +67,10 @@ public class PortfolioControllerImpl implements PortfolioController {
           this.getPortfolioValue();
           break;
         case 4:
+          this.getCostBasis();
+          //Get Cost Basis
+          break;
+        case 5:
           return;
         default:
           this.output.print("\nInvalid choice, please try again!\n");
@@ -85,6 +92,46 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
     }
     return choice;
+  }
+
+  private Float getFloatFromUser() {
+    Float choice;
+    while (true) {
+      try {
+        choice = this.input.nextFloat();
+        break;
+      } catch (Exception e) {
+        //To Consume the new Line entered by user.
+        this.input.nextLine();
+        this.output.print("Please enter a valid float value: ");
+      }
+    }
+    return choice;
+  }
+
+  private void createOrder() {
+    this.output.println("Would you like to create Order for: ");
+    this.output.println("1. Existing Portfolio \n2.New Portfolio");
+    int n = this.getIntegerFromUser();
+    switch (n) {
+      case 1:
+        this.createForExistingPortfolio();
+        break;
+      case 2:
+        this.createPortfolio();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private void createForExistingPortfolio() {
+    String portfolioName = this.displayPortfoliosAndTakeUserInput(this.model.getPortfolios());
+    this.output.println("How many orders would you like to create ?");
+    int n = this.getIntegerFromUser();
+    for (int i = 0; i < n; i++) {
+      this.createOrder(portfolioName);
+    }
   }
 
   private void createPortfolio() {
@@ -111,24 +158,42 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
   }
 
-  private void createPortfolioManually() {
-    this.output.println();
-    this.output.print("Enter portfolio name: ");
-    String portfolioName = this.input.next();
-    while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
-      this.output.print("This portfolio already exists, please enter another name: ");
-      portfolioName = this.input.next();
+  private void createOrder(String portfolioName) {
+    String action = "";
+    while (true) {
+      this.output.println("1. BUY\n 2.SELL");
+      Boolean exitLoop = false;
+      switch (this.getIntegerFromUser()) {
+        case 1:
+          action = "BUY";
+          exitLoop = true;
+          break;
+        case 2:
+          action = "SELL";
+          exitLoop = true;
+          break;
+        default:
+          this.output.println("Invalid Choice, Please enter 1 or 2");
+          break;
+      }
+      if (exitLoop) {
+        break;
+      }
     }
-    this.model.addPortfolio(portfolioName);
-    this.output.print("Enter number of stocks: ");
-    int n = this.getIntegerFromUser();
-    while (n <= 0) {
-      this.output.print("Please enter a valid number of stocks: ");
-      n = this.getIntegerFromUser();
+    this.output.println("Enter Date for order in YYYY-MM-DD Format");
+    String date = this.getDateFromUser();
+    this.output.println("Enter Commission for this transaction");
+    Float com = this.getFloatFromUser();
+    this.output.println("Enter number of transactions");
+    int numTransactions = this.getIntegerFromUser();
+    while (numTransactions <= 0) {
+      this.output.print("Please enter a valid number of Transactions: ");
+      numTransactions = this.getIntegerFromUser();
     }
     String stockName;
     int stockQuantity;
-    for (int i = 0; i < n; i++) {
+    HashMap<String, Integer> stocks = new HashMap<>();
+    for (int i = 0; i < numTransactions; i++) {
       this.output.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
       while (!(model.isValidTicker(stockName))) {
@@ -141,10 +206,28 @@ public class PortfolioControllerImpl implements PortfolioController {
         this.output.print("Please enter a valid quantity: ");
         stockQuantity = this.getIntegerFromUser();
       }
-      if (this.model.getStockTickersInPortfolio(portfolioName).contains(stockName)) {
-        i--;
-      }
-      this.model.addStock(portfolioName, stockName, stockQuantity);
+      stocks.put(stockName, stockQuantity);
+    }
+    model.addOrderToPortfolio(portfolioName, model.createOrder(date, action, com, stocks));
+  }
+
+  private void createPortfolioManually() {
+    this.output.println();
+    this.output.print("Enter portfolio name: ");
+    String portfolioName = this.input.next();
+    while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
+      this.output.print("This portfolio already exists, please enter another name: ");
+      portfolioName = this.input.next();
+    }
+    this.model.addPortfolio(portfolioName);
+    this.output.print("How many orders would you like to create ?");
+    int n = this.getIntegerFromUser();
+    while (n <= 0) {
+      this.output.print("Please enter a valid number of orders: ");
+      n = this.getIntegerFromUser();
+    }
+    for (int i = 0; i < n; i++) {
+      this.createOrder(portfolioName);
     }
     this.model.persist();
     this.output.print("\nNew portfolio (" + portfolioName + ") has been recorded!\n");
@@ -189,9 +272,11 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
     this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
+    this.output.println("Enter the date for which to display portfolio");
+    String date = this.getDateFromUser();
     this.output.println();
     view.displayPortfolioComposition(portfolioName,
-            this.model.getStockQuantitiesInPortfolio(portfolioName));
+            this.model.getStockQuantitiesInPortfolio(portfolioName, date));
   }
 
   private void getPortfolioValue() {
@@ -207,6 +292,22 @@ public class PortfolioControllerImpl implements PortfolioController {
     view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
     this.output.println("Total value of portfolio on is " + String.format("%.4f",
             model.getPortfolioTotal(portfolioName, date)));
+  }
+
+  private void getCostBasis() {
+    String[] portfolios = model.getPortfolios();
+    if (portfolios.length == 0) {
+      this.output.println("\nYou have no portfolios currently!");
+      return;
+    }
+    this.output.println("\nWhich portfolio would you like to explore?");
+    String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
+    this.output.println("Enter the date for which to display Cost Basis");
+    String date = this.getDateFromUser();
+    this.output.println();
+//    view.displayPortfolioComposition(portfolioName,
+//            this.model.getStockQuantitiesInPortfolio(portfolioName, date));
+    view.displayCostBasis(portfolioName, date, model.getCostBasis(portfolioName, date));
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
@@ -240,6 +341,28 @@ public class PortfolioControllerImpl implements PortfolioController {
         date = date.minusDays(2);
       }
       this.output.println("Calculating value for the previous Friday (" + date.toString() + ")");
+    }
+    return date.toString();
+  }
+
+  private String getDateFromUser() {
+    String strDate = this.input.next();
+    while ((!(this.model.isValidDate(strDate))) ||
+            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0) ||
+            (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)) {
+      this.output.print("Please enter a valid date: ");
+      strDate = this.input.next();
+    }
+    LocalDate date = LocalDate.parse(strDate);
+    DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK));
+    if ((day == DayOfWeek.SUNDAY) || (day == DayOfWeek.SATURDAY)) {
+      this.output.println("\nEntered day is a weekend.");
+      if (day == DayOfWeek.SATURDAY) {
+        date = date.minusDays(1);
+      } else {
+        date = date.minusDays(2);
+      }
+      this.output.println("Considering Date for the previous Friday (" + date.toString() + ")");
     }
     return date.toString();
   }

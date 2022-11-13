@@ -116,5 +116,24 @@ public interface PortfolioModel {
    * @param portfolioName Name of the portfolio.
    * @return Stocks and their quantities.
    */
-  HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName);
+  HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date);
+
+  /**
+   * Creates an Order
+   * @param date
+   * @param action
+   * @param c
+   * @param stocks
+   * @return
+   */
+  public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks);
+
+  /**
+   * Adds order to portfolio
+   * @param portfolio
+   * @param o
+   */
+  public void addOrderToPortfolio(String portfolio, Order o);
+
+  public Float getCostBasis(String portfolioName, String date);
 }

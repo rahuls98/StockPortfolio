@@ -37,14 +37,41 @@ public class PortfolioModelImpl implements PortfolioModel {
     tickerSet = model.getValidTickers();
   }
 
+  //
+//  @Override
+//  public void addPortfolio(String portfolioName) {
+//    this.user.addPortfolio(new Portfolio(portfolioName));
+//  }
   @Override
   public void addPortfolio(String portfolioName) {
-    this.user.addPortfolio(new Portfolio(portfolioName));
+    this.user.addPortfolio(new newPortfolio(portfolioName));
   }
 
   @Override
   public PortfolioInstanceModel getPortfolio(String portfolioName) {
     return this.user.getPortfolios().get(portfolioName);
+  }
+
+  @Override
+  public void addOrderToPortfolio(String portfolio, Order o) {
+    this.user.getPortfolios().get(portfolio).placeOrder(o);
+  }
+
+  @Override
+  public Float getCostBasis(String portfolioName, String date) {
+    return this.getPortfolio(portfolioName).getCostBasis(LocalDate.parse(date));
+  }
+
+  @Override
+  public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
+    Order o;
+    if (action.equals("BUY")) {
+      o = new Order(Action.BUY, LocalDate.parse(date), c);
+    } else {
+      o = new Order(Action.SELL, LocalDate.parse(date), c);
+    }
+    o.addStocks(stocks);
+    return o;
   }
 
   @Override
@@ -59,7 +86,8 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   @Override
   public Float getPortfolioTotal(String portfolioName, String date) {
-    return this.user.getPortfolios().get(portfolioName).getTotalComp(date);
+    return this.user.getPortfolios().get(portfolioName).getTotalValue(
+            this.user.getPortfolios().get(portfolioName).getValue(date));
   }
 
   @Override
@@ -134,6 +162,10 @@ public class PortfolioModelImpl implements PortfolioModel {
     this.getPortfolio(portfolioName).addStock(stock, stockQuantity);
   }
 
+  public void addOrder(String portfolioName, Order o) {
+    this.user.getPortfolios().get(portfolioName).placeOrder(o);
+  }
+
   @Override
   public void addPortfolioToUser(Portfolio portfolio, String portfolioName) {
     portfolio.setName(portfolioName);
@@ -151,7 +183,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName) {
-    return this.getPortfolio(portfolioName).getStockQuantities();
+  public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date) {
+    return this.getPortfolio(portfolioName).getStockCompositionOnDate(LocalDate.parse(date));
   }
 }

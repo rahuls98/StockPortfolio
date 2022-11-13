@@ -30,6 +30,7 @@ public class PortfolioModelImplTest {
 
   private PortfolioModel model;
 
+  //TODO: Test for parsing of invalid XML
   @Before
   public void setUp() {
     File file = new File("localStorage.xml");
