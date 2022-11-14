@@ -97,6 +97,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     return this.tickerSet.contains(ticker);
   }
 
+  /*
   @Override
   public Portfolio loadPortfolioFromXml(String pathToFile) {
     try {
@@ -107,7 +108,9 @@ public class PortfolioModelImpl implements PortfolioModel {
       NodeList nodeList = document.getElementsByTagName("portfolio");
       Node portfolioNode = nodeList.item(0);
       Element portfolioElement = (Element) portfolioNode;
-      Portfolio portfolioObj = new Portfolio(portfolioElement.getAttribute("title"));
+      String portfolioName = portfolioElement.getAttribute("title");
+      // String portfolioType = portfolioElement.getAttribute("type");
+      Portfolio portfolioObj = new Portfolio(portfolioName);
       NodeList stockList = portfolioElement.getElementsByTagName("stock");
       for (int j = 0; j < stockList.getLength(); j++) {
         Node stockNode = stockList.item(j);
@@ -128,6 +131,52 @@ public class PortfolioModelImpl implements PortfolioModel {
       }
       return portfolioObj;
     } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid XML!");
+    }
+  } */
+
+  @Override
+  public Portfolio loadPortfolioFromXml(String pathToFile) {
+    try {
+      int quantity;
+      FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
+      xmlFileHandler.readFile(pathToFile);
+      Document document = xmlFileHandler.getDocument();
+      NodeList nodeList = document.getElementsByTagName("portfolio");
+      Node portfolioNode = nodeList.item(0);
+      Element portfolioElement = (Element) portfolioNode;
+      String portfolioName = portfolioElement.getAttribute("title");
+      String portfolioType = portfolioElement.getAttribute("type");
+      newPortfolio portfolioObj = new newPortfolio(portfolioName);
+      NodeList orderList = portfolioElement.getElementsByTagName("order");
+      for (int k = 0; k < orderList.getLength(); k++) {
+        Node orderNode = orderList.item(k);
+        Element orderElement = (Element) orderNode;
+        String action = orderElement.getAttribute("action");
+        if (portfolioType.equals("inflexible") && action.equals("SELL")) {
+          throw new Exception("Invalid portfolio action!");
+        }
+        Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
+        String date = orderElement.getAttribute("date");
+        float commission = Float.parseFloat(orderElement.getAttribute("commission"));
+        Order order = new Order(orderAction, LocalDate.parse(date), commission);
+        NodeList stockList = orderElement.getElementsByTagName("stock");
+        HashMap<String, Integer> stocks = new HashMap<>();
+        for (int l = 0; l < stockList.getLength(); l++) {
+          Node stockNode = stockList.item(l);
+          Element stockElement = (Element) stockNode;
+          stocks.put(stockElement.getAttribute("symbol"),
+                  Integer.parseInt(stockElement.getAttribute("quantity")));
+        }
+        order.addStocks(stocks);
+        if (!portfolioObj.placeOrder(order)) {
+          throw new RuntimeException("Invalid order book");
+        }
+      }
+      System.out.println(portfolioObj);
+      return null;
+    } catch (Exception e) {
+      System.out.println(e);
       throw new IllegalArgumentException("Invalid XML!");
     }
   }
