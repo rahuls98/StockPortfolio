@@ -274,6 +274,7 @@ public class newPortfolio implements PortfolioInstanceModel {
         values.add(total);
         dateMapper.put(date.toString(), total);
       }
+      //TODO: Fix this
       float min = Integer.MAX_VALUE;
       for (float val : values) {
         if (val == 0) {

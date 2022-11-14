@@ -42,11 +42,13 @@ public class PortfolioModelImpl implements PortfolioModel {
 //  public void addPortfolio(String portfolioName) {
 //    this.user.addPortfolio(new Portfolio(portfolioName));
 //  }
+  //TODO: It takes, type, Hashmap of stock & quantity.
   @Override
   public void addPortfolio(String portfolioName) {
     this.user.addPortfolio(new newPortfolio(portfolioName));
   }
 
+  //TODO:Get flexible portfolios
   @Override
   public PortfolioInstanceModel getPortfolio(String portfolioName) {
     return this.user.getPortfolios().get(portfolioName);
@@ -155,7 +157,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     }
     return true;
   }
-
+  //TODO: remove old functions
   @Override
   public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
     Stock stock = new Stock(stockTicker);
