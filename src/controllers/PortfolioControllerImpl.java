@@ -114,7 +114,7 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private void createOrder() {
     this.output.println("Would you like to create Order for: ");
-    this.output.println("1. Existing Portfolio \n2.New Portfolio");
+    this.output.println("1. Existing Portfolio \n2. New Portfolio");
     int n = this.getIntegerFromUser();
     switch (n) {
       case 1:
@@ -219,8 +219,57 @@ public class PortfolioControllerImpl implements PortfolioController {
     this.output.println("Would you like to create:");
     this.output.println("1. Flexible Portfolio\n2. Inflexible Portfolio");
     int ch = this.getIntegerFromUser();
-
+    switch (ch) {
+      case 1:
+        this.createFlexiblePortfolioManually();
+        break;
+      case 2:
+        this.createInflexiblePortfolioManually();
+      default:
+        break;
+    }
   }
+
+  private void createInflexiblePortfolioManually() {
+    this.output.println();
+    this.output.print("Enter portfolio name: ");
+    String portfolioName = this.input.next();
+    while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
+      this.output.print("This portfolio already exists, please enter another name: ");
+      portfolioName = this.input.next();
+    }
+    this.output.print("Enter number of stocks: ");
+    int n = this.getIntegerFromUser();
+    while (n <= 0) {
+      this.output.print("Please enter a valid number of stocks: ");
+      n = this.getIntegerFromUser();
+    }
+    HashMap<String, Integer> stocks = new HashMap<>();
+    String stockName;
+    int stockQuantity;
+    for (int i = 0; i < n; i++) {
+      this.output.print("Stock " + (i + 1) + " ticker: ");
+      stockName = this.input.next();
+      while (!(model.isValidTicker(stockName))) {
+        this.output.print("Please enter a valid ticker name: ");
+        stockName = this.input.next();
+      }
+      this.output.print("Quantity : ");
+      stockQuantity = this.getIntegerFromUser();
+      while (stockQuantity <= 0) {
+        this.output.print("Please enter a valid quantity: ");
+        stockQuantity = this.getIntegerFromUser();
+      }
+      if (stocks.containsKey(stockName)) {
+        i--;
+      }
+      stocks.put(stockName, stockQuantity);
+    }
+    this.model.addInflexiblePortfolio(portfolioName, stocks);
+    this.model.persist();
+    this.output.print("\nNew portfolio (" + portfolioName + ") has been recorded!\n");
+  }
+
   private void createFlexiblePortfolioManually() {
     this.output.println();
     this.output.print("Enter portfolio name: ");
@@ -229,7 +278,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.print("This portfolio already exists, please enter another name: ");
       portfolioName = this.input.next();
     }
-    this.model.addPortfolio(portfolioName);
+    this.model.addFlexiblePortfolio(portfolioName);
     this.output.print("How many orders would you like to create ?");
     int n = this.getIntegerFromUser();
     while (n <= 0) {

@@ -15,6 +15,8 @@ public interface PortfolioModel {
    */
   void addPortfolio(String portfolioName);
 
+  void addPortfolioToUser(Portfolio portfolio, String portfolioName);
+
   //
 //  @Override
 //  public void addPortfolio(String portfolioName) {
@@ -71,6 +73,13 @@ public interface PortfolioModel {
    */
   Boolean isValidTicker(String ticker);
 
+  /**
+   * Loads a user portfolio from a given portfolio XML file.
+   *
+   * @param pathToXml Path to the XML file containing the portfolio information.
+   * @return Loaded portfolio and its contents.
+   */
+  Portfolio loadPortfolioFromXml(String pathToXml);
 
   /**
    * Loads the name of a portfolio from a given portfolio XML file.

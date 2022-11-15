@@ -49,15 +49,15 @@ public class UserTest {
     HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
     assertEquals(0, portfolios.size());
   }
-
-  @Test
-  public void testAddPortfolio() {
-    Portfolio_old portfolioOld = new Portfolio_old("portfolio");
-    user.addPortfolio(portfolioOld);
-    HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
-    assertEquals(1, portfolios.entrySet().size());
-    assertTrue(portfolios.containsKey("portfolio"));
-  }
+//
+//  @Test
+//  public void testAddPortfolio() {
+//    Portfolio_old portfolioOld = new Portfolio_old("portfolio");
+//    user.addPortfolio(portfolioOld);
+//    HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
+//    assertEquals(1, portfolios.entrySet().size());
+//    assertTrue(portfolios.containsKey("portfolio"));
+//  }
 
   @Test
   public void testAddPortfolioWithInvalidInput() {

@@ -44,7 +44,11 @@ public class PortfolioModelImpl implements PortfolioModel {
   public void addPortfolio(String portfolioName) {
     return;
   }
-
+  @Override
+  public void addPortfolioToUser(Portfolio portfolio, String portfolioName) {
+    portfolio.setName(portfolioName);
+    this.user.addPortfolio(portfolio);
+  }
   @Override
   public void addFlexiblePortfolio(String portfolioName) {
     this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.FLEXIBLE, null));
