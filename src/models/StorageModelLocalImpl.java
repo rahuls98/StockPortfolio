@@ -9,6 +9,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -116,27 +117,60 @@ class StorageModelLocalImpl implements StorageModel {
         for (int j = 0; j < portfolioList.getLength(); j++) {
           Node portfolioNode = portfolioList.item(j);
           Element portfolioElement = (Element) portfolioNode;
-          PortfolioInstanceModel portfolio = new Portfolio(portfolioElement.getAttribute("title"));
+          String portfolioName = portfolioElement.getAttribute("title");
+          String type = portfolioElement.getAttribute("type");
+          PortfolioType portfolioType = (type.equals("inflexible")) ? PortfolioType.INFLEXIBLE :
+                  PortfolioType.FLEXIBLE;
+          List<Order> portfolioOrders = new ArrayList<>();
+          Portfolio portfolio = null;
           NodeList orderList = portfolioElement.getElementsByTagName("order");
-          for (int k = 0; k < orderList.getLength(); k++) {
-            Node orderNode = orderList.item(k);
-            Element orderElement = (Element) orderNode;
-            String action = orderElement.getAttribute("action");
-            Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
-            String date = orderElement.getAttribute("date");
-            float commission = Float.parseFloat(orderElement.getAttribute("commission"));
-            Order order = new Order(orderAction, LocalDate.parse(date), commission);
-            NodeList stockList = orderElement.getElementsByTagName("stock");
-            HashMap<String, Integer> stocks = new HashMap<>();
-            for (int l = 0; l < stockList.getLength(); l++) {
-              Node stockNode = stockList.item(l);
-              Element stockElement = (Element) stockNode;
-              stocks.put(stockElement.getAttribute("symbol"),
-                      Integer.parseInt(stockElement.getAttribute("quantity")));
+          if (type.equals("inflexible")) {
+            for (int k = 0; k < orderList.getLength(); k++) {
+              Node orderNode = orderList.item(k);
+              Element orderElement = (Element) orderNode;
+              String action = orderElement.getAttribute("action");
+              if (action.equals("SELL")) {
+                throw new Exception("Invalid portfolio action!");
+              }
+              Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
+              String date = orderElement.getAttribute("date");
+              float commission = Float.parseFloat(orderElement.getAttribute("commission"));
+              Order order = new Order(orderAction, LocalDate.parse(date), commission);
+              NodeList stockList = orderElement.getElementsByTagName("stock");
+              HashMap<String, Integer> stocks = new HashMap<>();
+              for (int l = 0; l < stockList.getLength(); l++) {
+                Node stockNode = stockList.item(l);
+                Element stockElement = (Element) stockNode;
+                stocks.put(stockElement.getAttribute("symbol"),
+                        Integer.parseInt(stockElement.getAttribute("quantity")));
+              }
+              order.addStocks(stocks);
+              portfolioOrders.add(order);
             }
-            order.addStocks(stocks);
-            if (!portfolio.placeOrder(order)) {
-              throw new RuntimeException("Invalid order book");
+            portfolio = new Portfolio(portfolioName, portfolioType, portfolioOrders);
+          } else if (type.equals("flexible")) {
+            portfolio = new Portfolio(portfolioName, portfolioType, portfolioOrders);
+            for (int k = 0; k < orderList.getLength(); k++) {
+              Node orderNode = orderList.item(k);
+              Element orderElement = (Element) orderNode;
+              String action = orderElement.getAttribute("action");
+              Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
+              String date = orderElement.getAttribute("date");
+              float commission = Float.parseFloat(orderElement.getAttribute("commission"));
+              Order order = new Order(orderAction, LocalDate.parse(date), commission);
+              NodeList stockList = orderElement.getElementsByTagName("stock");
+              HashMap<String, Integer> stocks = new HashMap<>();
+              for (int l = 0; l < stockList.getLength(); l++) {
+                Node stockNode = stockList.item(l);
+                Element stockElement = (Element) stockNode;
+                stocks.put(stockElement.getAttribute("symbol"),
+                        Integer.parseInt(stockElement.getAttribute("quantity")));
+              }
+              order.addStocks(stocks);
+              portfolioOrders.add(order);
+              if (!portfolio.placeOrder(order)) {
+                throw new RuntimeException("Invalid order book");
+              }
             }
           }
           user.addNewPortfolio(portfolio);
@@ -169,6 +203,7 @@ class StorageModelLocalImpl implements StorageModel {
         Element portfolio = document.createElement("portfolio");
         portfolios.appendChild(portfolio);
         portfolio.setAttribute("title", portfoliosObj.getKey());
+        portfolio.setAttribute("type", portfoliosObj.getValue().getType().toString().toLowerCase());
         Element orders = document.createElement("orders");
         portfolio.appendChild(orders);
         ArrayList<Order> orderBook = portfoliosObj.getValue().getOrderBook();
