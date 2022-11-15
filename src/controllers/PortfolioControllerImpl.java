@@ -216,6 +216,13 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private void createPortfolioManually() {
     this.output.println();
+    this.output.println("Would you like to create:");
+    this.output.println("1. Flexible Portfolio\n2. Inflexible Portfolio");
+    int ch = this.getIntegerFromUser();
+
+  }
+  private void createFlexiblePortfolioManually() {
+    this.output.println();
     this.output.print("Enter portfolio name: ");
     String portfolioName = this.input.next();
     while (Arrays.stream(this.model.getPortfolios()).anyMatch(portfolioName::equals)) {
