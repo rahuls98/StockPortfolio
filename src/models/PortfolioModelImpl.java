@@ -51,7 +51,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
   @Override
   public void addFlexiblePortfolio(String portfolioName) {
-    this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.FLEXIBLE, null));
+    this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.FLEXIBLE, new ArrayList<>()));
   }
 
   //TODO: It takes, type, Hashmap of stock & quantity.
@@ -61,7 +61,7 @@ public class PortfolioModelImpl implements PortfolioModel {
     for (Map.Entry<String, Integer> stock : stocks.entrySet()) {
       initialOrders.add(new Order(Action.BUY, LocalDate.of(2011, 03, 02), 0.00f));
     }
-    this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.FLEXIBLE, initialOrders));
+    this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.INFLEXIBLE, initialOrders));
   }
 
   @Override
