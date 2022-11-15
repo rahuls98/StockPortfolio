@@ -129,12 +129,13 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createForExistingPortfolio() {
-    String portfolioName = this.displayPortfoliosAndTakeUserInput(this.model.getPortfolios());
+    String portfolioName = this.displayPortfoliosAndTakeUserInput(this.model.getFlexiblePortfolios());
     this.output.println("How many orders would you like to create ?");
     int n = this.getIntegerFromUser();
     for (int i = 0; i < n; i++) {
       this.createOrder(portfolioName);
     }
+    this.model.persist();
   }
 
   private void createPortfolio() {
