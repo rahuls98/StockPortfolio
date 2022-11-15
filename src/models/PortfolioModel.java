@@ -15,6 +15,17 @@ public interface PortfolioModel {
    */
   void addPortfolio(String portfolioName);
 
+  //
+//  @Override
+//  public void addPortfolio(String portfolioName) {
+//    this.user.addPortfolio(new Portfolio(portfolioName));
+//  }
+  //TODO: It takes, type, Hashmap of stock & quantity.
+  void addFlexiblePortfolio(String portfolioName);
+
+  //TODO: It takes, type, Hashmap of stock & quantity.
+  void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks);
+
   /**
    * Finds and retrieves a portfolio of the current user, searching by the portfolio name.
    *
@@ -29,6 +40,10 @@ public interface PortfolioModel {
    * @return Names of all portfolios.
    */
   String[] getPortfolios();
+
+  String[] getFlexiblePortfolios();
+
+  String[] getInflexiblePortfolios();
 
   /**
    * Retrieves all the values of all stocks in a portfolio on a particular date.
@@ -62,7 +77,7 @@ public interface PortfolioModel {
    * @param pathToXml Path to the XML file containing the portfolio information.
    * @return Loaded portfolio and its contents.
    */
-  Portfolio loadPortfolioFromXml(String pathToXml);
+  Portfolio_old loadPortfolioFromXml(String pathToXml);
 
   /**
    * Loads the name of a portfolio from a given portfolio XML file.
@@ -92,10 +107,10 @@ public interface PortfolioModel {
   /**
    * Adds a portfolio to the current user.
    *
-   * @param portfolio     Portfolio to add.
+   * @param portfolioOld     Portfolio to add.
    * @param portfolioName Name of the portfolio to add.
    */
-  void addPortfolioToUser(Portfolio portfolio, String portfolioName);
+  void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName);
 
   /**
    * Persists data to storage.

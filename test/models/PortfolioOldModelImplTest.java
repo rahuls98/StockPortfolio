@@ -26,7 +26,7 @@ import static org.junit.Assert.assertFalse;
  * Test suite for the PortfolioModelImpl.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class PortfolioModelImplTest {
+public class PortfolioOldModelImplTest {
 
   private PortfolioModel model;
 

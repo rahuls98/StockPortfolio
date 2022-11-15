@@ -1,166 +1,313 @@
 package models;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-/**
- * Represents a Portfolio having multiple stocks and their quantities.
- */
-class Portfolio implements PortfolioInstanceModel {
-
+public class Portfolio implements PortfolioInstanceModel {
   private String name;
-  private final HashMap<Stock, Integer> stocks;
 
-  /**
-   * Returns an object of Portfolio.
-   *
-   * @param name Name of the portfolio
-   */
-  public Portfolio(String name) throws IllegalArgumentException {
-    if (name == null || name.equals("")) {
-      throw new IllegalArgumentException("Portfolio name cannot be empty!");
-    }
+  private ArrayList<Order> orderBook;
+
+  private HashMap<String, Stock> stocks;
+
+  private PortfolioType type;
+
+  public Portfolio(String name, PortfolioType type, List<Order> initialOrders) {
     this.name = name;
+    this.type = type;
+    this.orderBook = new ArrayList<>();
+    this.orderBook.addAll(initialOrders);
     this.stocks = new HashMap<>();
   }
 
-  /**
-   * Retrieves the name of the portfolio.
-   *
-   * @return Portfolio name.
-   */
-  public String getName() {
-    return name;
+  @Override
+  public PortfolioType getType() {
+    return this.type;
   }
 
-  /**
-   * Sets the name of the portfolio.
-   *
-   * @param name Name to set.
-   */
+  @Override
+  public String getName() {
+    return this.name;
+  }
+
+  @Override
   public void setName(String name) {
     this.name = name;
   }
 
-  /**
-   * Adds a new stock and its quantity to the portfolio.
-   *
-   * @param stock    Stock to add.
-   * @param quantity Quantity of the stock.
-   */
+  @Override
   public void addStock(Stock stock, int quantity) {
-    if (stock == null) {
-      throw new IllegalArgumentException("Stock cannot be null!");
-    }
-    if (quantity < 0) {
-      throw new IllegalArgumentException("Quantity cannot be negative!");
-    }
-    stocks.put(stock, quantity);
+    return;
   }
 
-  /**
-   * Returns the contents of the portfolio.
-   *
-   * @return Portfolio contents.
-   */
-  public HashMap<Stock, Integer> getStocks() {
-    return stocks;
-  }
-
-  /**
-   * Returns all the stocks in the portfolio and their quantities.
-   *
-   * @return Portfolio stocks and quantities.
-   */
-  public HashMap<String, Integer> getStockQuantities() {
-    HashMap<String, Integer> map = new HashMap<>();
-    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
-      map.put(entry.getKey().getTicker(), entry.getValue());
+  @Override
+  public Boolean placeOrder(Order o) {
+    if (this.type == PortfolioType.INFLEXIBLE) {
+      return false;
     }
-    return map;
-  }
-
-  /**
-   * Retrieves the stocks of the portfolio and their values on a given date.
-   *
-   * @param date Date to retrieve values for.
-   * @return Stocks their values on the given date.
-   */
-  public HashMap<String, Float> getValue(String date) {
-    HashMap<String, Float> portfolioValueMap = new HashMap<>();
-    int count = 0;
-    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
-      count += 1;
-      Stock stock = entry.getKey();
-      int quantity = entry.getValue();
-      portfolioValueMap.put(stock.getTicker(), (stock.getPriceOnDate(date) * quantity));
-      if ((count % 5) == 0) {
-        try {
-          Thread.sleep(60000);
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
+    if (o.getAction() != Action.BUY) {
+      HashMap<String, Integer> composition = this.getStockQuantities();
+      for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
+        if (!(composition.containsKey(entry.getKey()))) {
+          return false;
+        }
+        if (composition.get(entry.getKey()) < entry.getValue()) {
+          return false;
         }
       }
     }
-    return portfolioValueMap;
+    orderBook.add(o);
+    return true;
+  }
+
+  //  public void buy(Order o) {
+//    //TODO: Validations
+//    orderBook.add(o);
+//  }
+//
+//  public Boolean sell(Order o) {
+//    HashMap<String, Integer> composition = this.getStockQuantities();
+//    for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
+//      if (!(composition.containsKey(entry.getKey()))) {
+//        return false;
+//      }
+//      if (composition.get(entry.getKey()) < entry.getValue()) {
+//        return false;
+//      }
+//    }
+//    orderBook.add(o);
+//    return true;
+//  }
+  @Override
+  public float getCostBasis(LocalDate date) {
+    ArrayList<Order> ordBook = this.getOrderBookOnDate(date);
+    float costBasis = 0.00f;
+    for (int i = 0; i < ordBook.size(); i++) {
+      costBasis += ordBook.get(i).getCommission();
+      if (ordBook.get(i).getAction() == Action.BUY) {
+        for (Map.Entry<String, Integer> stock : ordBook.get(i).getStocks().entrySet()) {
+          if (!(this.stocks.containsKey(stock.getKey()))) {
+            this.stocks.put(stock.getKey(), new Stock(stock.getKey()));
+          }
+          //The cost of the stock on the purchase date.
+          costBasis += (stock.getValue() * this.stocks.get(stock.getKey()).getPriceOnDate(ordBook.get(i).getDate().toString()));
+        }
+      }
+    }
+    return costBasis;
+  }
+
+  public Boolean isValidDate(LocalDate date) {
+    if (this.orderBook.isEmpty()) {
+      return true;
+    }
+    return (this.orderBook.get(this.orderBook.size() - 1).getDate().compareTo(date) <= 0);
+  }
+
+  @Override
+  public HashMap<Stock, Integer> getStocks() {
+    return null;
+  }
+
+  /**
+   * Returns the composition of the Portfolio
+   *
+   * @return composition of portfolio currently
+   */
+  @Override
+  public HashMap<String, Integer> getStockQuantities() {
+    return getComposition(this.orderBook);
+  }
+
+  @Override
+  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d) {
+    return getComposition(this.getOrderBookOnDate(d));
+  }
+
+  public ArrayList<Order> getOrderBookOnDate(LocalDate date) {
+    ArrayList<Order> ordBook = new ArrayList<>();
+    for (int i = 0; i < this.orderBook.size(); i++) {
+      if (date.compareTo(this.orderBook.get(i).getDate()) >= 0) {
+        ordBook.add(this.orderBook.get(i));
+      }
+    }
+    return ordBook;
+  }
+
+  public HashMap<String, Integer> getComposition(ArrayList<Order> orders) {
+    HashMap<String, Integer> composition = new HashMap<>();
+    //Add stocks
+    for (int i = 0; i < orders.size(); i++) {
+      if (orders.get(i).getAction() == Action.BUY) {
+        for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+          if (!(composition.containsKey(entry.getKey()))) {
+            composition.put(entry.getKey(), 0);
+          }
+          composition.put(entry.getKey(), composition.get(entry.getKey()) + entry.getValue());
+        }
+      }
+    }
+    //Subtract sell stocks
+    for (int i = 0; i < orders.size(); i++) {
+      if (orders.get(i).getAction() == Action.SELL) {
+        for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+          composition.put(entry.getKey(), composition.get(entry.getKey()) - entry.getValue());
+          if (composition.get(entry.getKey()) <= 0) {
+            composition.remove(entry.getKey());
+          }
+        }
+      }
+    }
+    return composition;
+  }
+
+  @Override
+  public HashMap<String, Float> getValue(String date) {
+    HashMap<String, Float> values = new HashMap<>();
+    HashMap<String, Integer> comp = this.getStockCompositionOnDate(LocalDate.parse(date));
+    for (Map.Entry<String, Integer> entry : comp.entrySet()) {
+      if (!(values.containsKey(entry.getKey()))) {
+        values.put(entry.getKey(), 0f);
+      }
+      if (!(this.stocks.containsKey(entry.getKey()))) {
+        this.stocks.put(entry.getKey(), new Stock(entry.getKey()));
+      }
+      values.put(entry.getKey(),
+              (values.get(entry.getKey()) +
+                      (entry.getValue() *
+                              this.stocks.get(entry.getKey()).getPriceOnDate(date))));
+    }
+    return values;
+  }
+
+  @Override
+  public float getTotalComp(String date) {
+    return 0;
   }
 
 
-  /**
-   * Retrieves the total value of the portfolio on a given date.
-   *
-   * @param date Date to retrieve total value for.
-   * @return Total value of the portfolio.
-   */
-  public float getTotalComp(String date) {
+  public Float getTotalValue(HashMap<String, Float> comp) {
     float total = 0.00f;
-    for (Map.Entry<String, Float> entry : this.getValue(date).entrySet()) {
+    for (Map.Entry<String, Float> entry : comp.entrySet()) {
       total += entry.getValue();
     }
     return total;
   }
 
-  /**
-   * Retrieves names of all stocks in the portfolio.
-   *
-   * @return Tickers of all stocks in portfolio.
-   */
+  @Override
   public HashSet<String> getStockNames() {
-    HashSet<String> map = new HashSet<>();
-    for (Map.Entry<Stock, Integer> entry : this.stocks.entrySet()) {
-      map.add(entry.getKey().getTicker());
+    return null;
+  }
+
+  @Override
+  public String toString() {
+    return this.name;
+  }
+
+  private static int findGCD(int a, int b) {
+    if (b == 0)
+      return a;
+    return findGCD(b, a % b);
+  }
+
+  @Override
+  public void dateRangeSplitter(String date1, String date2) {
+    try {
+      LocalDate ld1 = LocalDate.parse(date1);
+      LocalDate ld2 = LocalDate.parse(date2);
+      long diff = (ld2.toEpochDay() - ld1.toEpochDay());
+      if (diff < 4) {
+        System.out.println("Error!");
+        return;
+      }
+      int interval = 4;
+      for (int k = 30; k >= 4; k--) {
+        if (diff % k == 0) {
+          interval = k;
+          break;
+        }
+      }
+      diff = diff / interval;
+      int i;
+      int j = 0;
+      LocalDate date = null;
+      ArrayList<Float> values = new ArrayList<>();
+      TreeMap<String, Float> dateMapper = new TreeMap<>();
+      for (i = 0; i < interval; i++) {
+        j = 0;
+        date = LocalDate.ofEpochDay(ld1.toEpochDay() + (diff * i));
+        if (date.isAfter(ld2)) {
+          break;
+        }
+        boolean flag = true;
+        while (true) {
+          try {
+            this.getValue(date.toString());
+            break;
+          } catch (NullPointerException e) {
+            j++;
+            date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + (diff * i));
+            if (date.isAfter(ld2)) {
+              flag = false;
+              break;
+            }
+          }
+        }
+        if (flag) {
+          HashMap<String, Float> hm = this.getValue(date.toString());
+          float total = 0;
+          for (Map.Entry<String, Float> mapEntry : hm.entrySet()) {
+            total += mapEntry.getValue();
+          }
+          values.add(total);
+          dateMapper.put(date.toString(), total);
+        } else {
+          break;
+        }
+      }
+      date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + (diff * i));
+      if (!date.isAfter(ld2)) {
+        HashMap<String, Float> hm = this.getValue(date.toString());
+        float total = 0;
+        for (Map.Entry<String, Float> mapEntry : hm.entrySet()) {
+          total += mapEntry.getValue();
+        }
+        values.add(total);
+        dateMapper.put(date.toString(), total);
+      }
+      //TODO: Fix this
+      float min = Integer.MAX_VALUE;
+      for (float val : values) {
+        if (val == 0) {
+          continue;
+        }
+        if (val < min) {
+          min = val;
+        }
+      }
+      System.out.println("Scale: * = $" + (int) min);
+      for (Map.Entry<String, Float> mapEntry : dateMapper.entrySet()) {
+        // LocalDate ld = LocalDate.parse(mapEntry.getKey());
+        // System.out.print(ld.getMonth().toString().substring(0,3) + ", " + ld.getYear() + ": ");
+        System.out.print(mapEntry.getKey() + ": ");
+        for (int b = 0; b < (int) (mapEntry.getValue() / min); b++) {
+          System.out.print("*");
+        }
+        System.out.println();
+      }
+    } catch (DateTimeException e) {
+      System.out.println(e.getMessage());
     }
-    return map;
-  }
-
-  // TODO : handle later with a new interface that extends old one
-  @Override
-  public Boolean placeOrder(Order o) {
-    return null;
   }
 
   @Override
-  public Float getTotalValue(HashMap<String, Float> values) {
-    return null;
+  public ArrayList<Order> getOrderBook() {
+    return this.orderBook;
   }
-
-  @Override
-  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d) {
-    return null;
-  }
-
-  @Override
-  public float getCostBasis(LocalDate date) {
-    return 0;
-  }
-
-  @Override
-  public ArrayList<Order> getOrderBook() {return null;}
-
-  @Override
-  public void dateRangeSplitter(String date1, String date2) {}
 }

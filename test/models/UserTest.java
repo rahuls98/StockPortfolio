@@ -52,8 +52,8 @@ public class UserTest {
 
   @Test
   public void testAddPortfolio() {
-    Portfolio portfolio = new Portfolio("portfolio");
-    user.addPortfolio(portfolio);
+    Portfolio_old portfolioOld = new Portfolio_old("portfolio");
+    user.addPortfolio(portfolioOld);
     HashMap<String, PortfolioInstanceModel> portfolios = user.getPortfolios();
     assertEquals(1, portfolios.entrySet().size());
     assertTrue(portfolios.containsKey("portfolio"));

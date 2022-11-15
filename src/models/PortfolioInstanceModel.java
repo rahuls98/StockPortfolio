@@ -9,6 +9,8 @@ import java.util.Map;
 
 public interface PortfolioInstanceModel {
 
+  PortfolioType getType();
+
   /**
    * Retrieves the name of the portfolio.
    *

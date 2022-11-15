@@ -1,6 +1,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a User having a unique username and multiple portfolios.
@@ -58,5 +59,25 @@ class User {
    */
   public HashMap<String, PortfolioInstanceModel> getPortfolios() {
     return this.portfolios;
+  }
+
+  public HashMap<String, PortfolioInstanceModel> getFlexiblePortfolios() {
+    HashMap<String, PortfolioInstanceModel> flexiblePortfolios = new HashMap<>();
+    for (Map.Entry<String, PortfolioInstanceModel> portfolio : this.portfolios.entrySet()) {
+      if (portfolio.getValue().getType() == PortfolioType.FLEXIBLE) {
+        flexiblePortfolios.put(portfolio.getKey(), portfolio.getValue());
+      }
+    }
+    return flexiblePortfolios;
+  }
+
+  public HashMap<String, PortfolioInstanceModel> getInflexiblePortfolios() {
+    HashMap<String, PortfolioInstanceModel> inflexiblePortfolios = new HashMap<>();
+    for (Map.Entry<String, PortfolioInstanceModel> portfolio : this.portfolios.entrySet()) {
+      if (portfolio.getValue().getType() == PortfolioType.INFLEXIBLE) {
+        inflexiblePortfolios.put(portfolio.getKey(), portfolio.getValue());
+      }
+    }
+    return inflexiblePortfolios;
   }
 }
