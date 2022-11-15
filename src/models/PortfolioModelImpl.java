@@ -119,11 +119,6 @@ public class PortfolioModelImpl implements PortfolioModel {
     return this.tickerSet.contains(ticker);
   }
 
-  @Override
-  public Portfolio_old loadPortfolioFromXml(String pathToXml) {
-    return null;
-  }
-
 
 //
 //  @Override
@@ -246,11 +241,11 @@ public class PortfolioModelImpl implements PortfolioModel {
     this.user.getPortfolios().get(portfolioName).placeOrder(o);
   }
 
-  @Override
-  public void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName) {
-    portfolioOld.setName(portfolioName);
-    this.user.addPortfolio(portfolioOld);
-  }
+//  @Override
+//  public void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName) {
+//    portfolioOld.setName(portfolioName);
+//    this.user.addPortfolio(portfolioOld);
+//  }
 
   @Override
   public void persist() {

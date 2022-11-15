@@ -71,13 +71,6 @@ public interface PortfolioModel {
    */
   Boolean isValidTicker(String ticker);
 
-  /**
-   * Loads a user portfolio from a given portfolio XML file.
-   *
-   * @param pathToXml Path to the XML file containing the portfolio information.
-   * @return Loaded portfolio and its contents.
-   */
-  Portfolio_old loadPortfolioFromXml(String pathToXml);
 
   /**
    * Loads the name of a portfolio from a given portfolio XML file.
@@ -110,7 +103,7 @@ public interface PortfolioModel {
    * @param portfolioOld     Portfolio to add.
    * @param portfolioName Name of the portfolio to add.
    */
-  void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName);
+//  void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName);
 
   /**
    * Persists data to storage.
