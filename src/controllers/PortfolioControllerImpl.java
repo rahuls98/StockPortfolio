@@ -114,8 +114,12 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void createOrder() {
-    this.output.println("Would you like to create Order for: ");
-    this.output.println("1. Existing Portfolio \n2. New Portfolio");
+    String[] actions = new String[]{"Create an order in an existing portfolio", "Create a new " +
+            "portfolio and add orders", "Go back"};
+    this.output.println();
+    this.output.println("What would you like to do?");
+    this.view.displayActions(actions);
+    this.output.print("Select action: ");
     int n = this.getIntegerFromUser();
     switch (n) {
       case 1:
@@ -124,13 +128,21 @@ public class PortfolioControllerImpl implements PortfolioController {
       case 2:
         this.createPortfolio();
         break;
+      case 3:
+        return;
       default:
+        this.output.print("Invalid choice, please try again!\n");
         break;
     }
   }
 
   private void createForExistingPortfolio() {
-    String portfolioName = this.displayPortfoliosAndTakeUserInput(this.model.getFlexiblePortfolios());
+    String[] flexiblePortfolios = this.model.getFlexiblePortfolios();
+    if (flexiblePortfolios.length == 0) {
+      this.output.println("\nYou have no flexible portfolios currently!");
+      return;
+    }
+    String portfolioName = this.displayPortfoliosAndTakeUserInput(flexiblePortfolios);
     this.output.println("How many orders would you like to create ?");
     int n = this.getIntegerFromUser();
     for (int i = 0; i < n; i++) {
@@ -166,7 +178,10 @@ public class PortfolioControllerImpl implements PortfolioController {
   private void createOrder(String portfolioName) {
     String action = "";
     while (true) {
-      this.output.println("1. BUY\n 2.SELL");
+      String[] actions = new String[]{"BUY order", "SELL order"};
+      this.output.println("What type of order would you like to create?");
+      this.view.displayActions(actions);
+      this.output.print("Select action: ");
       Boolean exitLoop = false;
       switch (this.getIntegerFromUser()) {
         case 1:
@@ -178,21 +193,22 @@ public class PortfolioControllerImpl implements PortfolioController {
           exitLoop = true;
           break;
         default:
-          this.output.println("Invalid Choice, Please enter 1 or 2");
+          this.output.println("Invalid Choice, please enter 1 or 2");
           break;
       }
       if (exitLoop) {
         break;
       }
     }
-    this.output.println("Enter Date for order in YYYY-MM-DD Format");
+    // TODO : Change implementation, cause this will use previous date if input date is weekend.
+    this.output.print("Enter date for the order in YYYY-MM-DD format: ");
     String date = this.getDateFromUser();
-    this.output.println("Enter Commission for this transaction");
+    this.output.print("Enter commission for this transaction: ");
     Float com = this.getFloatFromUser();
-    this.output.println("Enter number of transactions");
+    this.output.print("Enter number of " + action + " transactions: ");
     int numTransactions = this.getIntegerFromUser();
     while (numTransactions <= 0) {
-      this.output.print("Please enter a valid number of Transactions: ");
+      this.output.print("Please enter a valid number of transactions: ");
       numTransactions = this.getIntegerFromUser();
     }
     String stockName;
@@ -213,13 +229,16 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
       stocks.put(stockName, stockQuantity);
     }
+    // TODO : Handle sell before buy while creating flexible portfolio
     model.addOrderToPortfolio(portfolioName, model.createOrder(date, action, com, stocks));
   }
 
   private void createPortfolioManually() {
+    String[] actions = new String[]{"Flexible", "Inflexible", "Go back"};
     this.output.println();
-    this.output.println("Would you like to create:");
-    this.output.println("1. Flexible Portfolio\n2. Inflexible Portfolio");
+    this.output.println("What type of portfolio would you like to create?");
+    this.view.displayActions(actions);
+    this.output.print("Select action: ");
     int ch = this.getIntegerFromUser();
     switch (ch) {
       case 1:
@@ -281,13 +300,17 @@ public class PortfolioControllerImpl implements PortfolioController {
       portfolioName = this.input.next();
     }
     this.model.addFlexiblePortfolio(portfolioName);
-    this.output.print("How many orders would you like to create ?");
+    this.output.println("\nA flexible portfolio can have multiple BUY/SELL orders, each " +
+            "pertaining " +
+            "to a set of stock transactions.");
+    this.output.print("How many orders would you like to create? ");
     int n = this.getIntegerFromUser();
     while (n <= 0) {
       this.output.print("Please enter a valid number of orders: ");
       n = this.getIntegerFromUser();
     }
     for (int i = 0; i < n; i++) {
+      this.output.println("\nORDER " + (i+1));
       this.createOrder(portfolioName);
     }
     this.model.persist();
@@ -388,6 +411,9 @@ public class PortfolioControllerImpl implements PortfolioController {
       if (val < min) {
         min = val;
       }
+    }
+    if (min == Integer.MAX_VALUE) {
+      min = 0;
     }
     this.view.displayPerformance(performanceValues, min);
   }
