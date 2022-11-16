@@ -1,15 +1,13 @@
-<portfolio title="Portfolio2">
+<portfolio title="test12" type="inflexible">
 	<orders>
-		<order action="BUY" date="">
+		<order action="BUY" commission="1.0" date="2022-10-31">
 			<stocks>
-				<stock quantity="20" symbol="V"/>
-				<stock quantity="10" symbol="AAPL"/>
+				<stock quantity="1" symbol="AAPL"/>
 			</stocks>
 		</order>
-		<order action="SELL" date="">
+		<order action="SELL" commission="2.0" date="2022-11-02">
 			<stocks>
-				<stock quantity="20" symbol="V"/>
-				<stock quantity="10" symbol="AAPL"/>
+				<stock quantity="1" symbol="AAPL"/>
 			</stocks>
 		</order>
 	</orders>

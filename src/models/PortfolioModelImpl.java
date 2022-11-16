@@ -73,8 +73,8 @@ public class PortfolioModelImpl implements PortfolioModel {
 
 
   @Override
-  public void addOrderToPortfolio(String portfolio, Order o) {
-    this.user.getPortfolios().get(portfolio).placeOrder(o);
+  public Boolean addOrderToPortfolio(String portfolio, Order o) {
+     return this.user.getPortfolios().get(portfolio).placeOrder(o);
   }
 
   @Override
@@ -224,12 +224,10 @@ public class PortfolioModelImpl implements PortfolioModel {
     return true;
   }
 
-  //TODO: remove old functions
   @Override
   public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
-    Stock stock = new Stock(stockTicker);
-    this.getPortfolio(portfolioName).addStock(stock, stockQuantity);
-  }
+    return;  }
+
 
   public void addOrder(String portfolioName, Order o) {
     this.user.getPortfolios().get(portfolioName).placeOrder(o);

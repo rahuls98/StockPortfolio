@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
  * Test suite for the PortfolioControllerImpl.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class PortfolioOldControllerImplTest {
+public class PortfolioControllerImplTest {
   private OutputStream out;
   private InputStream input;
   private PortfolioModel model;

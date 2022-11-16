@@ -45,7 +45,8 @@ public class PortfolioViewImpl implements PortfolioView {
       throw new IllegalArgumentException("Input cannot be null!");
     }
     if (name.equals("") || stockQuantities.isEmpty()) {
-      throw new IllegalArgumentException("Input cannot be empty!");
+      this.out.println("Portfolio is currently Empty");
+      return;
     }
     this.out.println("Portfolio: " + name);
     this.out.format("%s", "---------------------------\n");
@@ -63,7 +64,7 @@ public class PortfolioViewImpl implements PortfolioView {
       throw new IllegalArgumentException("Input cannot be null!");
     }
     if (name.equals("") || portfolioValues.isEmpty()) {
-      throw new IllegalArgumentException("Input cannot be empty!");
+      return;
     }
     this.out.println("Portfolio: " + name);
     this.out.format("%s", "---------------------------\n");

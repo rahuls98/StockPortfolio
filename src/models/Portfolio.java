@@ -11,7 +11,6 @@ import java.util.TreeMap;
 
 public class Portfolio implements PortfolioInstanceModel {
   private String name;
-
   private ArrayList<Order> orderBook;
 
   private HashMap<String, Stock> stocks;
@@ -41,49 +40,51 @@ public class Portfolio implements PortfolioInstanceModel {
     this.name = name;
   }
 
-  @Override
-  public void addStock(Stock stock, int quantity) {
-    return;
-  }
 
   @Override
   public Boolean placeOrder(Order o) {
     if (this.type == PortfolioType.INFLEXIBLE) {
       return false;
     }
-    if (o.getAction() != Action.BUY) {
-      HashMap<String, Integer> composition = this.getStockQuantities();
-      for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
-        if (!(composition.containsKey(entry.getKey()))) {
-          return false;
-        }
-        if (composition.get(entry.getKey()) < entry.getValue()) {
-          return false;
-        }
+    if (o.getAction() == Action.BUY) {
+      orderBook.add(o);
+    } else {
+      //Check Date greater than earliest
+      if (orderBook.isEmpty()) {
+        return false;
+      }
+      if(o.getDate().compareTo(this.getEarliestDate()) < 0) {
+        return false;
+      }
+      orderBook.add(o);
+      if (!(this.isOrderBookValid())) {
+        orderBook.remove(orderBook.size() - 1);
+        return false;
       }
     }
-    orderBook.add(o);
     return true;
   }
 
-  //  public void buy(Order o) {
-//    //TODO: Validations
-//    orderBook.add(o);
-//  }
-//
-//  public Boolean sell(Order o) {
-//    HashMap<String, Integer> composition = this.getStockQuantities();
-//    for (Map.Entry<String, Integer> entry : o.getStocks().entrySet()) {
-//      if (!(composition.containsKey(entry.getKey()))) {
-//        return false;
-//      }
-//      if (composition.get(entry.getKey()) < entry.getValue()) {
-//        return false;
-//      }
-//    }
-//    orderBook.add(o);
-//    return true;
-//  }
+  private LocalDate getEarliestDate() {
+    LocalDate earliest = this.orderBook.get(0).getDate();
+    for(int i = 0; i < this.orderBook.size(); i++) {
+      if(earliest.compareTo(this.orderBook.get(i).getDate()) > 0) {
+        earliest = this.orderBook.get(i).getDate();
+      }
+    }
+    return earliest;
+  }
+
+  private Boolean isOrderBookValid() {
+    HashMap<String, Integer> comp = this.getStockQuantities();
+    for (Map.Entry<String, Integer> stock : comp.entrySet()) {
+      if (stock.getValue() < 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @Override
   public float getCostBasis(LocalDate date) {
     ArrayList<Order> ordBook = this.getOrderBookOnDate(date);
@@ -103,17 +104,6 @@ public class Portfolio implements PortfolioInstanceModel {
     return costBasis;
   }
 
-  public Boolean isValidDate(LocalDate date) {
-    if (this.orderBook.isEmpty()) {
-      return true;
-    }
-    return (this.orderBook.get(this.orderBook.size() - 1).getDate().compareTo(date) <= 0);
-  }
-
-  @Override
-  public HashMap<Stock, Integer> getStocks() {
-    return null;
-  }
 
   /**
    * Returns the composition of the Portfolio
@@ -157,8 +147,11 @@ public class Portfolio implements PortfolioInstanceModel {
     for (int i = 0; i < orders.size(); i++) {
       if (orders.get(i).getAction() == Action.SELL) {
         for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+          if (!(composition.containsKey(entry.getKey()))) {
+            composition.put(entry.getKey(), 0);
+          }
           composition.put(entry.getKey(), composition.get(entry.getKey()) - entry.getValue());
-          if (composition.get(entry.getKey()) <= 0) {
+          if (composition.get(entry.getKey()) == 0) {
             composition.remove(entry.getKey());
           }
         }
@@ -186,9 +179,10 @@ public class Portfolio implements PortfolioInstanceModel {
     return values;
   }
 
+
   @Override
-  public float getTotalComp(String date) {
-    return 0;
+  public HashSet<String> getStockNames() {
+    return null;
   }
 
 
@@ -200,10 +194,6 @@ public class Portfolio implements PortfolioInstanceModel {
     return total;
   }
 
-  @Override
-  public HashSet<String> getStockNames() {
-    return null;
-  }
 
   @Override
   public String toString() {

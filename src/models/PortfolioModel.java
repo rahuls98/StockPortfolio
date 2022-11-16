@@ -151,7 +151,7 @@ public interface PortfolioModel {
    * @param portfolio
    * @param o
    */
-  void addOrderToPortfolio(String portfolio, Order o);
+  Boolean addOrderToPortfolio(String portfolio, Order o);
 
   Float getCostBasis(String portfolioName, String date);
 

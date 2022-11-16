@@ -229,8 +229,12 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
       stocks.put(stockName, stockQuantity);
     }
-    // TODO : Handle sell before buy while creating flexible portfolio
-    model.addOrderToPortfolio(portfolioName, model.createOrder(date, action, com, stocks));
+    if (!(model.addOrderToPortfolio(portfolioName, model.createOrder(date, action, com, stocks)))){
+      this.output.println("Invalid Order");
+    }
+    else {
+      this.output.println("Order Recorded");
+    }
   }
 
   private void createPortfolioManually() {
