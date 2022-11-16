@@ -3,6 +3,7 @@ package views;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Represents a text-based user-interface view of the application.
@@ -77,5 +78,19 @@ public class PortfolioViewImpl implements PortfolioView {
   @Override
   public void displayCostBasis(String name, String date, Float costBasis) {
     this.out.println("Cost Basis of " +name+"on date" +date+" is " +costBasis);
+  }
+
+  @Override
+  public void displayPerformance(TreeMap<String, Float> performanceValues, float scale) {
+    System.out.println("Scale: * = $" + (int) scale);
+    for (Map.Entry<String, Float> mapEntry : performanceValues.entrySet()) {
+      // LocalDate ld = LocalDate.parse(mapEntry.getKey());
+      // System.out.print(ld.getMonth().toString().substring(0,3) + ", " + ld.getYear() + ": ");
+      System.out.print(mapEntry.getKey() + ": ");
+      for (int b = 0; b < (int) (mapEntry.getValue() / scale); b++) {
+        System.out.print("*");
+      }
+      System.out.println();
+    }
   }
 }

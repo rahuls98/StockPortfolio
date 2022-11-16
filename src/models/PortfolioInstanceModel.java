@@ -77,5 +77,4 @@ public interface PortfolioInstanceModel {
   public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d);
   public float getCostBasis(LocalDate date);
   ArrayList<Order> getOrderBook();
-  void dateRangeSplitter(String date1, String date2);
 }

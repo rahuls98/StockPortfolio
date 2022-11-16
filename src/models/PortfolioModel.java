@@ -2,6 +2,7 @@ package models;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeMap;
 
 /**
  * Represents classes that manage stock portfolios and all their associated functionalities.
@@ -143,16 +144,17 @@ public interface PortfolioModel {
    * @param stocks
    * @return
    */
-  public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks);
+  Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks);
 
   /**
    * Adds order to portfolio
    * @param portfolio
    * @param o
    */
-  public void addOrderToPortfolio(String portfolio, Order o);
+  void addOrderToPortfolio(String portfolio, Order o);
 
-  public Float getCostBasis(String portfolioName, String date);
+  Float getCostBasis(String portfolioName, String date);
 
-  public void getPerformance(String portfolioName, String date1, String date2);
+  TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1,
+                                                     String date2);
 }

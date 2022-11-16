@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Represents a class that manages all the functionalities of a stock portfolio application for
@@ -58,9 +60,9 @@ public class PortfolioModelImpl implements PortfolioModel {
   @Override
   public void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks) {
     List<Order> initialOrders = new ArrayList<>();
-    for (Map.Entry<String, Integer> stock : stocks.entrySet()) {
-      initialOrders.add(new Order(Action.BUY, LocalDate.of(2011, 03, 02), 0.00f));
-    }
+    Order o = new Order(Action.BUY, LocalDate.of(2011, 03, 02), 0.00f);
+    o.addStocks(stocks);
+    initialOrders.add(o);
     this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.INFLEXIBLE, initialOrders));
   }
 
@@ -255,7 +257,71 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public void getPerformance(String portfolioName, String date1, String date2) {
-    this.getPortfolio(portfolioName).dateRangeSplitter(date1, date2);
+  public TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1,
+                                                     String date2) {
+    TreeMap<String, Float> dateMapper = new TreeMap<>();
+    try {
+      LocalDate ld1 = LocalDate.parse(date1);
+      LocalDate ld2 = LocalDate.parse(date2);
+      long diff = (ld2.toEpochDay() - ld1.toEpochDay());
+      if (diff < 4) {
+        throw new IllegalArgumentException();
+      }
+      int interval = 4;
+      for (int k = 30; k >= 4; k--) {
+        if (diff % k == 0) {
+          interval = k;
+          break;
+        }
+      }
+      diff = diff / interval;
+      int i;
+      int j = 0;
+      LocalDate date = null;
+      for (i = 0; i < interval; i++) {
+        date = LocalDate.ofEpochDay(ld1.toEpochDay() + (diff * i));
+        if (date.isAfter(ld2)) {
+          break;
+        }
+        j = 0;
+        boolean flag = true;
+        while (true) {
+          try {
+            this.getPortfolioValues(portfolioName, date.toString());
+            break;
+          } catch (NullPointerException e) {
+            j++;
+            date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + (diff * i));
+            if (date.isAfter(ld2)) {
+              flag = false;
+              break;
+            }
+          }
+        }
+        if (flag) {
+          HashMap<String, Float> hm = this.getPortfolioValues(portfolioName, date.toString());;
+          float total = 0;
+          for (Map.Entry<String, Float> mapEntry : hm.entrySet()) {
+            total += mapEntry.getValue();
+          }
+          dateMapper.put(date.toString(), total);
+        } else {
+          break;
+        }
+      }
+      date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + (diff * i));
+      if (!date.isAfter(ld2)) {
+        HashMap<String, Float> hm = this.getPortfolioValues(portfolioName, date.toString());
+        float total = 0;
+        for (Map.Entry<String, Float> mapEntry : hm.entrySet()) {
+          total += mapEntry.getValue();
+        }
+        dateMapper.put(date.toString(), total);
+      }
+    }
+    catch (DateTimeException e) {
+      System.out.println(e.getMessage());
+    }
+    return dateMapper;
   }
 }

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import models.PortfolioModel;
 import views.PortfolioView;
@@ -376,7 +377,19 @@ public class PortfolioControllerImpl implements PortfolioController {
     String d1 = this.getDateFromUser();
     this.output.print("Enter upper date: ");
     String d2 = this.getDateFromUser();
-    this.model.getPerformance(portfolioName, d1, d2);
+    TreeMap<String, Float> performanceValues = this.model.getPerformanceValues(portfolioName, d1,
+            d2);
+    // TODO: Find alternative
+    float min = Integer.MAX_VALUE;
+    for (float val : performanceValues.values()) {
+      if (val == 0) {
+        continue;
+      }
+      if (val < min) {
+        min = val;
+      }
+    }
+    this.view.displayPerformance(performanceValues, min);
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {

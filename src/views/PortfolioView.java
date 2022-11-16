@@ -1,6 +1,7 @@
 package views;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Represents all operations associated to the user-view of the application.
@@ -38,4 +39,6 @@ public interface PortfolioView {
   void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues);
 
   void displayCostBasis(String name, String date, Float costBasis);
+
+  void displayPerformance(TreeMap<String, Float> performanceValues, float scale);
 }
