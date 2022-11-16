@@ -143,7 +143,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       return;
     }
     String portfolioName = this.displayPortfoliosAndTakeUserInput(flexiblePortfolios);
-    this.output.println("How many orders would you like to create ?");
+    this.output.print("\nHow many orders would you like to create?");
     int n = this.getIntegerFromUser();
     for (int i = 0; i < n; i++) {
       this.createOrder(portfolioName);
@@ -179,7 +179,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     String action = "";
     while (true) {
       String[] actions = new String[]{"BUY order", "SELL order"};
-      this.output.println("What type of order would you like to create?");
+      this.output.println("\nWhat type of order would you like to create?");
       this.view.displayActions(actions);
       this.output.print("Select action: ");
       Boolean exitLoop = false;
@@ -423,6 +423,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
+    this.output.println("\nWhich portfolio would you like to use?");
     view.displayPortfolios(portfolios);
     this.output.print("Select portfolio: ");
     int choice = this.input.nextInt();
