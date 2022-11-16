@@ -47,8 +47,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   @Override
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
-    String[] actions = new String[]{"Create Order", "Get portfolio composition", "Get " +
-            "portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
+    String[] actions = new String[]{"Create Portfolio", "Create Order", "Get portfolio " +
+            "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -57,24 +57,24 @@ public class PortfolioControllerImpl implements PortfolioController {
       int choice = this.getIntegerFromUser();
       switch (choice) {
         case 1:
-//          this.createPortfolio();
-          this.createOrder();
-          //Make Transaction
+          this.createPortfolio();
           break;
         case 2:
-          this.getComposition();
+          this.createForExistingPortfolio();
           break;
         case 3:
-          this.getPortfolioValue();
+          this.getComposition();
           break;
         case 4:
-          this.getCostBasis();
-          //Get Cost Basis
+          this.getPortfolioValue();
           break;
         case 5:
-          this.getPerformance();
+          this.getCostBasis();
           break;
         case 6:
+          this.getPerformance();
+          break;
+        case 7:
           return;
         default:
           this.output.print("\nInvalid choice, please try again!\n");
