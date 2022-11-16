@@ -13,14 +13,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.TreeMap;
 
+import models.Order;
+import models.Portfolio;
+import models.PortfolioInstanceModel;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;
 import views.PortfolioViewImpl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -488,7 +496,7 @@ public class PortfolioControllerImplTest {
     String generatedString = this.genRandomString();
     LocalDate today = LocalDate.now();
     LocalDate tomorrow = today.plusDays(1);
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n"+tomorrow.toString()+"\n2022-10-31\n4\n";
+    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n" + tomorrow.toString() + "\n2022-10-31\n4\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
@@ -551,5 +559,141 @@ public class PortfolioControllerImplTest {
             "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
             " ExitSelect action: ";
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  @Test
+  public void testMockComposition() {
+    String s = "3\n1\n2022-11-14\n7\n";
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    StringBuilder log = new StringBuilder();
+    PortfolioController controller = new PortfolioControllerImpl(new MockModel(log, 1234), view, input,
+            new PrintStream(out));
+
+    controller.run();
+    assertEquals("Portfolio 12022-11-14", log.toString());
+  }
+
+  class MockModel implements PortfolioModel {
+    private StringBuilder log;
+    private int uniqueCode;
+
+    public MockModel(StringBuilder log, int uniqueCode) {
+      this.log = log;
+      this.uniqueCode = uniqueCode;
+    }
+
+    @Override
+    public void addPortfolio(String portfolioName) {
+
+    }
+
+    @Override
+    public void addPortfolioToUser(Portfolio portfolio, String portfolioName) {
+
+    }
+
+    @Override
+    public void addFlexiblePortfolio(String portfolioName) {
+
+    }
+
+    @Override
+    public void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks) {
+
+    }
+
+    @Override
+    public PortfolioInstanceModel getPortfolio(String portfolioName) {
+      log.append(portfolioName);
+      return null;
+    }
+
+    @Override
+    public String[] getPortfolios() {
+      String[] arr = new String[]{"Portfolio 1", "Portfolio 2"};
+      return arr;
+    }
+
+    @Override
+    public String[] getFlexiblePortfolios() {
+      return new String[0];
+    }
+
+    @Override
+    public String[] getInflexiblePortfolios() {
+      return new String[0];
+    }
+
+    @Override
+    public HashMap<String, Float> getPortfolioValues(String portfolioName, String date) {
+      return null;
+    }
+
+    @Override
+    public Float getPortfolioTotal(String portfolioName, String date) {
+      return null;
+    }
+
+    @Override
+    public Boolean isValidTicker(String ticker) {
+      return null;
+    }
+
+    @Override
+    public Portfolio loadPortfolioFromXml(String pathToXml) {
+      return null;
+    }
+
+    @Override
+    public String loadPortfolioNameFromXML(String pathToXml) {
+      return null;
+    }
+
+    @Override
+    public boolean isValidDate(String date) {
+      return true;
+    }
+
+    @Override
+    public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
+
+    }
+
+    @Override
+    public void persist() {
+
+    }
+
+    @Override
+    public HashSet<String> getStockTickersInPortfolio(String portfolioName) {
+      return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date) {
+      log.append(portfolioName);
+      log.append(date.toString());
+      return new HashMap<String, Integer>();
+    }
+
+    @Override
+    public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
+      return null;
+    }
+
+    @Override
+    public Boolean addOrderToPortfolio(String portfolio, Order o) {
+      return null;
+    }
+
+    @Override
+    public Float getCostBasis(String portfolioName, String date) {
+      return null;
+    }
+
+    @Override
+    public TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1, String date2) {
+      return null;
+    }
   }
 }
