@@ -110,7 +110,7 @@ public class PortfolioOldControllerImplTest {
 
   @Test
   public void testStartingMenu() {
-    InputStream input = new ByteArrayInputStream("4".getBytes());
+    InputStream input = new ByteArrayInputStream("6 \n".getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();

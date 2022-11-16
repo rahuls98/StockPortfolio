@@ -25,20 +25,7 @@ public interface PortfolioInstanceModel {
    */
   public void setName(String name);
 
-  /**
-   * Adds a new stock and its quantity to the portfolio.
-   *
-   * @param stock    Stock to add.
-   * @param quantity Quantity of the stock.
-   */
-  public void addStock(Stock stock, int quantity);
 
-  /**
-   * Returns the contents of the portfolio.
-   *
-   * @return Portfolio contents.
-   */
-  public HashMap<Stock, Integer> getStocks();
 
   /**
    * Returns all the stocks in the portfolio and their quantities.
@@ -56,13 +43,7 @@ public interface PortfolioInstanceModel {
 
   public HashMap<String, Float> getValue(String date);
 
-  /**
-   * Retrieves the total value of the portfolio on a given date.
-   *
-   * @param date Date to retrieve total value for.
-   * @return Total value of the portfolio.
-   */
-  public float getTotalComp(String date);
+
 
   /**
    * Retrieves names of all stocks in the portfolio.
