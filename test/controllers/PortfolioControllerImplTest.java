@@ -261,83 +261,74 @@ public class PortfolioControllerImplTest {
   }
 
   @Test
-  public void testGoWithCreatePortfolioWithFractional() {
-    String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1.5\n1\n4\n";
+  public void testCreateInflexiblePortfolioWithFractional() {
+    String startingMenuEntry = "1";
+    String portfolioDetailEntry = "1";
+    String portfolioType = "2";
+    String portfolioName = this.genRandomString();
+    String numberOfStocks = "1";
+    String stockTicker = "GOOG";
+    String invalidStockQuantity = "1.5";
+    String validStockQuantity = "1";
+    String s = startingMenuEntry.concat("\n")
+            .concat(portfolioDetailEntry).concat("\n")
+            .concat(portfolioType).concat("\n")
+            .concat(portfolioName).concat("\n")
+            .concat(numberOfStocks).concat("\n")
+            .concat(stockTicker).concat("\n")
+            .concat(invalidStockQuantity).concat("\n")
+            .concat(validStockQuantity).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested.\n" +
-            "\n" +
-            "What would you like to do?\n" +
-            "1. Create portfolio\n" +
-            "2. Get portfolio composition\n" +
-            "3. Get portfolio value\n" +
-            "4. Exit\n" +
-            "Select action: \n" +
-            "\n" +
-            "How would you like to enter the portfolio details?\n" +
-            "1. Enter manually\n" +
-            "2. Load from file\n" +
-            "3. Go back\n" +
-            "Select action: \n" +
-            "\n" +
-            "Enter portfolio name: \n" +
-            "Enter number of stocks: \n" +
-            "Stock 1 ticker: \n" +
-            "Quantity : \n" +
-            "Please enter a valid integer value: \n" +
-            "\n" +
-            "New portfolio (" + generatedString + ") has been recorded!\n" +
-            "\n" +
-            "What would you like to do?\n" +
-            "1. Create portfolio\n" +
-            "2. Get portfolio composition\n" +
-            "3. Get portfolio value\n" +
-            "4. Exit\n" +
-            "Select action: \n";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + this.portfolioTypeOptions
+            + "Enter portfolio name: "
+            + "Enter number of stocks: "
+            + this.stockTickerEntry
+            + this.stockQuantityEntry
+            + "Please enter a valid integer value: "
+            + "New portfolio (" + portfolioName + ") has been recorded!"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
-  public void testGoWithCreatePortfolioInvalidNonIntFlow() {
-    String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\na\n1\nAAPL\n1\n4\n";
+  public void testCreateInflexiblePortfolioInvalidNonIntFlow() {
+    String startingMenuEntry = "1";
+    String portfolioDetailEntry = "1";
+    String portfolioType = "2";
+    String portfolioName = this.genRandomString();
+    String numberOfStocks = "1";
+    String stockTicker = "GOOG";
+    String invalidStockQuantity = "a";
+    String validStockQuantity = "1";
+    String s = startingMenuEntry.concat("\n")
+            .concat(portfolioDetailEntry).concat("\n")
+            .concat(portfolioType).concat("\n")
+            .concat(portfolioName).concat("\n")
+            .concat(numberOfStocks).concat("\n")
+            .concat(stockTicker).concat("\n")
+            .concat(invalidStockQuantity).concat("\n")
+            .concat(validStockQuantity).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested.\n" +
-            "\n" +
-            "What would you like to do?\n" +
-            "1. Create portfolio\n" +
-            "2. Get portfolio composition\n" +
-            "3. Get portfolio value\n" +
-            "4. Exit\n" +
-            "Select action: \n" +
-            "\n" +
-            "How would you like to enter the portfolio details?\n" +
-            "1. Enter manually\n" +
-            "2. Load from file\n" +
-            "3. Go back\n" +
-            "Select action: \n" +
-            "\n" +
-            "Enter portfolio name: \n" +
-            "Enter number of stocks: \n" +
-            "Please enter a valid integer value: \n" +
-            "Stock 1 ticker: \n" +
-            "Quantity : \n" +
-            "\n" +
-            "New portfolio (" + generatedString + ") has been recorded!\n" +
-            "\n" +
-            "What would you like to do?\n" +
-            "1. Create portfolio\n" +
-            "2. Get portfolio composition\n" +
-            "3. Get portfolio value\n" +
-            "4. Exit\n" +
-            "Select action: \n" +
-            "\n";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + this.portfolioTypeOptions
+            + "Enter portfolio name: "
+            + "Enter number of stocks: "
+            + this.stockTickerEntry
+            + this.stockQuantityEntry
+            + "Please enter a valid integer value: "
+            + "New portfolio (" + portfolioName + ") has been recorded!"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
