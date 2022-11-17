@@ -83,15 +83,19 @@ public class PortfolioViewImpl implements PortfolioView {
 
   @Override
   public void displayPerformance(TreeMap<String, Float> performanceValues, float scale) {
-    System.out.println("Scale: * = $" + (int) scale);
+    this.out.println("Scale: * = $" + (int) scale);
+    int strCounter;
     for (Map.Entry<String, Float> mapEntry : performanceValues.entrySet()) {
-      // LocalDate ld = LocalDate.parse(mapEntry.getKey());
-      // System.out.print(ld.getMonth().toString().substring(0,3) + ", " + ld.getYear() + ": ");
-      System.out.print(mapEntry.getKey() + ": ");
+      this.out.print(mapEntry.getKey() + ": ");
+      strCounter = 0;
       for (int b = 0; b < (int) (mapEntry.getValue() / scale); b++) {
-        System.out.print("*");
+        if(strCounter == 50) {
+          break;
+        }
+        strCounter += 1;
+        this.out.print("*");
       }
-      System.out.println();
+      this.out.println();
     }
   }
 }

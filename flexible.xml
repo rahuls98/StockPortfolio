@@ -5,9 +5,14 @@
 				<stock quantity="10" symbol="AAPL"/>
 			</stocks>
 		</order>
-		<order action="SELL" commission="-2.0" date="2022-11-02">
+		<order action="SELL" commission="1.0" date="2022-11-01">
 			<stocks>
-				<stock quantity="15" symbol="AAPL"/>
+				<stock quantity="10" symbol="AAPL"/>
+			</stocks>
+		</order>
+		<order action="SELL" commission="2.0" date="2022-11-02">
+			<stocks>
+				<stock quantity="10" symbol="AAPL"/>
 			</stocks>
 		</order>
 	</orders>

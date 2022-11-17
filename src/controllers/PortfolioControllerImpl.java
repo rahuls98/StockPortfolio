@@ -6,7 +6,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -232,7 +234,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
       stocks.put(stockName, stockQuantity);
     }
-    if (!(model.addOrderToPortfolio(portfolioName, model.createOrder(date, action, com, stocks)))){
+    if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))){
       this.output.println("Invalid Order");
     }
     else {
@@ -394,8 +396,6 @@ public class PortfolioControllerImpl implements PortfolioController {
     this.output.println("Enter the date for which to display Cost Basis");
     String date = this.getDateFromUser();
     this.output.println();
-//    view.displayPortfolioComposition(portfolioName,
-//            this.model.getStockQuantitiesInPortfolio(portfolioName, date));
     view.displayCostBasis(portfolioName, date, model.getCostBasis(portfolioName, date));
   }
 
@@ -407,20 +407,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     String d2 = this.getDateFromUser();
     TreeMap<String, Float> performanceValues = this.model.getPerformanceValues(portfolioName, d1,
             d2);
-    // TODO: Find alternative
-    float min = Integer.MAX_VALUE;
-    for (float val : performanceValues.values()) {
-      if (val == 0) {
-        continue;
-      }
-      if (val < min) {
-        min = val;
-      }
-    }
-    if (min == Integer.MAX_VALUE) {
-      min = 0;
-    }
-    this.view.displayPerformance(performanceValues, min);
+    this.view.displayPerformance(performanceValues, this.model.getScale(performanceValues));
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
@@ -432,8 +419,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.print("Please make a valid entry from the choices above: ");
       choice = this.input.nextInt();
     }
-    String portfolioName = portfolios[choice - 1];
-    return portfolioName;
+    return portfolios[choice - 1];
   }
 
   private String getDate() {
