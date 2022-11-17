@@ -47,11 +47,13 @@ public class PortfolioModelImpl implements PortfolioModel {
   public void addPortfolio(String portfolioName) {
     return;
   }
+
   @Override
   public void addPortfolioToUser(Portfolio portfolio, String portfolioName) {
     portfolio.setName(portfolioName);
     this.user.addPortfolio(portfolio);
   }
+
   @Override
   public void addFlexiblePortfolio(String portfolioName) {
     this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.FLEXIBLE, new ArrayList<>()));
@@ -73,9 +75,8 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
 
-
   private Boolean addOrderToPortfolio(String portfolio, Order o) {
-     return this.user.getPortfolios().get(portfolio).placeOrder(o);
+    return this.user.getPortfolios().get(portfolio).placeOrder(o);
   }
 
   @Override
@@ -294,7 +295,8 @@ public class PortfolioModelImpl implements PortfolioModel {
           }
         }
         if (flag) {
-          HashMap<String, Float> hm = this.getPortfolioValues(portfolioName, date.toString());;
+          HashMap<String, Float> hm = this.getPortfolioValues(portfolioName, date.toString());
+          ;
           float total = 0;
           for (Map.Entry<String, Float> mapEntry : hm.entrySet()) {
             total += mapEntry.getValue();
@@ -313,8 +315,7 @@ public class PortfolioModelImpl implements PortfolioModel {
         }
         dateMapper.put(date.toString(), total);
       }
-    }
-    catch (DateTimeException e) {
+    } catch (DateTimeException e) {
       System.out.println(e.getMessage());
     }
     return dateMapper;
@@ -325,6 +326,9 @@ public class PortfolioModelImpl implements PortfolioModel {
     ArrayList<Float> vars = new ArrayList<>(values.values());
     float scale = Collections.max(vars) - Collections.min(vars);
     scale = scale / 50;
+    if (scale == 0) {
+      scale = 1;
+    }
     return scale;
   }
 }

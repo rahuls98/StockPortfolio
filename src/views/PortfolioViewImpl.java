@@ -32,7 +32,8 @@ public class PortfolioViewImpl implements PortfolioView {
       throw new IllegalArgumentException("Input cannot be null!");
     }
     if (portfolios.length == 0) {
-      throw new IllegalArgumentException("Input cannot be empty!");
+      this.out.println("You have no portfolios!");
+      return;
     }
     for (int i = 0; i < portfolios.length; i++) {
       this.out.println((i + 1) + ". " + portfolios[i]);
@@ -83,7 +84,7 @@ public class PortfolioViewImpl implements PortfolioView {
 
   @Override
   public void displayPerformance(TreeMap<String, Float> performanceValues, float scale) {
-    this.out.println("Scale: * = $" + (int) scale);
+    this.out.println("Scale: * = $" + String.format("%.2f",scale));
     int strCounter;
     for (Map.Entry<String, Float> mapEntry : performanceValues.entrySet()) {
       this.out.print(mapEntry.getKey() + ": ");

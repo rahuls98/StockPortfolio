@@ -651,9 +651,9 @@ public class PortfolioControllerImplTest {
             + "ORDER 1"
             + this.orderTypeOptions
             + "Enter date for the order in YYYY-MM-DD format: "
-            + "Please enter a valid date: "
-            + "Please enter a valid date: "
-            + "Please enter a valid date: "
+            + "Please enter a valid date that isn't a weekend: "
+            + "Please enter a valid date that isn't a weekend: "
+            + "Please enter a valid date that isn't a weekend: "
             + "Enter commission for this transaction: "
             + "Enter number of BUY transactions: "
             + "Stock 1 ticker: "
