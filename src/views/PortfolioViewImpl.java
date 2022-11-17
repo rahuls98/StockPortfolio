@@ -90,15 +90,9 @@ public class PortfolioViewImpl implements PortfolioView {
             + " from " + performanceValues.firstKey() + " to " + performanceValues.lastKey());
     this.out.println("Scale: * = $" + String.format("%.2f", scale));
     this.out.println();
-    int strCounter;
     for (Map.Entry<String, Float> mapEntry : performanceValues.entrySet()) {
       this.out.print(mapEntry.getKey() + ": ");
-      strCounter = 0;
       for (int b = 0; b < (int) (mapEntry.getValue() / scale); b++) {
-        if (strCounter == 50) {
-          break;
-        }
-        strCounter += 1;
         this.out.print("*");
       }
       this.out.println();
