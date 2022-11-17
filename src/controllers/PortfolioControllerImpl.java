@@ -103,11 +103,14 @@ public class PortfolioControllerImpl implements PortfolioController {
     while (true) {
       try {
         choice = this.input.nextFloat();
+        if(choice < 0) {
+          throw new RuntimeException();
+        }
         break;
       } catch (Exception e) {
         //To Consume the new Line entered by user.
         this.input.nextLine();
-        this.output.print("Please enter a valid float value: ");
+        this.output.print("Please enter a valid positive float value: ");
       }
     }
     return choice;
@@ -179,7 +182,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     String action = "";
     while (true) {
       String[] actions = new String[]{"BUY order", "SELL order"};
-      this.output.println("\nWhat type of order would you like to create?");
+      this.output.println("What type of order would you like to create?");
       this.view.displayActions(actions);
       this.output.print("Select action: ");
       Boolean exitLoop = false;
@@ -358,9 +361,8 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.println("\nYou have no portfolios currently!");
       return;
     }
-    this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
-    this.output.println("Enter the date for which to display portfolio");
+    this.output.print("\nEnter a date for viewing the composition: ");
     String date = this.getDateFromUser();
     this.output.println();
     view.displayPortfolioComposition(portfolioName,
@@ -373,7 +375,6 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.println("\nYou have no portfolios currently!");
       return;
     }
-    this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
     String date = this.getDate();
     this.output.println();

@@ -137,6 +137,9 @@ public class PortfolioModelImpl implements PortfolioModel {
       Element portfolioElement = (Element) portfolioNode;
       String portfolioName = portfolioElement.getAttribute("title");
       String type = portfolioElement.getAttribute("type");
+      if (type.equals("")) {
+        throw new Exception();
+      }
       NodeList orderList = portfolioElement.getElementsByTagName("order");
       if (type.equals("inflexible")) {
         NodeList stockList = portfolioElement.getElementsByTagName("stock");
@@ -166,6 +169,9 @@ public class PortfolioModelImpl implements PortfolioModel {
           String action = orderElement.getAttribute("action");
           String date = orderElement.getAttribute("date");
           float commission = Float.parseFloat(orderElement.getAttribute("commission"));
+          if (commission < 0) {
+            throw new Exception();
+          }
           HashMap<String, Integer> stocks = new HashMap<>();
           NodeList stockList = orderElement.getElementsByTagName("stock");
           for (int l = 0; l < stockList.getLength(); l++) {

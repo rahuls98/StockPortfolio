@@ -27,8 +27,6 @@ import views.PortfolioView;
 import views.PortfolioViewImpl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -341,223 +339,238 @@ public class PortfolioControllerImplTest {
   }
 
   @Test
-  public void testGoWithCreatePortfolioWithPath() {
-    InputStream input = new ByteArrayInputStream("1\n2\ntestFile.xml\n4\n".getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
-            new PrintStream(out));
-    controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: " +
-            "How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter path to XML: New portfolio (TestFile) has been " +
-            "recorded!" +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: ";
-    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
-  }
-
-  @Test
-  public void testGoWithCreatePortfolioWithIllegalPath() {
-    InputStream input = new ByteArrayInputStream("1\n2\ntestFile1.xml\ntestFile.xml\n4\n"
-            .getBytes());
-    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
-            new PrintStream(out));
-    controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: " +
-            "How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter path to XML:" +
-            " No such file exists! Please enter a valid path:" +
-            " New portfolio (TestFile) has been recorded!" +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: ";
-    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
-  }
-
-  @Test
-  public void testPortfolioCompositionAfterCreate() {
-    String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n2\n1\n4\n";
+  public void testCreateInflexiblePortfolioWithPath() {
+    String startingMenuEntry = "1";
+    String portfolioDetailEntry = "2";
+    String xmlFilePath = "testFile.xml";
+    String s = startingMenuEntry.concat("\n")
+            .concat(portfolioDetailEntry).concat("\n")
+            .concat(xmlFilePath).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. Exit" +
-            "Select action: How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter portfolio name: Enter number of stocks: " +
-            "Stock 1 ticker: Quantity : New portfolio (" + generatedString + ") has been " +
-            "recorded!" +
-            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
-            "3. Get portfolio value4. ExitSelect action: Which portfolio would you like to " +
-            "explore?" +
-            "1. " + generatedString + "Select portfolio: Portfolio: " + generatedString +
-            "------------" +
-            "---------------Stock       |  Quantity    ---------------------------AAPL " +
-            "       |  1           ---------------------------What would you like to do?" +
-            "1. Create portfolio2. Get portfolio composition3. Get portfolio value" +
-            "4. ExitSelect action: ";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
-  public void testPortfolioValueAfterCreate() {
-    String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-10-31\n4\n";
+  public void testCreateInflexiblePortfolioWithIllegalPath() {
+    String startingMenuEntry = "1";
+    String portfolioDetailEntry = "2";
+    String invalidXmlFilePath = "testFile1.xml";
+    String validXmlFilePath = "testFile.xml";
+    String s = startingMenuEntry.concat("\n")
+            .concat(portfolioDetailEntry).concat("\n")
+            .concat(invalidXmlFilePath).concat("\n")
+            .concat(validXmlFilePath).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter portfolio name: Enter number of stocks: Stock 1 " +
-            "ticker" +
-            ": Quantity : New portfolio (" + generatedString + ") has been recorded!" +
-            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
-            "3. Get portfolio value4. ExitSelect action: Which portfolio would you like to " +
-            "explore?" +
-            "1. " + generatedString + "Select portfolio: Enter the date for which you want the " +
-            "value: " +
-            "Portfolio: " + generatedString + "---------------------------Stock       |  " +
-            "Value      " +
-            " ---------------------------AAPL        |  153.34      -------------------" +
-            "--------Total value of portfolio on is 153.3400What would you like to do?" +
-            "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
-            " ExitSelect action: ";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "No such file exists! Please enter a valid path: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
-  public void testPortfolioValueForInvalidDateAfterCreate() {
-    String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n202222-10-31\n2022-10-31\n4\n";
+  public void testInflexiblePortfolioCompositionAfterCreate() {
+    String xmlFilePath = "testFile.xml";
+    String compositionDate = "2022-11-15";
+    String portfolioName = "TestFile";
+    String s = "1".concat("\n")
+            .concat("2").concat("\n")
+            .concat(xmlFilePath).concat("\n")
+            .concat("3").concat("\n")
+            .concat("1").concat("\n")
+            .concat(compositionDate).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter portfolio name: Enter number of stocks: Stock 1 " +
-            "ticker" +
-            ": Quantity : New portfolio (" + generatedString + ") has been recorded!" +
-            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
-            "3. Get portfolio value4. ExitSelect action: Which portfolio would you like to " +
-            "explore?" +
-            "1. " + generatedString + "Select portfolio: Enter the date for which you want the " +
-            "value:" +
-            " Please enter a valid date: " +
-            "Portfolio: " + generatedString + "---------------------------Stock       |  " +
-            "Value      " +
-            " ---------------------------AAPL        |  153.34      -------------------" +
-            "--------Total value of portfolio on is 153.3400What would you like to do?" +
-            "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
-            " ExitSelect action: ";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu
+            + "Which portfolio would you like to use?"
+            + "1. " + portfolioName
+            + "Select portfolio: "
+            + "Enter a date for viewing the composition: "
+            + "Portfolio: " + portfolioName
+            + "---------------------------\n"
+            + "Stock       |  Quantity    \n"
+            + "---------------------------\n"
+            + "GOOG        |  2           \n"
+            + "AAPL        |  2           \n"
+            + "---------------------------"
+            + this.startingMenu;
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  @Test
+  public void testInflexiblePortfolioValueAfterCreate() {
+    String xmlFilePath = "testFile.xml";
+    String valueDate = "2022-11-02";
+    String portfolioName = "TestFile";
+    String s = "1".concat("\n")
+            .concat("2").concat("\n")
+            .concat(xmlFilePath).concat("\n")
+            .concat("4").concat("\n")
+            .concat("1").concat("\n")
+            .concat(valueDate).concat("\n")
+            .concat(exitOption).concat("\n");
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu
+            + "Which portfolio would you like to use?"
+            + "1. " + portfolioName
+            + "Select portfolio: "
+            + "Enter the date for which you want the value: "
+            + "Portfolio: " + portfolioName
+            + "---------------------------\n"
+            + "Stock       |  Value       \n"
+            + "---------------------------\n"
+            + "GOOG        |  174.14      \n"
+            + "AAPL        |  290.06      \n"
+            + "---------------------------"
+            + "Total value of portfolio on is 464.2000"
+            + this.startingMenu;
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  @Test
+  public void testInflexiblePortfolioValueForInvalidDateAfterCreate() {
+    String xmlFilePath = "testFile.xml";
+    String validValueDate = "2022-10-31";
+    String invalidValueDate = "202222-10-31";
+    String portfolioName = "TestFile";
+    String s = "1".concat("\n")
+            .concat("2").concat("\n")
+            .concat(xmlFilePath).concat("\n")
+            .concat("4").concat("\n")
+            .concat("1").concat("\n")
+            .concat(invalidValueDate).concat("\n")
+            .concat(validValueDate).concat("\n")
+            .concat(exitOption).concat("\n");
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu
+            + "Which portfolio would you like to use?"
+            + "1. " + portfolioName
+            + "Select portfolio: "
+            + "Enter the date for which you want the value: "
+            + "Please enter a valid date: "
+            + "Portfolio: " + portfolioName
+            + "---------------------------\n"
+            + "Stock       |  Value       \n"
+            + "---------------------------\n"
+            + "GOOG        |  189.32      \n"
+            + "AAPL        |  306.68      \n"
+            + "---------------------------"
+            + "Total value of portfolio on is 496.0000"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
   public void testPortfolioValueForInvalidTomorrowDateAfterCreate() {
-    String generatedString = this.genRandomString();
-    LocalDate today = LocalDate.now();
-    LocalDate tomorrow = today.plusDays(1);
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n" + tomorrow.toString() + "\n2022-10-31\n4\n";
+    String xmlFilePath = "testFile.xml";
+    String validValueDate = "2022-10-31";
+    String invalidValueDate = LocalDate.now().plusDays(1).toString();
+    String portfolioName = "TestFile";
+    String s = "1".concat("\n")
+            .concat("2").concat("\n")
+            .concat(xmlFilePath).concat("\n")
+            .concat("4").concat("\n")
+            .concat("1").concat("\n")
+            .concat(invalidValueDate).concat("\n")
+            .concat(validValueDate).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter portfolio name: Enter number of stocks: Stock 1 " +
-            "ticker" +
-            ": Quantity : New portfolio (" + generatedString + ") has been recorded!" +
-            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
-            "3. Get portfolio value4. ExitSelect action: Which portfolio would you like to " +
-            "explore?" +
-            "1. " + generatedString + "Select portfolio: Enter the date for which you want the " +
-            "value:" +
-            " Please enter a valid date: " +
-            "Portfolio: " + generatedString + "---------------------------Stock       |  " +
-            "Value      " +
-            " ---------------------------AAPL        |  153.34      -------------------" +
-            "--------Total value of portfolio on is 153.3400What would you like to do?" +
-            "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
-            " ExitSelect action: ";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu
+            + "Which portfolio would you like to use?"
+            + "1. " + portfolioName
+            + "Select portfolio: "
+            + "Enter the date for which you want the value: "
+            + "Please enter a valid date: "
+            + "Portfolio: " + portfolioName
+            + "---------------------------\n"
+            + "Stock       |  Value       \n"
+            + "---------------------------\n"
+            + "GOOG        |  189.32      \n"
+            + "AAPL        |  306.68      \n"
+            + "---------------------------"
+            + "Total value of portfolio on is 496.0000"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
   @Test
   public void testPortfolioValueForWeekendAfterCreate() {
-    String generatedString = this.genRandomString();
-    String s = "1\n1\n" + generatedString + "\n1\nAAPL\n1\n3\n1\n2022-10-30\n4\n";
+    String xmlFilePath = "testFile.xml";
+    String valueDate = "2022-10-30";
+    String portfolioName = "TestFile";
+    String s = "1".concat("\n")
+            .concat("2").concat("\n")
+            .concat(xmlFilePath).concat("\n")
+            .concat("4").concat("\n")
+            .concat("1").concat("\n")
+            .concat(valueDate).concat("\n")
+            .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
     controller.run();
-    String expectedOutput = "Please enter the menu item number when requested." +
-            "What would you like to do?" +
-            "1. Create portfolio" +
-            "2. Get portfolio composition" +
-            "3. Get portfolio value" +
-            "4. ExitSelect action: How would you like to enter the portfolio details?" +
-            "1. Enter manually" +
-            "2. Load from file" +
-            "3. Go backSelect action: Enter portfolio name: Enter number of stocks: Stock 1 " +
-            "ticker" +
-            ": Quantity : New portfolio (" + generatedString + ") has been recorded!" +
-            "What would you like to do?1. Create portfolio2. Get portfolio composition" +
-            "3. Get portfolio value4. ExitSelect action: Which portfolio would you like to " +
-            "explore?" +
-            "1. " + generatedString + "Select portfolio: Enter the date for which you want the " +
-            "value:" +
-            " Entered day is a weekend.Calculating value for the previous Friday (2022-10-28)" +
-            "Portfolio: " + generatedString + "---------------------------Stock       |  " +
-            "Value      " +
-            " ---------------------------AAPL        |  155.74      -------------------" +
-            "--------Total value of portfolio on is 155.7400What would you like to do?" +
-            "1. Create portfolio2. Get portfolio composition3. Get portfolio value4." +
-            " ExitSelect action: ";
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + "Enter path to XML: "
+            + "New portfolio (TestFile) has been recorded!"
+            + this.startingMenu
+            + "Which portfolio would you like to use?"
+            + "1. " + portfolioName
+            + "Select portfolio: "
+            + "Enter the date for which you want the value: "
+            + "Entered day is a weekend.Calculating value for the previous Friday (2022-10-28)"
+            + "Portfolio: " + portfolioName
+            + "---------------------------\n"
+            + "Stock       |  Value       \n"
+            + "---------------------------\n"
+            + "GOOG        |  193.16      \n"
+            + "AAPL        |  311.48      \n"
+            + "---------------------------"
+            + "Total value of portfolio on is 504.6400"
+            + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 

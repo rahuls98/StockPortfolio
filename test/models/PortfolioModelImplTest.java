@@ -26,7 +26,7 @@ import static org.junit.Assert.assertFalse;
  * Test suite for the PortfolioModelImpl.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class PortfolioOldModelImplTest {
+public class PortfolioModelImplTest {
 
   private PortfolioModel model;
 
@@ -46,7 +46,16 @@ public class PortfolioOldModelImplTest {
     }
     PortfolioView view = new PortfolioViewImpl(new PrintStream(out));
     String testPortfolio = "testPortfolio";
-    String s = "1\n1\n" + testPortfolio + "\n2\nAAPL\n2\nGOOG\n2\n4\n";
+    String s = "1".concat("\n")
+            .concat("1").concat("\n")
+            .concat("2").concat("\n")
+            .concat(testPortfolio).concat("\n")
+            .concat("2").concat("\n")
+            .concat("AAPL").concat("\n")
+            .concat("2").concat("\n")
+            .concat("GOOG").concat("\n")
+            .concat("2").concat("\n")
+            .concat("7").concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));
