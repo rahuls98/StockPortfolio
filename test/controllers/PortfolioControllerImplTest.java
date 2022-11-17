@@ -651,9 +651,9 @@ public class PortfolioControllerImplTest {
             + "ORDER 1"
             + this.orderTypeOptions
             + "Enter date for the order in YYYY-MM-DD format: "
-            + "Please enter a valid date: "
-            + "Please enter a valid date: "
-            + "Please enter a valid date: "
+            + "Please enter a valid date that isn't a weekend: "
+            + "Please enter a valid date that isn't a weekend: "
+            + "Please enter a valid date that isn't a weekend: "
             + "Enter commission for this transaction: "
             + "Enter number of BUY transactions: "
             + "Stock 1 ticker: "
@@ -764,6 +764,148 @@ public class PortfolioControllerImplTest {
   }
 
   @Test
+  public void testFlexiblePortfolioIllegalOrders() {
+    String costBasisDate = "2022-10-11";
+    String portfolioName = "flex_test_1";
+    String s = "1".concat("\n") // Create portfolio
+            .concat("1").concat("\n") // Enter manually
+            .concat("1").concat("\n") // Create flexible portfolio
+            .concat(portfolioName).concat("\n")
+            .concat("3").concat("\n") // Number of orders
+            // ORDER 1
+            .concat("1").concat("\n") // BUY order
+            .concat("2022-09-30").concat("\n") // Date
+            .concat("5.6").concat("\n") // Commission
+            .concat("1").concat("\n") // Transactions
+            .concat("AAPL").concat("\n") // Transactions
+            .concat("50").concat("\n") // Transactions
+            // ORDER 2
+            .concat("2").concat("\n") // SELL order
+            .concat("2022-10-05").concat("\n") // Valid date
+            .concat("5").concat("\n") // Commission
+            .concat("1").concat("\n") // Transactions
+            .concat("AAPL").concat("\n") // Transactions
+            .concat("50").concat("\n") // Transactions
+            // ORDER 3
+            .concat("2").concat("\n") // SELL order
+            .concat("2022-10-07").concat("\n") // Valid date
+            .concat("6.0").concat("\n") // Caommission
+            .concat("1").concat("\n") // Transactions
+            .concat("AAPL").concat("\n") // Transactions
+            .concat("60").concat("\n") // Transactions
+            .concat(exitOption).concat("\n");
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + this.portfolioTypeOptions
+            + "Enter portfolio name: "
+            + "A flexible portfolio can have multiple BUY/SELL orders, each pertaining to a set of "
+            + "stock transactions.\n"
+            + "How many orders would you like to create? "
+            + "ORDER 1"
+            + this.orderTypeOptions
+            + "Enter date for the order in YYYY-MM-DD format: "
+            + "Enter commission for this transaction: "
+            + "Enter number of BUY transactions: "
+            + "Stock 1 ticker: "
+            + "Quantity : "
+            + "Order Recorded"
+            + "ORDER 2"
+            + this.orderTypeOptions
+            + "Enter date for the order in YYYY-MM-DD format: "
+            + "Enter commission for this transaction: "
+            + "Enter number of SELL transactions: "
+            + "Stock 1 ticker: "
+            + "Quantity : "
+            + "Order Recorded"
+            + "ORDER 3"
+            + this.orderTypeOptions
+            + "Enter date for the order in YYYY-MM-DD format: "
+            + "Enter commission for this transaction: "
+            + "Enter number of SELL transactions: "
+            + "Stock 1 ticker: "
+            + "Quantity : "
+            + "Invalid Order"
+            + "New portfolio (" + portfolioName + ") has been recorded!"
+            + this.startingMenu;
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  @Test
+  public void testFlexiblePortfolioIllegalOrderInMiddle() {
+    String costBasisDate = "2022-10-11";
+    String portfolioName = "flex_test_1";
+    String s = "1".concat("\n") // Create portfolio
+            .concat("1").concat("\n") // Enter manually
+            .concat("1").concat("\n") // Create flexible portfolio
+            .concat(portfolioName).concat("\n")
+            .concat("3").concat("\n") // Number of orders
+            // ORDER 1
+            .concat("1").concat("\n") // BUY order
+            .concat("2022-09-30").concat("\n") // Date
+            .concat("5.6").concat("\n") // Commission
+            .concat("1").concat("\n") // Transactions
+            .concat("AAPL").concat("\n") // Transactions
+            .concat("50").concat("\n") // Transactions
+            // ORDER 2
+            .concat("2").concat("\n") // SELL order
+            .concat("2022-10-07").concat("\n") // Valid date
+            .concat("5").concat("\n") // Commission
+            .concat("1").concat("\n") // Transactions
+            .concat("AAPL").concat("\n") // Transactions
+            .concat("50").concat("\n") // Transactions
+            // ORDER 3
+            .concat("2").concat("\n") // SELL order
+            .concat("2022-10-05").concat("\n") // Valid date
+            .concat("6.0").concat("\n") // Caommission
+            .concat("1").concat("\n") // Transactions
+            .concat("AAPL").concat("\n") // Transactions
+            .concat("60").concat("\n") // Transactions
+            .concat(exitOption).concat("\n");
+    InputStream input = new ByteArrayInputStream(s.getBytes());
+    PortfolioController controller = new PortfolioControllerImpl(model, view, input,
+            new PrintStream(out));
+    controller.run();
+    String expectedOutput = this.startingPrompt + this.startingMenu
+            + this.portfolioDetailEntryOptions
+            + this.portfolioTypeOptions
+            + "Enter portfolio name: "
+            + "A flexible portfolio can have multiple BUY/SELL orders, each pertaining to a set of "
+            + "stock transactions.\n"
+            + "How many orders would you like to create? "
+            + "ORDER 1"
+            + this.orderTypeOptions
+            + "Enter date for the order in YYYY-MM-DD format: "
+            + "Enter commission for this transaction: "
+            + "Enter number of BUY transactions: "
+            + "Stock 1 ticker: "
+            + "Quantity : "
+            + "Order Recorded"
+            + "ORDER 2"
+            + this.orderTypeOptions
+            + "Enter date for the order in YYYY-MM-DD format: "
+            + "Enter commission for this transaction: "
+            + "Enter number of SELL transactions: "
+            + "Stock 1 ticker: "
+            + "Quantity : "
+            + "Order Recorded"
+            + "ORDER 3"
+            + this.orderTypeOptions
+            + "Enter date for the order in YYYY-MM-DD format: "
+            + "Enter commission for this transaction: "
+            + "Enter number of SELL transactions: "
+            + "Stock 1 ticker: "
+            + "Quantity : "
+            + "Invalid Order"
+            + "New portfolio (" + portfolioName + ") has been recorded!"
+            + this.startingMenu;
+    assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+  @Test
   public void testMockComposition() {
     String s = "3\n1\n2022-11-14\n7\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
@@ -801,12 +943,6 @@ public class PortfolioControllerImplTest {
     @Override
     public void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks) {
       return;
-    }
-
-    @Override
-    public PortfolioInstanceModel getPortfolio(String portfolioName) {
-      log.append(portfolioName);
-      return null;
     }
 
     @Override

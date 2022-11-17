@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -148,5 +149,42 @@ public class PortfolioOldViewImplTest {
             .concat("---------------------------\n");
     textBasedUI.displayPortfolioValue(portfolioName, portfolioValues);
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
+  }
+
+
+  class MockView implements PortfolioView {
+    private StringBuilder log;
+    public MockView(StringBuilder log) {
+      this.log = log;
+    }
+    @Override
+    public void displayActions(String[] actions) {
+
+    }
+
+    @Override
+    public void displayPortfolios(String[] portfolios) {
+
+    }
+
+    @Override
+    public void displayPortfolioComposition(String name, HashMap<String, Integer> stockQuantities) {
+
+    }
+
+    @Override
+    public void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues) {
+
+    }
+
+    @Override
+    public void displayCostBasis(String name, String date, Float costBasis) {
+
+    }
+
+    @Override
+    public void displayPerformance(TreeMap<String, Float> performanceValues, float scale) {
+
+    }
   }
 }

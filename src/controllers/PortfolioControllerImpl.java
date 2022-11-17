@@ -105,7 +105,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     while (true) {
       try {
         choice = this.input.nextFloat();
-        if(choice < 0) {
+        if (choice < 0) {
           throw new RuntimeException();
         }
         break;
@@ -205,9 +205,8 @@ public class PortfolioControllerImpl implements PortfolioController {
         break;
       }
     }
-    // TODO : Change implementation, cause this will use previous date if input date is weekend.
     this.output.print("Enter date for the order in YYYY-MM-DD format: ");
-    String date = this.getDateFromUser();
+    String date = this.getWeekdayFromUser();
     this.output.print("Enter commission for this transaction: ");
     Float com = this.getFloatFromUser();
     this.output.print("Enter number of " + action + " transactions: ");
@@ -234,10 +233,9 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
       stocks.put(stockName, stockQuantity);
     }
-    if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))){
+    if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))) {
       this.output.println("Invalid Order");
-    }
-    else {
+    } else {
       this.output.println("Order Recorded");
     }
   }
@@ -319,7 +317,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       n = this.getIntegerFromUser();
     }
     for (int i = 0; i < n; i++) {
-      this.output.println("\nORDER " + (i+1));
+      this.output.println("\nORDER " + (i + 1));
       this.createOrder(portfolioName);
     }
     this.model.persist();
@@ -364,8 +362,15 @@ public class PortfolioControllerImpl implements PortfolioController {
       return;
     }
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
-    this.output.print("\nEnter a date for viewing the composition: ");
-    String date = this.getDateFromUser();
+    String date;
+    if (Arrays.asList(model.getInflexiblePortfolios()).contains(portfolioName)) {
+      //It is an inflexible portfolio
+      date = LocalDate.now().toString();
+    } else {
+      //It is a flexible portfolio
+      this.output.print("\nEnter a date for viewing the composition: ");
+      date = this.getDateFromUser();
+    }
     this.output.println();
     view.displayPortfolioComposition(portfolioName,
             this.model.getStockQuantitiesInPortfolio(portfolioName, date));
@@ -386,9 +391,9 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void getCostBasis() {
-    String[] portfolios = model.getPortfolios();
+    String[] portfolios = model.getFlexiblePortfolios();
     if (portfolios.length == 0) {
-      this.output.println("\nYou have no portfolios currently!");
+      this.output.println("\nYou have no flexible portfolios currently!");
       return;
     }
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
@@ -399,11 +404,16 @@ public class PortfolioControllerImpl implements PortfolioController {
   }
 
   private void getPerformance() {
-    String portfolioName = this.displayPortfoliosAndTakeUserInput(model.getPortfolios());
+    String[] portfolios = model.getPortfolios();
+    if (portfolios.length == 0) {
+      this.output.println("\nYou have no portfolios currently!");
+      return;
+    }
+    String portfolioName = this.displayPortfoliosAndTakeUserInput(portfolios);
     this.output.print("Enter lower date: ");
-    String d1 = this.getDateFromUser();
+    String d1 = this.getWeekdayFromUser();
     this.output.print("Enter upper date: ");
-    String d2 = this.getDateFromUser();
+    String d2 = this.getWeekdayFromUser();
     TreeMap<String, Float> performanceValues = this.model.getPerformanceValues(portfolioName, d1,
             d2);
     this.view.displayPerformance(performanceValues, this.model.getScale(performanceValues));
@@ -442,6 +452,19 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.println("Calculating value for the previous Friday (" + date.toString() + ")");
     }
     return date.toString();
+  }
+
+  private String getWeekdayFromUser() {
+    String strDate = this.input.next();
+    while ((!(this.model.isValidDate(strDate))) ||
+            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0) ||
+            (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0) ||
+            (DayOfWeek.of(LocalDate.parse(strDate).get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SATURDAY) ||
+            (DayOfWeek.of(LocalDate.parse(strDate).get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SUNDAY)) {
+      this.output.print("Please enter a valid date that isn't a weekend: ");
+      strDate = this.input.next();
+    }
+    return strDate;
   }
 
   private String getDateFromUser() {

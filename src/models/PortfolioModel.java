@@ -29,13 +29,6 @@ public interface PortfolioModel {
   //TODO: It takes, type, Hashmap of stock & quantity.
   void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks);
 
-  /**
-   * Finds and retrieves a portfolio of the current user, searching by the portfolio name.
-   *
-   * @param portfolioName Name of the portfolio to retrieve.
-   * @return Portfolio object with all of its stocks and quantities.
-   */
-  PortfolioInstanceModel getPortfolio(String portfolioName);
 
   /**
    * Retrieves the names of all portfolios of the current user.
@@ -99,7 +92,6 @@ public interface PortfolioModel {
   boolean isValidDate(String date);
 
 
-
   /**
    * Persists data to storage.
    */
@@ -123,6 +115,7 @@ public interface PortfolioModel {
 
   /**
    * Adds order to portfolio
+   *
    * @param portfolio
    * @param
    */
@@ -131,7 +124,7 @@ public interface PortfolioModel {
   Float getCostBasis(String portfolioName, String date);
 
   TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1,
-                                                     String date2);
+                                              String date2);
 
   Float getScale(TreeMap<String, Float> values);
 }
