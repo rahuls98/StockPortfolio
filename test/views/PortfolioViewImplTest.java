@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
 /**
  * Test suite for the PortfolioViewImpl.
  */
-public class PortfolioOldViewImplTest {
+public class PortfolioViewImplTest {
 
   private OutputStream out;
   private PortfolioView textBasedUI;
