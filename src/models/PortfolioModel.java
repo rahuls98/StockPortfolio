@@ -98,22 +98,7 @@ public interface PortfolioModel {
    */
   boolean isValidDate(String date);
 
-  /**
-   * Adds a stock and its quantity to a given portfolio.
-   *
-   * @param portfolioName Name of the portfolio to add the stock to.
-   * @param stockTicker   Ticker symbol of the stock to add.
-   * @param stockQuantity Quantity of the stock to add.
-   */
-  void addStock(String portfolioName, String stockTicker, int stockQuantity);
 
-  /**
-   * Adds a portfolio to the current user.
-   *
-   * @param portfolioOld     Portfolio to add.
-   * @param portfolioName Name of the portfolio to add.
-   */
-//  void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName);
 
   /**
    * Persists data to storage.
@@ -137,21 +122,11 @@ public interface PortfolioModel {
   HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date);
 
   /**
-   * Creates an Order
-   * @param date
-   * @param action
-   * @param c
-   * @param stocks
-   * @return
-   */
-  Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks);
-
-  /**
    * Adds order to portfolio
    * @param portfolio
-   * @param o
+   * @param
    */
-  Boolean addOrderToPortfolio(String portfolio, Order o);
+  Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks);
 
   Float getCostBasis(String portfolioName, String date);
 

@@ -72,8 +72,8 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
 
-  @Override
-  public Boolean addOrderToPortfolio(String portfolio, Order o) {
+
+  private Boolean addOrderToPortfolio(String portfolio, Order o) {
      return this.user.getPortfolios().get(portfolio).placeOrder(o);
   }
 
@@ -82,8 +82,8 @@ public class PortfolioModelImpl implements PortfolioModel {
     return this.getPortfolio(portfolioName).getCostBasis(LocalDate.parse(date));
   }
 
-  @Override
-  public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
+
+  private Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
     Order o;
     if (action.equals("BUY")) {
       o = new Order(Action.BUY, LocalDate.parse(date), c);
@@ -186,6 +186,7 @@ public class PortfolioModelImpl implements PortfolioModel {
           }
           if (!this.addOrderToPortfolio(portfolioName,
                   this.createOrder(date, action, commission, stocks))) {
+            this.user.getPortfolios().remove(portfolioName);
             throw new RuntimeException("Invalid order book");
           }
         }
@@ -222,20 +223,6 @@ public class PortfolioModelImpl implements PortfolioModel {
     return true;
   }
 
-  @Override
-  public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
-    return;  }
-
-
-  public void addOrder(String portfolioName, Order o) {
-    this.user.getPortfolios().get(portfolioName).placeOrder(o);
-  }
-
-//  @Override
-//  public void addPortfolioToUser(Portfolio_old portfolioOld, String portfolioName) {
-//    portfolioOld.setName(portfolioName);
-//    this.user.addPortfolio(portfolioOld);
-//  }
 
   @Override
   public void persist() {
@@ -250,6 +237,11 @@ public class PortfolioModelImpl implements PortfolioModel {
   @Override
   public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date) {
     return this.getPortfolio(portfolioName).getStockCompositionOnDate(LocalDate.parse(date));
+  }
+
+  @Override
+  public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks) {
+    return this.addOrderToPortfolio(portfolio, this.createOrder(date, action, c, stocks));
   }
 
   @Override

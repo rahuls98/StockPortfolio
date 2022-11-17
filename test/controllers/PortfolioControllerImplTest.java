@@ -654,11 +654,6 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public void addStock(String portfolioName, String stockTicker, int stockQuantity) {
-
-    }
-
-    @Override
     public void persist() {
 
     }
@@ -676,12 +671,7 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
-      return null;
-    }
-
-    @Override
-    public Boolean addOrderToPortfolio(String portfolio, Order o) {
+    public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks) {
       return null;
     }
 
