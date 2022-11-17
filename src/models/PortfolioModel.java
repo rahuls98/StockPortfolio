@@ -80,7 +80,7 @@ public interface PortfolioModel {
    * @param pathToXml Path to the XML file containing the portfolio information.
    * @return Loaded portfolio and its contents.
    */
-  Portfolio loadPortfolioFromXml(String pathToXml);
+  void loadPortfolioFromXml(String pathToXml);
 
   /**
    * Loads the name of a portfolio from a given portfolio XML file.

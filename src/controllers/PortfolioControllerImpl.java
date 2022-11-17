@@ -343,7 +343,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       portfolioName = this.input.next();
     }
     try {
-      this.model.addPortfolioToUser(this.model.loadPortfolioFromXml(pathToXml), portfolioName);
+      this.model.loadPortfolioFromXml(pathToXml);
     } catch (Exception e) {
       this.output.println("\nXML File Invalid!");
       return;

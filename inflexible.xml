@@ -1,0 +1,6 @@
+<portfolio title="inflexible_test_1" type="inflexible">
+	<stocks>
+		<stock quantity="2" symbol="GOOG"/>
+		<stock quantity="2" symbol="AAPL"/>
+	</stocks>
+</portfolio>

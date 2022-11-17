@@ -126,7 +126,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public Portfolio loadPortfolioFromXml(String pathToFile) {
+  public void loadPortfolioFromXml(String pathToFile) {
     try {
       int quantity;
       FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
@@ -137,61 +137,59 @@ public class PortfolioModelImpl implements PortfolioModel {
       Element portfolioElement = (Element) portfolioNode;
       String portfolioName = portfolioElement.getAttribute("title");
       String type = portfolioElement.getAttribute("type");
-      PortfolioType portfolioType = (type.equals("inflexible")) ? PortfolioType.INFLEXIBLE :
-              PortfolioType.FLEXIBLE;
-      List<Order> portfolioOrders = new ArrayList<>();
-      Portfolio portfolio = null;
       NodeList orderList = portfolioElement.getElementsByTagName("order");
       if (type.equals("inflexible")) {
-        for (int k = 0; k < orderList.getLength(); k++) {
-          Node orderNode = orderList.item(k);
-          Element orderElement = (Element) orderNode;
-          String action = orderElement.getAttribute("action");
-          if (action.equals("SELL")) {
-            throw new Exception("Invalid portfolio action!");
+        NodeList stockList = portfolioElement.getElementsByTagName("stock");
+        HashMap<String, Integer> stocks = new HashMap<>();
+        for (int j = 0; j < stockList.getLength(); j++) {
+          Node stockNode = stockList.item(j);
+          Element stockElement = (Element) stockNode;
+          if (!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
+            throw new IllegalArgumentException("Invalid Ticker");
           }
-          Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
-          String date = orderElement.getAttribute("date");
-          float commission = Float.parseFloat(orderElement.getAttribute("commission"));
-          Order order = new Order(orderAction, LocalDate.parse(date), commission);
-          NodeList stockList = orderElement.getElementsByTagName("stock");
-          HashMap<String, Integer> stocks = new HashMap<>();
-          for (int l = 0; l < stockList.getLength(); l++) {
-            Node stockNode = stockList.item(l);
-            Element stockElement = (Element) stockNode;
-            stocks.put(stockElement.getAttribute("symbol"),
-                    Integer.parseInt(stockElement.getAttribute("quantity")));
+          try {
+            quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
+            if (quantity <= 0) {
+              throw new IllegalArgumentException("Invalid Quantity");
+            }
+          } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid Quantity");
           }
-          order.addStocks(stocks);
-          portfolioOrders.add(order);
+          stocks.put(stockElement.getAttribute("symbol"), quantity);
         }
-        portfolio = new Portfolio(portfolioName, portfolioType, portfolioOrders);
+        this.addInflexiblePortfolio(portfolioName, stocks);
       } else if (type.equals("flexible")) {
-        portfolio = new Portfolio(portfolioName, portfolioType, portfolioOrders);
+        this.addFlexiblePortfolio(portfolioName);
         for (int k = 0; k < orderList.getLength(); k++) {
           Node orderNode = orderList.item(k);
           Element orderElement = (Element) orderNode;
           String action = orderElement.getAttribute("action");
-          Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
           String date = orderElement.getAttribute("date");
           float commission = Float.parseFloat(orderElement.getAttribute("commission"));
-          Order order = new Order(orderAction, LocalDate.parse(date), commission);
-          NodeList stockList = orderElement.getElementsByTagName("stock");
           HashMap<String, Integer> stocks = new HashMap<>();
+          NodeList stockList = orderElement.getElementsByTagName("stock");
           for (int l = 0; l < stockList.getLength(); l++) {
             Node stockNode = stockList.item(l);
             Element stockElement = (Element) stockNode;
-            stocks.put(stockElement.getAttribute("symbol"),
-                    Integer.parseInt(stockElement.getAttribute("quantity")));
+            if (!(this.isValidTicker(stockElement.getAttribute("symbol")))) {
+              throw new IllegalArgumentException("Invalid Ticker");
+            }
+            try {
+              quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
+              if (quantity <= 0) {
+                throw new IllegalArgumentException("Invalid Quantity");
+              }
+            } catch (NumberFormatException e) {
+              throw new IllegalArgumentException("Invalid Quantity");
+            }
+            stocks.put(stockElement.getAttribute("symbol"), quantity);
           }
-          order.addStocks(stocks);
-          portfolioOrders.add(order);
-          if (!portfolio.placeOrder(order)) {
+          if (!this.addOrderToPortfolio(portfolioName,
+                  this.createOrder(date, action, commission, stocks))) {
             throw new RuntimeException("Invalid order book");
           }
         }
       }
-      return portfolio;
     } catch (Exception e) {
       System.out.println(e);
       throw new IllegalArgumentException("Invalid XML!");

@@ -640,8 +640,7 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public Portfolio loadPortfolioFromXml(String pathToXml) {
-      return null;
+    public void loadPortfolioFromXml(String pathToXml) {
     }
 
     @Override
