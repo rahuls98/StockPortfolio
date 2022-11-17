@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public interface PortfolioInstanceModel {
 
@@ -16,23 +14,21 @@ public interface PortfolioInstanceModel {
    *
    * @return Portfolio name.
    */
-  public String getName();
+  String getName();
 
   /**
    * Sets the name of the portfolio.
    *
    * @param name Name to set.
    */
-  public void setName(String name);
-
-
+  void setName(String name);
 
   /**
-   * Returns all the stocks in the portfolio and their quantities.
+   * Returns the composition of the Portfolio.
    *
-   * @return Portfolio stocks and quantities.
+   * @return Current composition of the portfolio represented as stocks mapped to their quantities.
    */
-  public HashMap<String, Integer> getStockQuantities();
+  HashMap<String, Integer> getStockQuantities();
 
   /**
    * Retrieves the stocks of the portfolio and their values on a given date.
@@ -41,21 +37,51 @@ public interface PortfolioInstanceModel {
    * @return Stocks their values on the given date.
    */
 
-  public HashMap<String, Float> getValue(String date);
-
-
+  HashMap<String, Float> getValue(String date);
 
   /**
    * Retrieves names of all stocks in the portfolio.
    *
    * @return Tickers of all stocks in portfolio.
    */
-  public HashSet<String> getStockNames();
+  HashSet<String> getStockNames();
 
-  public Boolean placeOrder(Order o);
+  /**
+   * Adds an order to the current portfolio.
+   *
+   * @param o Order to add.
+   * @return true if the order was added successfully, false if not.
+   */
+  Boolean placeOrder(Order o);
 
-  public Float getTotalValue(HashMap<String, Float> values);
-  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d);
-  public float getCostBasis(LocalDate date);
+  /**
+   * Total value of the given stock values.
+   *
+   * @param values Values to calculate total for.
+   * @return Total value.
+   */
+  Float getTotalValue(HashMap<String, Float> values);
+
+  /**
+   * Returns the composition of the portfolio on a given date.
+   *
+   * @param d Date to get the composition for.
+   * @return Composition of the portfolio on the given date.
+   */
+  HashMap<String, Integer> getStockCompositionOnDate(LocalDate d);
+
+  /**
+   * Returns the cost basis of the portfolio on a given date.
+   *
+   * @param date Date to get the cost basis for.
+   * @return Cost basis of the portfolio on the given date.
+   */
+  float getCostBasis(LocalDate date);
+
+  /**
+   * Returns a list of all the orders in the current portfolio.
+   *
+   * @return Orders in the current portfolio.
+   */
   ArrayList<Order> getOrderBook();
 }

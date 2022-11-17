@@ -30,7 +30,6 @@ public class PortfolioModelImplTest {
 
   private PortfolioModel model;
 
-  //TODO: Test for parsing of invalid XML
   @Before
   public void setUp() {
     File file = new File("localStorage.xml");
@@ -79,17 +78,13 @@ public class PortfolioModelImplTest {
   @Test
   public void testGetPortfolioValues() {
     assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-31")
-                    .get("AAPL")
-            , 306.67, 0.01f);
+                    .get("AAPL"), 306.67, 0.01f);
     assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-31")
-                    .get("GOOG")
-            , 189.32, 0.01f);
+                    .get("GOOG"), 189.32, 0.01f);
     assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-25")
-                    .get("AAPL")
-            , 304.67, 0.01f);
+                    .get("AAPL"), 304.67, 0.01f);
     assertEquals(model.getPortfolioValues("testPortfolio", "2022-10-25")
-                    .get("GOOG")
-            , 209.86, 0.01f);
+                    .get("GOOG"), 209.86, 0.01f);
   }
 
   @Test

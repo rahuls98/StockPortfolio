@@ -6,9 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -49,8 +47,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   @Override
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
-    String[] actions = new String[]{"Create Portfolio", "Create Order", "Get portfolio " +
-            "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
+    String[] actions = new String[]{"Create Portfolio", "Create Order", "Get portfolio "
+            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -116,29 +114,6 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
     }
     return choice;
-  }
-
-  private void createOrder() {
-    String[] actions = new String[]{"Create an order in an existing portfolio", "Create a new " +
-            "portfolio and add orders", "Go back"};
-    this.output.println();
-    this.output.println("What would you like to do?");
-    this.view.displayActions(actions);
-    this.output.print("Select action: ");
-    int n = this.getIntegerFromUser();
-    switch (n) {
-      case 1:
-        this.createForExistingPortfolio();
-        break;
-      case 2:
-        this.createPortfolio();
-        break;
-      case 3:
-        return;
-      default:
-        this.output.print("Invalid choice, please try again!\n");
-        break;
-    }
   }
 
   private void createForExistingPortfolio() {
@@ -253,6 +228,7 @@ public class PortfolioControllerImpl implements PortfolioController {
         break;
       case 2:
         this.createInflexiblePortfolioManually();
+        break;
       default:
         break;
     }
@@ -307,9 +283,8 @@ public class PortfolioControllerImpl implements PortfolioController {
       portfolioName = this.input.next();
     }
     this.model.addFlexiblePortfolio(portfolioName);
-    this.output.println("\nA flexible portfolio can have multiple BUY/SELL orders, each " +
-            "pertaining " +
-            "to a set of stock transactions.");
+    this.output.println("\nA flexible portfolio can have multiple BUY/SELL orders, each "
+            + "pertaining to a set of stock transactions.");
     this.output.print("How many orders would you like to create? ");
     int n = this.getIntegerFromUser();
     while (n <= 0) {
@@ -416,7 +391,8 @@ public class PortfolioControllerImpl implements PortfolioController {
     String d2 = this.getWeekdayFromUser();
     TreeMap<String, Float> performanceValues = this.model.getPerformanceValues(portfolioName, d1,
             d2);
-    this.view.displayPerformance(portfolioName, performanceValues, this.model.getScale(performanceValues));
+    this.view.displayPerformance(portfolioName, performanceValues,
+            this.model.getScale(performanceValues));
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {
@@ -456,11 +432,13 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private String getWeekdayFromUser() {
     String strDate = this.input.next();
-    while ((!(this.model.isValidDate(strDate))) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0) ||
-            (DayOfWeek.of(LocalDate.parse(strDate).get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SATURDAY) ||
-            (DayOfWeek.of(LocalDate.parse(strDate).get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SUNDAY)) {
+    while ((!(this.model.isValidDate(strDate)))
+            || (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0)
+            || (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)
+            || (DayOfWeek.of(LocalDate.parse(strDate).get(ChronoField.DAY_OF_WEEK))
+            == DayOfWeek.SATURDAY)
+            || (DayOfWeek.of(LocalDate.parse(strDate).get(ChronoField.DAY_OF_WEEK))
+            == DayOfWeek.SUNDAY)) {
       this.output.print("Please enter a valid date that isn't a weekend: ");
       strDate = this.input.next();
     }
@@ -469,9 +447,9 @@ public class PortfolioControllerImpl implements PortfolioController {
 
   private String getDateFromUser() {
     String strDate = this.input.next();
-    while ((!(this.model.isValidDate(strDate))) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)) {
+    while ((!(this.model.isValidDate(strDate)))
+            || (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0)
+            || (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)) {
       this.output.print("Please enter a valid date: ");
       strDate = this.input.next();
     }

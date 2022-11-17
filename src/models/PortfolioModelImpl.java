@@ -249,7 +249,8 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks) {
+  public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action,
+                                                   float c, HashMap<String, Integer> stocks) {
     return this.addOrderToPortfolio(portfolio, this.createOrder(date, action, c, stocks));
   }
 
@@ -262,8 +263,8 @@ public class PortfolioModelImpl implements PortfolioModel {
       LocalDate ld2 = LocalDate.parse(date2);
       while ((ld2.toEpochDay() - ld1.toEpochDay()) < 4) {
         ld1 = ld1.minusDays(1);
-        while ((DayOfWeek.of(ld1.get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SATURDAY) ||
-                (DayOfWeek.of(ld1.get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SUNDAY)) {
+        while ((DayOfWeek.of(ld1.get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SATURDAY)
+                || (DayOfWeek.of(ld1.get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SUNDAY)) {
           ld1 = ld1.minusDays(1);
         }
       }

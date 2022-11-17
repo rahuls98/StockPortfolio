@@ -11,6 +11,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * This class contains the test suite for the Portfolio class.
+ */
 public class PortfolioTest {
   private Portfolio portfolio;
 
@@ -80,8 +83,10 @@ public class PortfolioTest {
   public void testSellValidQuantity() {
     HashMap<String, Integer> stocks = new HashMap<>();
     stocks.put("AAPL", 1);
-    Order buyOrder = new Order(Action.BUY, LocalDate.of(2022, 11, 9), 1);
-    Order sellOrder = new Order(Action.SELL, LocalDate.of(2022, 11, 9), 1);
+    Order buyOrder = new Order(Action.BUY,
+            LocalDate.of(2022, 11, 9), 1);
+    Order sellOrder = new Order(Action.SELL,
+            LocalDate.of(2022, 11, 9), 1);
     buyOrder.addStocks(stocks);
     sellOrder.addStocks(stocks);
     this.portfolio.placeOrder(buyOrder);
@@ -113,9 +118,11 @@ public class PortfolioTest {
     HashMap<String, Integer> comp = new HashMap<>();
     comp.put("GOOG", 1);
     comp.put("AAPL", 1);
-    assertEquals(comp, p1.getStockCompositionOnDate(LocalDate.of(2022, 6, 17)));
+    assertEquals(comp,
+            p1.getStockCompositionOnDate(LocalDate.of(2022, 6, 17)));
     comp.put("AAPL", 2);
-    assertEquals(comp, p1.getStockCompositionOnDate(LocalDate.of(2022, 7, 17)));
+    assertEquals(comp,
+            p1.getStockCompositionOnDate(LocalDate.of(2022, 7, 17)));
   }
 
   @Test
@@ -166,9 +173,13 @@ public class PortfolioTest {
     port.placeOrder(o2); //Buy 1 GOOG on 13th October - 99.71
     port.placeOrder(o3);//Sell 1 GOOG on 17th October
 
-    assertEquals(0.00f, port.getCostBasis(LocalDate.parse("2022-09-01")), 0.01);
-    assertEquals(150.09f, port.getCostBasis(LocalDate.parse("2022-10-07")), 0.01);
-    assertEquals((150.09f + 99.71 + 20), port.getCostBasis(LocalDate.parse("2022-10-13")), 0.01);
-    assertEquals((150.09f + 99.71 + 20 + 10), port.getCostBasis(LocalDate.parse("2022-10-18")), 0.01);
+    assertEquals(0.00f,
+            port.getCostBasis(LocalDate.parse("2022-09-01")), 0.01);
+    assertEquals(150.09f,
+            port.getCostBasis(LocalDate.parse("2022-10-07")), 0.01);
+    assertEquals((150.09f + 99.71 + 20),
+            port.getCostBasis(LocalDate.parse("2022-10-13")), 0.01);
+    assertEquals((150.09f + 99.71 + 20 + 10),
+            port.getCostBasis(LocalDate.parse("2022-10-18")), 0.01);
   }
 }

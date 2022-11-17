@@ -18,12 +18,6 @@ public interface PortfolioModel {
 
   void addPortfolioToUser(Portfolio portfolio, String portfolioName);
 
-  //
-//  @Override
-//  public void addPortfolio(String portfolioName) {
-//    this.user.addPortfolio(new Portfolio(portfolioName));
-//  }
-  //TODO: It takes, type, Hashmap of stock & quantity.
   void addFlexiblePortfolio(String portfolioName);
 
   //TODO: It takes, type, Hashmap of stock & quantity.
@@ -119,7 +113,8 @@ public interface PortfolioModel {
    * @param portfolio
    * @param
    */
-  Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks);
+  Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c,
+                                            HashMap<String, Integer> stocks);
 
   Float getCostBasis(String portfolioName, String date);
 

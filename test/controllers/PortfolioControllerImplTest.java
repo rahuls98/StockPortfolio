@@ -18,9 +18,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.TreeMap;
 
-import models.Order;
 import models.Portfolio;
-import models.PortfolioInstanceModel;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;
@@ -40,37 +38,37 @@ public class PortfolioControllerImplTest {
   private PortfolioView view;
 
   private final String startingPrompt = "Please enter the menu item number when requested.";
-  private final String startingMenu = "What would you like to do?\n" +
-          "1. Create Portfolio\n" +
-          "2. Create Order\n" +
-          "3. Get portfolio composition\n" +
-          "4. Get portfolio value\n" +
-          "5. Get Cost Basis\n" +
-          "6. Get Performance\n" +
-          "7. Exit\n" +
-          "Select action: ";
+  private final String startingMenu = "What would you like to do?\n"
+          + "1. Create Portfolio\n"
+          + "2. Create Order\n"
+          + "3. Get portfolio composition\n"
+          + "4. Get portfolio value\n"
+          + "5. Get Cost Basis\n"
+          + "6. Get Performance\n"
+          + "7. Exit\n"
+          + "Select action: ";
 
   private final String exitOption = "7";
 
   private final String invalidInteger = "Please enter a valid integer value: ";
 
-  private final String portfolioDetailEntryOptions = "How would you like to " +
-          "enter the portfolio details?\n" +
-          "1. Enter manually\n" +
-          "2. Load from file\n" +
-          "3. Go back\n" +
-          "Select action: ";
+  private final String portfolioDetailEntryOptions = "How would you like to "
+          + "enter the portfolio details?\n"
+          + "1. Enter manually\n"
+          + "2. Load from file\n"
+          + "3. Go back\n"
+          + "Select action: ";
 
-  private final String portfolioTypeOptions = "What type of portfolio would you like to create?\n" +
-          "1. Flexible\n" +
-          "2. Inflexible\n" +
-          "3. Go back\n" +
-          "Select action: ";
+  private final String portfolioTypeOptions = "What type of portfolio would you like to create?\n"
+          + "1. Flexible\n"
+          + "2. Inflexible\n"
+          + "3. Go back\n"
+          + "Select action: ";
 
-  private final String orderTypeOptions = "What type of order would you like to create?\n" +
-          "1. BUY order\n" +
-          "2. SELL order\n" +
-          "Select action: ";
+  private final String orderTypeOptions = "What type of order would you like to create?\n"
+          + "1. BUY order\n"
+          + "2. SELL order\n"
+          + "Select action: ";
 
   private final String stockTickerEntry = "Stock 1 ticker: ";
   private final String stockQuantityEntry = "Quantity : ";

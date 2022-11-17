@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,8 +28,7 @@ public class PortfolioViewImplTest {
   }
 
   private String prepareString(String s) {
-    return s.replace("\r", "").
-            replace("\n", "");
+    return s.replace("\r", "").replace("\n", "");
   }
 
   @Test

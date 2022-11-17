@@ -202,15 +202,17 @@ class StorageModelLocalImpl implements StorageModel {
       user.setAttribute("name", userObj.getName());
       Element portfolios = document.createElement("portfolios");
       user.appendChild(portfolios);
-      for (Map.Entry<String, PortfolioInstanceModel> portfoliosObj : userObj.getPortfolios().entrySet()) {
+      for (Map.Entry<String, PortfolioInstanceModel> portfoliosObj :
+              userObj.getPortfolios().entrySet()) {
         Element portfolio = document.createElement("portfolio");
         portfolios.appendChild(portfolio);
         portfolio.setAttribute("title", portfoliosObj.getKey());
-        portfolio.setAttribute("type", portfoliosObj.getValue().getType().toString().toLowerCase());
+        portfolio.setAttribute("type", portfoliosObj.getValue().getType().toString()
+                .toLowerCase());
         Element orders = document.createElement("orders");
         portfolio.appendChild(orders);
         ArrayList<Order> orderBook = portfoliosObj.getValue().getOrderBook();
-        for (Order orderObj: orderBook) {
+        for (Order orderObj : orderBook) {
           Element order = document.createElement("order");
           order.setAttribute("action", orderObj.getAction().name());
           order.setAttribute("date", orderObj.getDate().toString());

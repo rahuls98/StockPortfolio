@@ -1,14 +1,16 @@
 package models;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
+/**
+ * Represents a Portfolio which can be various PortfolioTypes, having multiple stocks and
+ * their quantities.
+ */
 public class Portfolio implements PortfolioInstanceModel {
   private String name;
   private ArrayList<Order> orderBook;
@@ -17,6 +19,14 @@ public class Portfolio implements PortfolioInstanceModel {
 
   private PortfolioType type;
 
+  /**
+   * Returns an object of Portfolio which will have a name, a PortfolioType, and a set of orders
+   * with stock transactions.
+   *
+   * @param name          Name of the portfolio
+   * @param type          Type of the portfolio according to PortfolioType
+   * @param initialOrders Inital orders to add to the portfolio
+   */
   public Portfolio(String name, PortfolioType type, List<Order> initialOrders) {
     this.name = name;
     this.type = type;
@@ -40,7 +50,6 @@ public class Portfolio implements PortfolioInstanceModel {
     this.name = name;
   }
 
-
   @Override
   public Boolean placeOrder(Order o) {
     if (this.type == PortfolioType.INFLEXIBLE) {
@@ -53,7 +62,7 @@ public class Portfolio implements PortfolioInstanceModel {
       if (orderBook.isEmpty()) {
         return false;
       }
-      if(o.getDate().compareTo(this.getEarliestDate()) < 0) {
+      if (o.getDate().compareTo(this.getEarliestDate()) < 0) {
         return false;
       }
       orderBook.add(o);
@@ -67,8 +76,8 @@ public class Portfolio implements PortfolioInstanceModel {
 
   private LocalDate getEarliestDate() {
     LocalDate earliest = this.orderBook.get(0).getDate();
-    for(int i = 0; i < this.orderBook.size(); i++) {
-      if(earliest.compareTo(this.orderBook.get(i).getDate()) > 0) {
+    for (int i = 0; i < this.orderBook.size(); i++) {
+      if (earliest.compareTo(this.orderBook.get(i).getDate()) > 0) {
         earliest = this.orderBook.get(i).getDate();
       }
     }
@@ -97,19 +106,14 @@ public class Portfolio implements PortfolioInstanceModel {
             this.stocks.put(stock.getKey(), new Stock(stock.getKey()));
           }
           //The cost of the stock on the purchase date.
-          costBasis += (stock.getValue() * this.stocks.get(stock.getKey()).getPriceOnDate(ordBook.get(i).getDate().toString()));
+          costBasis += (stock.getValue() * this.stocks.get(stock.getKey())
+                  .getPriceOnDate(ordBook.get(i).getDate().toString()));
         }
       }
     }
     return costBasis;
   }
 
-
-  /**
-   * Returns the composition of the Portfolio
-   *
-   * @return composition of portfolio currently
-   */
   @Override
   public HashMap<String, Integer> getStockQuantities() {
     return getComposition(this.orderBook);
@@ -120,7 +124,7 @@ public class Portfolio implements PortfolioInstanceModel {
     return getComposition(this.getOrderBookOnDate(d));
   }
 
-  public ArrayList<Order> getOrderBookOnDate(LocalDate date) {
+  private ArrayList<Order> getOrderBookOnDate(LocalDate date) {
     ArrayList<Order> ordBook = new ArrayList<>();
     for (int i = 0; i < this.orderBook.size(); i++) {
       if (date.compareTo(this.orderBook.get(i).getDate()) >= 0) {
@@ -130,7 +134,7 @@ public class Portfolio implements PortfolioInstanceModel {
     return ordBook;
   }
 
-  public HashMap<String, Integer> getComposition(ArrayList<Order> orders) {
+  private HashMap<String, Integer> getComposition(ArrayList<Order> orders) {
     HashMap<String, Integer> composition = new HashMap<>();
     //Add stocks
     for (int i = 0; i < orders.size(); i++) {
@@ -171,21 +175,18 @@ public class Portfolio implements PortfolioInstanceModel {
       if (!(this.stocks.containsKey(entry.getKey()))) {
         this.stocks.put(entry.getKey(), new Stock(entry.getKey()));
       }
-      values.put(entry.getKey(),
-              (values.get(entry.getKey()) +
-                      (entry.getValue() *
-                              this.stocks.get(entry.getKey()).getPriceOnDate(date))));
+      values.put(entry.getKey(), (values.get(entry.getKey()) + (entry.getValue()
+              * this.stocks.get(entry.getKey()).getPriceOnDate(date))));
     }
     return values;
   }
-
 
   @Override
   public HashSet<String> getStockNames() {
     return null;
   }
 
-
+  @Override
   public Float getTotalValue(HashMap<String, Float> comp) {
     float total = 0.00f;
     for (Map.Entry<String, Float> entry : comp.entrySet()) {
@@ -194,16 +195,9 @@ public class Portfolio implements PortfolioInstanceModel {
     return total;
   }
 
-
   @Override
   public String toString() {
     return this.name;
-  }
-
-  private static int findGCD(int a, int b) {
-    if (b == 0)
-      return a;
-    return findGCD(b, a % b);
   }
 
   @Override
