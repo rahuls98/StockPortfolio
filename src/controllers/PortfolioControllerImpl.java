@@ -416,7 +416,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     String d2 = this.getWeekdayFromUser();
     TreeMap<String, Float> performanceValues = this.model.getPerformanceValues(portfolioName, d1,
             d2);
-    this.view.displayPerformance(performanceValues, this.model.getScale(performanceValues));
+    this.view.displayPerformance(portfolioName, performanceValues, this.model.getScale(performanceValues));
   }
 
   private String displayPortfoliosAndTakeUserInput(String[] portfolios) {

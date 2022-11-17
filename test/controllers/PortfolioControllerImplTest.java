@@ -421,7 +421,6 @@ public class PortfolioControllerImplTest {
             .concat(xmlFilePath).concat("\n")
             .concat("3").concat("\n")
             .concat("1").concat("\n")
-            .concat(compositionDate).concat("\n")
             .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
@@ -435,7 +434,6 @@ public class PortfolioControllerImplTest {
             + "Which portfolio would you like to use?"
             + "1. " + portfolioName
             + "Select portfolio: "
-            + "Enter a date for viewing the composition: "
             + "Portfolio: " + portfolioName
             + "---------------------------\n"
             + "Stock       |  Quantity    \n"

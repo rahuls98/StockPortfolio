@@ -47,7 +47,7 @@ public class PortfolioOldViewImplTest {
             .concat("4. Exit\r\n");
 
     String[] actions = new String[]{"Create portfolio", "Get portfolio composition",
-        "Get portfolio value", "Exit"};
+            "Get portfolio value", "Exit"};
     textBasedUI.displayActions(actions);
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -151,40 +151,4 @@ public class PortfolioOldViewImplTest {
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
 
-
-  class MockView implements PortfolioView {
-    private StringBuilder log;
-    public MockView(StringBuilder log) {
-      this.log = log;
-    }
-    @Override
-    public void displayActions(String[] actions) {
-
-    }
-
-    @Override
-    public void displayPortfolios(String[] portfolios) {
-
-    }
-
-    @Override
-    public void displayPortfolioComposition(String name, HashMap<String, Integer> stockQuantities) {
-
-    }
-
-    @Override
-    public void displayPortfolioValue(String name, HashMap<String, Float> portfolioValues) {
-
-    }
-
-    @Override
-    public void displayCostBasis(String name, String date, Float costBasis) {
-
-    }
-
-    @Override
-    public void displayPerformance(TreeMap<String, Float> performanceValues, float scale) {
-
-    }
-  }
 }

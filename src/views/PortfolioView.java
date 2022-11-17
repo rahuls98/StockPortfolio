@@ -40,5 +40,5 @@ public interface PortfolioView {
 
   void displayCostBasis(String name, String date, Float costBasis);
 
-  void displayPerformance(TreeMap<String, Float> performanceValues, float scale);
+  void displayPerformance(String portfolioName, TreeMap<String, Float> performanceValues, float scale);
 }

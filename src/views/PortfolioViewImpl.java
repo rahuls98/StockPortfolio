@@ -3,6 +3,7 @@ package views;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -83,14 +84,19 @@ public class PortfolioViewImpl implements PortfolioView {
   }
 
   @Override
-  public void displayPerformance(TreeMap<String, Float> performanceValues, float scale) {
-    this.out.println("Scale: * = $" + String.format("%.2f",scale));
+  public void displayPerformance(String portfolioName,
+                                 TreeMap<String, Float> performanceValues, float scale) {
+    this.out.println();
+    this.out.println("Performance of portfolio " + portfolioName
+            + " from " + performanceValues.firstKey() + " to " + performanceValues.lastKey());
+    this.out.println("Scale: * = $" + String.format("%.2f", scale));
+    this.out.println();
     int strCounter;
     for (Map.Entry<String, Float> mapEntry : performanceValues.entrySet()) {
       this.out.print(mapEntry.getKey() + ": ");
       strCounter = 0;
       for (int b = 0; b < (int) (mapEntry.getValue() / scale); b++) {
-        if(strCounter == 50) {
+        if (strCounter == 50) {
           break;
         }
         strCounter += 1;
