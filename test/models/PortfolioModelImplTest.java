@@ -70,13 +70,6 @@ public class PortfolioModelImplTest {
     }
   }
 
-//  @Test
-//  public void testGetPortfolio() {
-//    PortfolioInstanceModel portfolio = model.getPortfolio("testPortfolio");
-//    assertEquals("testPortfolio", portfolio.getName());
-//    assertEquals(2, portfolio.getStocks().size());
-//  }
-
   @Test
   public void testGetPortfolios() {
     String[] portfolios = model.getPortfolios();
