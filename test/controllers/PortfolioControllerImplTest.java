@@ -421,7 +421,6 @@ public class PortfolioControllerImplTest {
             .concat(xmlFilePath).concat("\n")
             .concat("3").concat("\n")
             .concat("1").concat("\n")
-            .concat(compositionDate).concat("\n")
             .concat(exitOption).concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
@@ -435,7 +434,6 @@ public class PortfolioControllerImplTest {
             + "Which portfolio would you like to use?"
             + "1. " + portfolioName
             + "Select portfolio: "
-            + "Enter a date for viewing the composition: "
             + "Portfolio: " + portfolioName
             + "---------------------------\n"
             + "Stock       |  Quantity    \n"
@@ -476,10 +474,10 @@ public class PortfolioControllerImplTest {
             + "---------------------------\n"
             + "Stock       |  Value       \n"
             + "---------------------------\n"
-            + "GOOG        |  174.14      \n"
-            + "AAPL        |  290.06      \n"
+            + "GOOG        |  $174.14     \n"
+            + "AAPL        |  $290.06     \n"
             + "---------------------------"
-            + "Total value of portfolio on is 464.2000"
+            + "Total value of portfolio on is $464.2000"
             + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -516,10 +514,10 @@ public class PortfolioControllerImplTest {
             + "---------------------------\n"
             + "Stock       |  Value       \n"
             + "---------------------------\n"
-            + "GOOG        |  189.32      \n"
-            + "AAPL        |  306.68      \n"
+            + "GOOG        |  $189.32     \n"
+            + "AAPL        |  $306.68     \n"
             + "---------------------------"
-            + "Total value of portfolio on is 496.0000"
+            + "Total value of portfolio on is $496.0000"
             + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -556,10 +554,10 @@ public class PortfolioControllerImplTest {
             + "---------------------------\n"
             + "Stock       |  Value       \n"
             + "---------------------------\n"
-            + "GOOG        |  189.32      \n"
-            + "AAPL        |  306.68      \n"
+            + "GOOG        |  $189.32     \n"
+            + "AAPL        |  $306.68     \n"
             + "---------------------------"
-            + "Total value of portfolio on is 496.0000"
+            + "Total value of portfolio on is $496.0000"
             + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
@@ -594,10 +592,10 @@ public class PortfolioControllerImplTest {
             + "---------------------------\n"
             + "Stock       |  Value       \n"
             + "---------------------------\n"
-            + "GOOG        |  193.16      \n"
-            + "AAPL        |  311.48      \n"
+            + "GOOG        |  $193.16     \n"
+            + "AAPL        |  $311.48     \n"
             + "---------------------------"
-            + "Total value of portfolio on is 504.6400"
+            + "Total value of portfolio on is $504.6400"
             + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
   }
