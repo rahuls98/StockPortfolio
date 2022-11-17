@@ -386,7 +386,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     String date = this.getDate();
     this.output.println();
     view.displayPortfolioValue(portfolioName, model.getPortfolioValues(portfolioName, date));
-    this.output.println("Total value of portfolio on is " + String.format("%.4f",
+    this.output.println("Total value of portfolio on is $" + String.format("%.4f",
             model.getPortfolioTotal(portfolioName, date)));
   }
 

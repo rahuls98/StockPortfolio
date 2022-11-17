@@ -73,7 +73,7 @@ public class PortfolioViewImpl implements PortfolioView {
     this.out.format("%-12s%-3s%-12s\n", "Stock", "|", "Value");
     this.out.format("%s", "---------------------------\n");
     for (Map.Entry<String, Float> entry : portfolioValues.entrySet()) {
-      this.out.format("%-12s%-3s%-12s\n", entry.getKey(), "|", entry.getValue());
+      this.out.format("%-12s%-3s%-12s\n", entry.getKey(), "|", "$" + entry.getValue());
     }
     this.out.format("%s", "---------------------------\n");
   }

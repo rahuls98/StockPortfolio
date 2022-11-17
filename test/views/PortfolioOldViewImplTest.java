@@ -63,16 +63,6 @@ public class PortfolioOldViewImplTest {
   }
 
   @Test
-  public void testDisplayPortfoliosWithEmptyInput() {
-    try {
-      textBasedUI.displayPortfolios(new String[]{});
-      fail();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Input cannot be empty!", e.getMessage());
-    }
-  }
-
-  @Test
   public void testDisplayPortfolios() {
     String[] portfolios = new String[]{"Portfolio 1", "Portfolio 2", "Portfolio 3"};
     String expectedOutput = ""
@@ -145,7 +135,7 @@ public class PortfolioOldViewImplTest {
             .concat("---------------------------\n")
             .concat("Stock       |  Value       \n")
             .concat("---------------------------\n")
-            .concat("AAPL        |  106.5       \n")
+            .concat("AAPL        |  $106.5      \n")
             .concat("---------------------------\n");
     textBasedUI.displayPortfolioValue(portfolioName, portfolioValues);
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
