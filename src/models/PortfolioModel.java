@@ -65,7 +65,6 @@ public interface PortfolioModel {
    * Loads a user portfolio from a given portfolio XML file.
    *
    * @param pathToXml Path to the XML file containing the portfolio information.
-   * @return Loaded portfolio and its contents.
    */
   void loadPortfolioFromXml(String pathToXml);
 
@@ -108,18 +107,39 @@ public interface PortfolioModel {
   HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date);
 
   /**
-   * Adds order to portfolio
-   *
-   * @param portfolio
-   * @param
+   * Adds an order to the Portfolio.
+   * @param portfolio to add the order to.
+   * @param date date of the order.
+   * @param action either BUY or SELL.
+   * @param c commission for the order.
+   * @param stocks Stocks in the order.
+   * @return True if successful, false otherwise.
    */
   Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c,
                                             HashMap<String, Integer> stocks);
 
+  /**
+   * Returns the cost basis of portfolio upto date.
+   * @param portfolioName the portfolio to return cost basis.
+   * @param date date up to which cost basis is returned.
+   * @return the cost basis.
+   */
   Float getCostBasis(String portfolioName, String date);
 
+  /**
+   * Returns the performance of the portfolio as a Treemap.
+   * @param portfolioName name of the portfolio.
+   * @param date1 lower date for performance.
+   * @param date2 upper date for performance.
+   * @return Treemap of dates, floats.
+   */
   TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1,
                                               String date2);
 
+  /**
+   * Returns the scale to be considered for performance.
+   * @param values Treemap of dates to values.
+   * @return scale as a float.
+   */
   Float getScale(TreeMap<String, Float> values);
 }

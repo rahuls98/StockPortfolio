@@ -5,8 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Represents the methods supported by an instance of a Portfolio.
+ */
 public interface PortfolioInstanceModel {
-
+  /**
+   * Returns the type of portfolio.
+   *
+   * @return an Enum of PortfolioType.
+   */
   PortfolioType getType();
 
   /**
