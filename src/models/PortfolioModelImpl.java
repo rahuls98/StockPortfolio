@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -311,5 +312,13 @@ public class PortfolioModelImpl implements PortfolioModel {
       System.out.println(e.getMessage());
     }
     return dateMapper;
+  }
+
+  @Override
+  public Float getScale(TreeMap<String, Float> values) {
+    ArrayList<Float> vars = new ArrayList<>(values.values());
+    float scale = Collections.max(vars) - Collections.min(vars);
+    scale = scale / 50;
+    return scale;
   }
 }

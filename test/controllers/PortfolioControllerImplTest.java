@@ -684,5 +684,10 @@ public class PortfolioControllerImplTest {
     public TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1, String date2) {
       return null;
     }
+
+    @Override
+    public Float getScale(TreeMap<String, Float> values) {
+      return null;
+    }
   }
 }

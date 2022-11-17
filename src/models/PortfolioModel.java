@@ -132,4 +132,6 @@ public interface PortfolioModel {
 
   TreeMap<String, Float> getPerformanceValues(String portfolioName, String date1,
                                                      String date2);
+
+  Float getScale(TreeMap<String, Float> values);
 }
