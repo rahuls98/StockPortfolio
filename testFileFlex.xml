@@ -1,0 +1,9 @@
+<portfolio title="TestFileFlex" type="flexible">
+    <orders>
+        <order action="BUY" commission="1.0" date="2022-10-31">
+            <stocks>
+                <stock quantity="10" symbol="AAPL"/>
+            </stocks>
+        </order>
+    </orders>
+</portfolio>

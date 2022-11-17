@@ -78,7 +78,7 @@ public class PortfolioViewImpl implements PortfolioView {
 
   @Override
   public void displayCostBasis(String name, String date, Float costBasis) {
-    this.out.println("Cost Basis of " +name+"on date" +date+" is " +costBasis);
+    this.out.println("Cost basis of " + name + " as of " + date + " is $" + costBasis);
   }
 
   @Override

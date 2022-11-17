@@ -391,9 +391,8 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.println("\nYou have no portfolios currently!");
       return;
     }
-    this.output.println("\nWhich portfolio would you like to explore?");
     String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
-    this.output.println("Enter the date for which to display Cost Basis");
+    this.output.print("Enter the date to calculate the cost basis for: ");
     String date = this.getDateFromUser();
     this.output.println();
     view.displayCostBasis(portfolioName, date, model.getCostBasis(portfolioName, date));
