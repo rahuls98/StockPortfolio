@@ -135,6 +135,9 @@ class StorageModelLocalImpl implements StorageModel {
               Action orderAction = (action.equals("BUY")) ? Action.BUY : Action.SELL;
               String date = orderElement.getAttribute("date");
               float commission = Float.parseFloat(orderElement.getAttribute("commission"));
+              if (commission < 0) {
+                throw new Exception();
+              }
               Order order = new Order(orderAction, LocalDate.parse(date), commission);
               NodeList stockList = orderElement.getElementsByTagName("stock");
               HashMap<String, Integer> stocks = new HashMap<>();

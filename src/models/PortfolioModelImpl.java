@@ -199,7 +199,6 @@ public class PortfolioModelImpl implements PortfolioModel {
         }
       }
     } catch (Exception e) {
-      System.out.println(e);
       throw new IllegalArgumentException("Invalid XML!");
     }
   }
