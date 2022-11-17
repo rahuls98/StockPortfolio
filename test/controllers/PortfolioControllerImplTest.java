@@ -946,12 +946,6 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public PortfolioInstanceModel getPortfolio(String portfolioName) {
-      log.append(portfolioName);
-      return null;
-    }
-
-    @Override
     public String[] getPortfolios() {
       String[] arr = new String[]{"Portfolio 1", "Portfolio 2"};
       return arr;

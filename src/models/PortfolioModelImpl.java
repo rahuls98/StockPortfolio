@@ -6,9 +6,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.time.DateTimeException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,8 +71,8 @@ public class PortfolioModelImpl implements PortfolioModel {
     this.user.addPortfolio(new Portfolio(portfolioName, PortfolioType.INFLEXIBLE, initialOrders));
   }
 
-  @Override
-  public PortfolioInstanceModel getPortfolio(String portfolioName) {
+
+  private PortfolioInstanceModel getPortfolio(String portfolioName) {
     return this.user.getPortfolios().get(portfolioName);
   }
 
@@ -259,10 +261,14 @@ public class PortfolioModelImpl implements PortfolioModel {
     try {
       LocalDate ld1 = LocalDate.parse(date1);
       LocalDate ld2 = LocalDate.parse(date2);
-      long diff = (ld2.toEpochDay() - ld1.toEpochDay());
-      if (diff < 4) {
-        throw new IllegalArgumentException();
+      while ((ld2.toEpochDay() - ld1.toEpochDay()) < 4) {
+        ld1 = ld1.minusDays(1);
+        while ((DayOfWeek.of(ld1.get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SATURDAY) ||
+                (DayOfWeek.of(ld1.get(ChronoField.DAY_OF_WEEK)) == DayOfWeek.SUNDAY)) {
+          ld1 = ld1.minusDays(1);
+        }
       }
+      long diff = (ld2.toEpochDay() - ld1.toEpochDay());
       int interval = 4;
       for (int k = 30; k >= 4; k--) {
         if (diff % k == 0) {
@@ -296,7 +302,6 @@ public class PortfolioModelImpl implements PortfolioModel {
         }
         if (flag) {
           HashMap<String, Float> hm = this.getPortfolioValues(portfolioName, date.toString());
-          ;
           float total = 0;
           for (Map.Entry<String, Float> mapEntry : hm.entrySet()) {
             total += mapEntry.getValue();
