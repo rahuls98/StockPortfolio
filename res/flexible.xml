@@ -1,0 +1,14 @@
+<portfolio title="flexible_test_1" type="flexible">
+	<orders>
+		<order action="BUY" commission="1.0" date="2022-10-31">
+			<stocks>
+				<stock quantity="10" symbol="AAPL"/>
+			</stocks>
+		</order>
+		<order action="SELL" commission="1.0" date="2022-11-01">
+			<stocks>
+				<stock quantity="9" symbol="AAPL"/>
+			</stocks>
+		</order>
+	</orders>
+</portfolio>
