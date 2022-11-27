@@ -1,0 +1,83 @@
+package models;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Represents a User having a unique username and multiple portfolios.
+ */
+class User {
+
+  private final String name;
+  private final HashMap<String, PortfolioInstanceModel> portfolios;
+
+  /**
+   * Returns an object of User.
+   *
+   * @param name Unique username.
+   */
+  public User(String name) throws IllegalArgumentException {
+    if (name == null || name.equals("")) {
+      throw new IllegalArgumentException("Username cannot be empty!");
+    }
+    this.name = name;
+    this.portfolios = new HashMap<>();
+  }
+
+  /**
+   * Returns the username of the User.
+   *
+   * @return username.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Adds a portfolio to the User.
+   *
+   * @param portfolio Portfolio to add.
+   */
+  public void addPortfolio(PortfolioInstanceModel portfolio) {
+    if (portfolio == null) {
+      throw new IllegalArgumentException("Null portfolio not allowed!");
+    }
+    portfolios.put(portfolio.getName(), portfolio);
+  }
+
+  public void addNewPortfolio(PortfolioInstanceModel portfolio) {
+    if (portfolio == null) {
+      throw new IllegalArgumentException("Null portfolio not allowed!");
+    }
+    portfolios.put(portfolio.getName(), portfolio);
+  }
+
+  /**
+   * Returns all the portfolios of the User.
+   *
+   * @return Portfolios of the User.
+   */
+  public HashMap<String, PortfolioInstanceModel> getPortfolios() {
+    return this.portfolios;
+  }
+
+  public HashMap<String, PortfolioInstanceModel> getFlexiblePortfolios() {
+    HashMap<String, PortfolioInstanceModel> flexiblePortfolios = new HashMap<>();
+    for (Map.Entry<String, PortfolioInstanceModel> portfolio : this.portfolios.entrySet()) {
+      if (portfolio.getValue().getType() == PortfolioType.FLEXIBLE) {
+        flexiblePortfolios.put(portfolio.getKey(), portfolio.getValue());
+      }
+    }
+    return flexiblePortfolios;
+  }
+
+  public HashMap<String, PortfolioInstanceModel> getInflexiblePortfolios() {
+    HashMap<String, PortfolioInstanceModel> inflexiblePortfolios = new HashMap<>();
+    for (Map.Entry<String, PortfolioInstanceModel> portfolio : this.portfolios.entrySet()) {
+      if (portfolio.getValue().getType() == PortfolioType.INFLEXIBLE) {
+        inflexiblePortfolios.put(portfolio.getKey(), portfolio.getValue());
+      }
+    }
+    return inflexiblePortfolios;
+  }
+}

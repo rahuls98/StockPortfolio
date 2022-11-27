@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users>
+    <user name="Test">
+        <portfolios>
+            <portfolio title="test2" type="flexible">
+                <orders/>
+            </portfolio>
+            <portfolio title="test3" type="flexible">
+                <orders/>
+            </portfolio>
+            <portfolio title="TestFileFlex" type="flexible">
+                <orders>
+                    <order action="BUY" commission="1.0" date="2022-10-31">
+                        <stocks>
+                            <stock quantity="10" symbol="AAPL"/>
+                        </stocks>
+                    </order>
+                </orders>
+            </portfolio>
+            <portfolio title="TestFileFlex1" type="flexible">
+                <orders>
+                    <order action="BUY" commission="1.0" date="2022-10-31">
+                        <stocks>
+                            <stock quantity="10" symbol="AAPL"/>
+                        </stocks>
+                    </order>
+                </orders>
+            </portfolio>
+            <portfolio title="test1" type="flexible">
+                <orders/>
+            </portfolio>
+        </portfolios>
+    </user>
+</users>
