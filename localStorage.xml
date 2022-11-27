@@ -6,7 +6,14 @@
                 <orders/>
             </portfolio>
             <portfolio title="test3" type="flexible">
-                <orders/>
+                <orders>
+                    <order action="BUY" commission="2.5" date="2022-11-23">
+                        <stocks>
+                            <stock quantity="1" symbol="GOOG"/>
+                            <stock quantity="1" symbol="AAPL"/>
+                        </stocks>
+                    </order>
+                </orders>
             </portfolio>
             <portfolio title="TestFileFlex" type="flexible">
                 <orders>

@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.*;
+import java.util.HashMap;
 
 import javax.swing.*;
 import javax.swing.JComponent;
@@ -29,7 +30,6 @@ public class CreateOrderScreen extends JFrame implements IView {
 
     setBounds(300, 90, 1000, 5000);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-//    setResizable(false);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
     portfolioCombobox = new JComboBox(portfolios);
@@ -63,7 +63,7 @@ public class CreateOrderScreen extends JFrame implements IView {
     this.add(enterCommission);
     this.add(commission);
 
-    enterDate = new JLabel("Enter Date");
+    enterDate = new JLabel("Enter Date in YYYY-MM-DD");
     date = new JTextField(10);
     this.add(enterDate);
     this.add(date);
@@ -93,14 +93,31 @@ public class CreateOrderScreen extends JFrame implements IView {
   @Override
   public void addFeatures(Features features) {
     addStockButton.addActionListener(e -> this.addStock());
+    buyButton.addActionListener(e -> features.createOrder(
+            ""+portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
+            date.getText(),
+            "BUY",
+            //TODO: Handle invalid float in commision
+            Float.parseFloat(commission.getText()),
+            this.returnStocks()
+    ));
+    sellButton.addActionListener(e -> features.createOrder(
+            ""+portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
+            date.getText(),
+            "SELL",
+            //TODO: Handle invalid float in commision
+            Float.parseFloat(commission.getText()),
+            this.returnStocks()
+    ));
+    ret.addActionListener(e -> features.goToHome());
   }
 
   private void addStock() {
-    if (count == maxSize){
-      //Handle message
+    if (count == maxSize) {
+      //TODO:Handle message
       return;
     }
-    count ++;
+    count++;
 
     tickers[count] = new JTextField(10);
     quantity[count] = new JTextField(10);
@@ -116,7 +133,15 @@ public class CreateOrderScreen extends JFrame implements IView {
 
   @Override
   public void disappear() {
+    setVisible(false);
+  }
 
+  private HashMap<String, Integer> returnStocks() {
+    HashMap<String, Integer> stocks = new HashMap<>();
+    for(int i = 1; i <= count; i++){
+      stocks.put(tickers[i].getText(), Integer.parseInt(quantity[i].getText()));
+    }
+    return stocks;
   }
 
   @Override

@@ -13,7 +13,7 @@ import models.PortfolioModel;
 public class Controller implements Features {
   private PortfolioModel model;
   private IView view;
-	
+
   public Controller(PortfolioModel m) {
     model = m;
     this.setView(new HomeScreen("Stock Application"));
@@ -24,9 +24,6 @@ public class Controller implements Features {
     //provide view with all the callbacks
     view.addFeatures(this);
   }
-
-
-
 
   @Override
   public void exitProgram() {
@@ -97,7 +94,7 @@ public class Controller implements Features {
     Object[][] data = new Object[hMap.size()][2];
     int i = 0;
     Object[] row;
-    for(Map.Entry<String, Integer> comp : hMap.entrySet()){
+    for (Map.Entry<String, Integer> comp : hMap.entrySet()) {
       row = new Object[]{comp.getKey(), comp.getValue()};
       data[i] = row;
       i++;
@@ -130,7 +127,7 @@ public class Controller implements Features {
     Object[][] data = new Object[hMap.size()][2];
     int i = 0;
     Object[] row;
-    for(Map.Entry<String, Float> comp : hMap.entrySet()){
+    for (Map.Entry<String, Float> comp : hMap.entrySet()) {
       row = new Object[]{comp.getKey(), comp.getValue()};
       data[i] = row;
       i++;
@@ -145,7 +142,7 @@ public class Controller implements Features {
       new DisplayDialogMessage(false, "Name exists in portfolio, please try again");
       return;
     }
-    if(pName.length() == 0) {
+    if (pName.length() == 0) {
       return;
     }
     this.model.addFlexiblePortfolio(pName);
@@ -172,5 +169,22 @@ public class Controller implements Features {
     this.setView(new CreateOrderScreen("Create Order", portfolios));
   }
 
+  @Override
+  public void createOrder(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks) {
+    //TODO: Perform validation on  Stocks
 
+    if (!(this.model.isValidDate(date))) {
+      new DisplayDialogMessage(false, "Invalid Date!");
+      return;
+    }
+
+    if (!(model.addOrderToPortfolioFromController(portfolio, date, action, c, stocks))) {
+      new DisplayDialogMessage(false, "Invalid Order, cannot be processed.");
+      this.goToHome();
+    } else {
+      this.model.persist();
+      new DisplayDialogMessage(true, "Order created successfully!");
+      this.goToHome();
+    }
+  }
 }

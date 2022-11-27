@@ -229,6 +229,14 @@ public class PortfolioModelImpl implements PortfolioModel {
     } catch (DateTimeParseException e) {
       return false;
     }
+    if ((LocalDate.parse(date).compareTo(LocalDate.now()) >= 0)
+            || (LocalDate.parse(date).compareTo(LocalDate.parse("2011-03-01")) <= 0)
+            || (DayOfWeek.of(LocalDate.parse(date).get(ChronoField.DAY_OF_WEEK))
+            == DayOfWeek.SATURDAY)
+            || (DayOfWeek.of(LocalDate.parse(date).get(ChronoField.DAY_OF_WEEK))
+            == DayOfWeek.SUNDAY)) {
+     return false;
+    }
     return true;
   }
 
