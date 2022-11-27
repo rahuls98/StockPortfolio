@@ -1026,5 +1026,11 @@ public class PortfolioControllerImplTest {
     public Float getScale(TreeMap<String, Float> values) {
       return null;
     }
+
+    @Override
+    public void executeFixedAmountStrategy(String portfolioName, int investmentAmount,
+     LocalDate date, HashMap<String, Integer> stocks) {
+
+    }
   }
 }

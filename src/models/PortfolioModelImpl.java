@@ -336,4 +336,21 @@ public class PortfolioModelImpl implements PortfolioModel {
     }
     return scale;
   }
+
+  @Override
+  public void executeFixedAmountStrategy(String portfolioName, int investmentAmount,
+                                         LocalDate date, HashMap<String, Integer> stocks) {
+    Stock stock;
+    int stockInvestment;
+    int stockQuantity;
+    HashMap<String, Integer> stocksMap = new HashMap<>();
+    for (Map.Entry<String, Integer> stockObject : stocks.entrySet()) {
+      stock = new Stock(stockObject.getKey());
+      stockInvestment = investmentAmount / stockObject.getValue();
+      stockQuantity = (int) stock.getPriceOnDate(date.toString()) / stockInvestment;
+      stocksMap.put(stockObject.getKey(), stockQuantity);
+    }
+    this.addOrderToPortfolioFromController(portfolioName, date.toString(), "BUY",
+            0.0f, stocksMap);
+  }
 }

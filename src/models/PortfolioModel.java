@@ -1,5 +1,6 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
@@ -142,4 +143,11 @@ public interface PortfolioModel {
    * @return scale as a float.
    */
   Float getScale(TreeMap<String, Float> values);
+
+  void executeFixedAmountStrategy(String portfolioName, int investmentAmount,
+                                  LocalDate date, HashMap<String,Integer> stocks);
+
+  void executeSip(String portfolioName,int investmentAmount, LocalDate startDate, LocalDate endDate,
+                  int interval,
+                  HashMap<String, Integer> stocks);
 }

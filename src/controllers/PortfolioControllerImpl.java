@@ -48,7 +48,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
     String[] actions = new String[]{"Create Portfolio", "Create Order", "Get portfolio "
-            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
+            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit",
+            "Fixed amount strategy"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -75,12 +76,40 @@ public class PortfolioControllerImpl implements PortfolioController {
           this.getPerformance();
           break;
         case 7:
+          this.executeFixedAmountStrategy();
+          break;
+        case 8:
           return;
         default:
           this.output.print("\nInvalid choice, please try again!\n");
           break;
       }
     }
+  }
+
+  private void executeFixedAmountStrategy() {
+    String[] portfolios = model.getPortfolios();
+    if (portfolios.length == 0) {
+      this.output.println("\nYou have no portfolios currently!");
+      return;
+    }
+    String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
+    this.output.print("Enter investment amount: ");
+    int investmentAmount = this.getIntegerFromUser();
+    this.output.print("Enter number of stocks: ");
+    int stockCounts = this.getIntegerFromUser();
+    String stockTicker;
+    int stockWeight;
+    HashMap<String, Integer> stocks = new HashMap<>();
+    for (int i = 0; i < stockCounts; i++) {
+      this.output.print("Ticker: ");
+      stockTicker = this.input.next();
+      this.output.print("Weight: ");
+      stockWeight = this.getIntegerFromUser();
+      stocks.put(stockTicker, stockWeight);
+    }
+    this.model.executeFixedAmountStrategy(portfolioName, investmentAmount, LocalDate.now(), stocks);
+    this.model.persist();
   }
 
   private int getIntegerFromUser() {
