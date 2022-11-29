@@ -3,7 +3,13 @@
     <user name="Test">
         <portfolios>
             <portfolio title="test2" type="flexible">
-                <orders/>
+                <orders>
+                    <order action="BUY" commission="1.5" date="2022-10-31">
+                        <stocks>
+                            <stock quantity="1" symbol="AAPL"/>
+                        </stocks>
+                    </order>
+                </orders>
             </portfolio>
             <portfolio title="test3" type="flexible">
                 <orders>

@@ -16,6 +16,7 @@ public class HomeScreen extends JFrame implements IView {
   private final JButton getValue;
   private final JButton getCostBasis;
   private final JButton exit;
+  private final JButton investmentPlan;
 
   public HomeScreen(String caption) {
     super(caption);
@@ -47,11 +48,14 @@ public class HomeScreen extends JFrame implements IView {
     getValue.setActionCommand("Get Value");
     getCostBasis = new JButton("Cost Basis");
     getCostBasis.setActionCommand("Cost Basis");
+    investmentPlan = new JButton("Investment Plans");
+    investmentPlan.setActionCommand("Investment Plans");
     exit = new JButton("Exit");
     exit.setActionCommand("Exit");
 
     this.add(createOrder);
     this.add(createPortfolio);
+    this.add(investmentPlan);
     this.add(getComp);
     this.add(getValue);
     this.add(getCostBasis);
@@ -71,6 +75,7 @@ public class HomeScreen extends JFrame implements IView {
     getComp.addActionListener(e -> features.goToDisplayPortfoliosComp());
     getValue.addActionListener(e -> features.goToDisplayValue());
     createOrder.addActionListener(e -> features.goToCreateOrder());
+    investmentPlan.addActionListener(e -> features.goToInvestmentPlanScreen());
   }
 
   @Override

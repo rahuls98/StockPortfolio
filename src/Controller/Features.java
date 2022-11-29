@@ -20,5 +20,8 @@ public interface Features {
   void goToCreateOrder();
 
   void createOrder(String portfolio, String date, String action, float c,
-                   HashMap<String, Integer> stocks);
+                   HashMap<String, String> stocks);
+
+  void goToInvestmentPlanScreen();
+  void goToInvestByPercentageScreen(String portfolioName);
 }

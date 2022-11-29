@@ -170,15 +170,28 @@ public class Controller implements Features {
   }
 
   @Override
-  public void createOrder(String portfolio, String date, String action, float c, HashMap<String, Integer> stocks) {
-    //TODO: Perform validation on  Stocks
+  public void createOrder(String portfolio, String date, String action, float c, HashMap<String, String> stocks) {
 
     if (!(this.model.isValidDate(date))) {
       new DisplayDialogMessage(false, "Invalid Date!");
       return;
     }
+    HashMap<String, Integer> stockMap = new HashMap<>();
+    for (Map.Entry<String, String> stock : stocks.entrySet()) {
+      try {
+        Integer.parseInt(stock.getValue());
+      } catch (IllegalArgumentException e) {
+        new DisplayDialogMessage(false, "Invalid Quantity");
+        return;
+      }
+      if (!(this.model.isValidTicker(stock.getKey()))) {
+        new DisplayDialogMessage(false, "Invalid Stock");
+        return;
+      }
+      stockMap.put(stock.getKey(), Integer.parseInt(stock.getValue()));
+    }
 
-    if (!(model.addOrderToPortfolioFromController(portfolio, date, action, c, stocks))) {
+    if (!(model.addOrderToPortfolioFromController(portfolio, date, action, c, stockMap))) {
       new DisplayDialogMessage(false, "Invalid Order, cannot be processed.");
       this.goToHome();
     } else {
@@ -186,5 +199,22 @@ public class Controller implements Features {
       new DisplayDialogMessage(true, "Order created successfully!");
       this.goToHome();
     }
+  }
+
+  @Override
+  public void goToInvestmentPlanScreen() {
+    String[] portfolios = model.getPortfolios( );
+    if (portfolios.length == 0) {
+      view.displayDialog(false, "You have no portfolios currently");
+      this.goToHome();
+      return;
+    }
+    view.disappear();
+    this.setView(new InvestmentPlanScreen(portfolios));
+  }
+
+  @Override
+  public void goToInvestByPercentageScreen(String portfolioName) {
+//    model.get
   }
 }

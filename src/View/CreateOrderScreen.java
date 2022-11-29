@@ -136,10 +136,10 @@ public class CreateOrderScreen extends JFrame implements IView {
     setVisible(false);
   }
 
-  private HashMap<String, Integer> returnStocks() {
-    HashMap<String, Integer> stocks = new HashMap<>();
+  private HashMap<String, String> returnStocks() {
+    HashMap<String, String> stocks = new HashMap<>();
     for(int i = 1; i <= count; i++){
-      stocks.put(tickers[i].getText(), Integer.parseInt(quantity[i].getText()));
+      stocks.put(tickers[i].getText(), quantity[i].getText());
     }
     return stocks;
   }
