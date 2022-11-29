@@ -19,8 +19,8 @@ public class PortfolioTest {
 
   @Before
   public void initTest() {
-    HashMap<String, Integer> stocks = new HashMap<>();
-    stocks.put("GOOG", 1);
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("GOOG", 1f);
     Order order = new Order(Action.BUY, LocalDate.of(2022, 11, 8), 1);
     order.addStocks(stocks);
     portfolio = new Portfolio("test1", PortfolioType.FLEXIBLE, new ArrayList<>());
@@ -30,33 +30,33 @@ public class PortfolioTest {
 
   @Test
   public void testAdd() {
-    HashMap<String, Integer> stocks = new HashMap<>();
-    stocks.put("AAPL", 1);
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("AAPL", 1f);
     Order o = new Order(Action.BUY, LocalDate.of(2022, 11, 9), 1);
     o.addStocks(stocks);
     this.portfolio.placeOrder(o);
-    HashMap<String, Integer> comp = new HashMap<>();
-    comp.put("GOOG", 1);
-    comp.put("AAPL", 1);
+    HashMap<String, Float> comp = new HashMap<>();
+    comp.put("GOOG", 1f);
+    comp.put("AAPL", 1f);
     assertEquals(comp, this.portfolio.getStockQuantities());
   }
 
   @Test
   public void testInvalidSellOlderDate() {
-    HashMap<String, Integer> stocks = new HashMap<>();
-    stocks.put("AAPL", 1);
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("AAPL", 1f);
     Order o = new Order(Action.SELL, LocalDate.of(2022, 11, 4), 1);
     o.addStocks(stocks);
     assertFalse(this.portfolio.placeOrder(o));
-    HashMap<String, Integer> comp = new HashMap<>();
-    comp.put("GOOG", 1);
+    HashMap<String, Float> comp = new HashMap<>();
+    comp.put("GOOG", 1f);
     assertEquals(comp, this.portfolio.getStockQuantities());
   }
 
   @Test
   public void testInvalidSellMiddleDate() {
-    HashMap<String, Integer> stocks = new HashMap<>();
-    stocks.put("GOOG", 1);
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("GOOG", 1f);
     Order o = new Order(Action.SELL, LocalDate.of(2022, 11, 14), 1);
     o.addStocks(stocks);
     assertTrue(this.portfolio.placeOrder(o));
@@ -69,20 +69,20 @@ public class PortfolioTest {
 
   @Test
   public void testSellInvalidQuantity() {
-    HashMap<String, Integer> stocks = new HashMap<>();
-    stocks.put("AAPL", 1);
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("AAPL", 1f);
     Order o = new Order(Action.SELL, LocalDate.of(2022, 11, 9), 1);
     o.addStocks(stocks);
     this.portfolio.placeOrder(o);
-    HashMap<String, Integer> comp = new HashMap<>();
-    comp.put("GOOG", 1);
+    HashMap<String, Float> comp = new HashMap<>();
+    comp.put("GOOG", 1f);
     assertEquals(comp, this.portfolio.getStockQuantities());
   }
 
   @Test
   public void testSellValidQuantity() {
-    HashMap<String, Integer> stocks = new HashMap<>();
-    stocks.put("AAPL", 1);
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("AAPL", 1f);
     Order buyOrder = new Order(Action.BUY,
             LocalDate.of(2022, 11, 9), 1);
     Order sellOrder = new Order(Action.SELL,
@@ -91,36 +91,36 @@ public class PortfolioTest {
     sellOrder.addStocks(stocks);
     this.portfolio.placeOrder(buyOrder);
     this.portfolio.placeOrder(sellOrder);
-    HashMap<String, Integer> comp = new HashMap<>();
-    comp.put("GOOG", 1);
+    HashMap<String, Float> comp = new HashMap<>();
+    comp.put("GOOG", 1f);
     assertEquals(comp, this.portfolio.getStockQuantities());
   }
 
   @Test
   public void testCompositionOnDate() {
     Order o1 = new Order(Action.BUY, LocalDate.of(2022, 6, 1), 1);
-    HashMap<String, Integer> stocks1 = new HashMap<>();
-    stocks1.put("GOOG", 1);
+    HashMap<String, Float> stocks1 = new HashMap<>();
+    stocks1.put("GOOG", 1f);
     o1.addStocks(stocks1);
     Order o2 = new Order(Action.BUY, LocalDate.of(2022, 6, 15), 1);
-    HashMap<String, Integer> stock2 = new HashMap<>();
-    stock2.put("AAPL", 1);
+    HashMap<String, Float> stock2 = new HashMap<>();
+    stock2.put("AAPL", 1f);
     o2.addStocks(stock2);
     Order o3 = new Order(Action.BUY, LocalDate.of(2022, 7, 1), 1);
-    HashMap<String, Integer> stocks3 = new HashMap<>();
-    stocks3.put("AAPL", 1);
+    HashMap<String, Float> stocks3 = new HashMap<>();
+    stocks3.put("AAPL", 1f);
     o3.addStocks(stocks3);
     Portfolio p1 = new Portfolio("test1", PortfolioType.FLEXIBLE, new ArrayList<>());
     p1.placeOrder(o1);
     p1.placeOrder(o2);
     p1.placeOrder(o3);
 
-    HashMap<String, Integer> comp = new HashMap<>();
-    comp.put("GOOG", 1);
-    comp.put("AAPL", 1);
+    HashMap<String, Float> comp = new HashMap<>();
+    comp.put("GOOG", 1f);
+    comp.put("AAPL", 1f);
     assertEquals(comp,
             p1.getStockCompositionOnDate(LocalDate.of(2022, 6, 17)));
-    comp.put("AAPL", 2);
+    comp.put("AAPL", 2f);
     assertEquals(comp,
             p1.getStockCompositionOnDate(LocalDate.of(2022, 7, 17)));
   }
@@ -128,16 +128,16 @@ public class PortfolioTest {
   @Test
   public void testGetValue() {
     Order o1 = new Order(Action.BUY, LocalDate.of(2022, 6, 1), 1);
-    HashMap<String, Integer> stocks1 = new HashMap<>();
-    stocks1.put("GOOG", 1);
+    HashMap<String, Float> stocks1 = new HashMap<>();
+    stocks1.put("GOOG", 1f);
     o1.addStocks(stocks1);
     Order o2 = new Order(Action.BUY, LocalDate.of(2022, 6, 15), 1);
-    HashMap<String, Integer> stock2 = new HashMap<>();
-    stock2.put("AAPL", 1);
+    HashMap<String, Float> stock2 = new HashMap<>();
+    stock2.put("AAPL", 1f);
     o2.addStocks(stock2);
     Order o3 = new Order(Action.BUY, LocalDate.of(2022, 7, 1), 1);
-    HashMap<String, Integer> stocks3 = new HashMap<>();
-    stocks3.put("AAPL", 1);
+    HashMap<String, Float> stocks3 = new HashMap<>();
+    stocks3.put("AAPL", 1f);
     o3.addStocks(stocks3);
     Portfolio p1 = new Portfolio("test1", PortfolioType.FLEXIBLE, new ArrayList<>());
     p1.placeOrder(o1);
@@ -156,12 +156,12 @@ public class PortfolioTest {
 
   @Test
   public void testGetCostBasis() {
-    HashMap<String, Integer> stocks1 = new HashMap<>();
-    stocks1.put("AAPL", 1);
-    HashMap<String, Integer> stocks2 = new HashMap<>();
-    stocks2.put("GOOG", 1);
-    HashMap<String, Integer> stocks3 = new HashMap<>();
-    stocks3.put("GOOG", 1);
+    HashMap<String, Float> stocks1 = new HashMap<>();
+    stocks1.put("AAPL", 1f);
+    HashMap<String, Float> stocks2 = new HashMap<>();
+    stocks2.put("GOOG", 1f);
+    HashMap<String, Float> stocks3 = new HashMap<>();
+    stocks3.put("GOOG", 1f);
     Order o1 = new Order(Action.BUY, LocalDate.of(2022, 10, 07), 10.00f);
     o1.addStocks(stocks1);
     Order o2 = new Order(Action.BUY, LocalDate.of(2022, 10, 13), 20.00f);

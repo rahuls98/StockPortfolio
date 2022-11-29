@@ -140,12 +140,12 @@ class StorageModelLocalImpl implements StorageModel {
               }
               Order order = new Order(orderAction, LocalDate.parse(date), commission);
               NodeList stockList = orderElement.getElementsByTagName("stock");
-              HashMap<String, Integer> stocks = new HashMap<>();
+              HashMap<String, Float> stocks = new HashMap<>();
               for (int l = 0; l < stockList.getLength(); l++) {
                 Node stockNode = stockList.item(l);
                 Element stockElement = (Element) stockNode;
                 stocks.put(stockElement.getAttribute("symbol"),
-                        Integer.parseInt(stockElement.getAttribute("quantity")));
+                        Float.parseFloat(stockElement.getAttribute("quantity")));
               }
               order.addStocks(stocks);
               portfolioOrders.add(order);
@@ -162,12 +162,12 @@ class StorageModelLocalImpl implements StorageModel {
               float commission = Float.parseFloat(orderElement.getAttribute("commission"));
               Order order = new Order(orderAction, LocalDate.parse(date), commission);
               NodeList stockList = orderElement.getElementsByTagName("stock");
-              HashMap<String, Integer> stocks = new HashMap<>();
+              HashMap<String, Float> stocks = new HashMap<>();
               for (int l = 0; l < stockList.getLength(); l++) {
                 Node stockNode = stockList.item(l);
                 Element stockElement = (Element) stockNode;
                 stocks.put(stockElement.getAttribute("symbol"),
-                        Integer.parseInt(stockElement.getAttribute("quantity")));
+                        Float.parseFloat(stockElement.getAttribute("quantity")));
               }
               order.addStocks(stocks);
               portfolioOrders.add(order);
@@ -219,11 +219,11 @@ class StorageModelLocalImpl implements StorageModel {
           order.setAttribute("commission", Float.toString(orderObj.getCommission()));
           Element stocks = document.createElement("stocks");
           order.appendChild(stocks);
-          HashMap<String, Integer> orderStocks = orderObj.getStocks();
-          for (Map.Entry<String, Integer> stocksObj : orderStocks.entrySet()) {
+          HashMap<String, Float> orderStocks = orderObj.getStocks();
+          for (Map.Entry<String, Float> stocksObj : orderStocks.entrySet()) {
             Element stock = document.createElement("stock");
             stock.setAttribute("symbol", stocksObj.getKey());
-            stock.setAttribute("quantity", Integer.toString(stocksObj.getValue()));
+            stock.setAttribute("quantity", Float.toString(stocksObj.getValue()));
             stocks.appendChild(stock);
           }
           orders.appendChild(order);

@@ -45,10 +45,11 @@ public class PortfolioControllerImplTest {
           + "4. Get portfolio value\n"
           + "5. Get Cost Basis\n"
           + "6. Get Performance\n"
-          + "7. Exit\n"
+          + "7. Fixed amount strategy\n"
+          + "8. Exit\n"
           + "Select action: ";
 
-  private final String exitOption = "7";
+  private final String exitOption = "8";
 
   private final String invalidInteger = "Please enter a valid integer value: ";
 
@@ -436,8 +437,8 @@ public class PortfolioControllerImplTest {
             + "---------------------------\n"
             + "Stock       |  Quantity    \n"
             + "---------------------------\n"
-            + "GOOG        |  2           \n"
-            + "AAPL        |  2           \n"
+            + "GOOG        |  2.0         \n"
+            + "AAPL        |  2.0         \n"
             + "---------------------------"
             + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
@@ -903,7 +904,7 @@ public class PortfolioControllerImplTest {
 
   @Test
   public void testMockComposition() {
-    String s = "3\n1\n2022-11-14\n7\n";
+    String s = "3\n1\n2022-11-14\n8\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
     StringBuilder log = new StringBuilder();
     PortfolioController controller = new PortfolioControllerImpl(
@@ -937,7 +938,7 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks) {
+    public void addInflexiblePortfolio(String portfolioName, HashMap<String, Float> stocks) {
       return;
     }
 
@@ -998,16 +999,16 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName,
-                                                                  String date) {
+    public HashMap<String, Float> getStockQuantitiesInPortfolio(String portfolioName,
+                                                                String date) {
       log.append(portfolioName);
       log.append(date);
-      return new HashMap<String, Integer>();
+      return new HashMap<String, Float>();
     }
 
     @Override
     public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action,
-                                                     float c, HashMap<String, Integer> stocks) {
+                                                     float c, HashMap<String, Float> stocks) {
       return null;
     }
 
@@ -1030,6 +1031,11 @@ public class PortfolioControllerImplTest {
     @Override
     public void executeFixedAmountStrategy(String portfolioName, int investmentAmount,
      LocalDate date, HashMap<String, Integer> stocks) {
+
+    }
+
+    @Override
+    public void executeSip(String portfolioName, int investmentAmount, LocalDate startDate, LocalDate endDate, int interval, HashMap<String, Integer> stocks) {
 
     }
   }

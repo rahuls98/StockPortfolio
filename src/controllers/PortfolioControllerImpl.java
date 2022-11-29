@@ -48,8 +48,8 @@ public class PortfolioControllerImpl implements PortfolioController {
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
     String[] actions = new String[]{"Create Portfolio", "Create Order", "Get portfolio "
-            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit",
-            "Fixed amount strategy"};
+            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance",
+            "Fixed amount strategy", "Dollar-cost averaging", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");
@@ -79,6 +79,9 @@ public class PortfolioControllerImpl implements PortfolioController {
           this.executeFixedAmountStrategy();
           break;
         case 8:
+          this.executeDollarCostAveraging();
+          break;
+        case 9:
           return;
         default:
           this.output.print("\nInvalid choice, please try again!\n");
@@ -109,6 +112,34 @@ public class PortfolioControllerImpl implements PortfolioController {
       stocks.put(stockTicker, stockWeight);
     }
     this.model.executeFixedAmountStrategy(portfolioName, investmentAmount, LocalDate.now(), stocks);
+    this.model.persist();
+  }
+
+  private void executeDollarCostAveraging() {
+    this.output.print("Enter portfolio name: ");
+    String portfolioName = this.input.next();
+    this.output.print("Enter interval in days: ");
+    int intervalDays = this.getIntegerFromUser();
+    this.output.print("Enter start date: ");
+    LocalDate startDate = LocalDate.parse(this.getDateFromUser());
+    this.output.print("Enter end date: ");
+    LocalDate endDate = LocalDate.parse(this.getDateFromUser());
+    this.output.print("Enter investment amount: ");
+    int investmentAmount = this.getIntegerFromUser();
+    this.output.print("Enter number of stocks: ");
+    int stockCounts = this.getIntegerFromUser();
+    String stockTicker;
+    int stockWeight;
+    HashMap<String, Integer> stocks = new HashMap<>();
+    for (int i = 0; i < stockCounts; i++) {
+      this.output.print("Ticker: ");
+      stockTicker = this.input.next();
+      this.output.print("Weight: ");
+      stockWeight = this.getIntegerFromUser();
+      stocks.put(stockTicker, stockWeight);
+    }
+    this.model.addFlexiblePortfolio(portfolioName);
+    this.model.executeSip(portfolioName, investmentAmount, startDate, endDate, intervalDays, stocks);
     this.model.persist();
   }
 
@@ -221,7 +252,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
     String stockName;
     int stockQuantity;
-    HashMap<String, Integer> stocks = new HashMap<>();
+    HashMap<String, Float> stocks = new HashMap<>();
     for (int i = 0; i < numTransactions; i++) {
       this.output.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
@@ -235,7 +266,7 @@ public class PortfolioControllerImpl implements PortfolioController {
         this.output.print("Please enter a valid quantity: ");
         stockQuantity = this.getIntegerFromUser();
       }
-      stocks.put(stockName, stockQuantity);
+      stocks.put(stockName, (float)stockQuantity);
     }
     if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))) {
       this.output.println("Invalid Order");
@@ -277,7 +308,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.print("Please enter a valid number of stocks: ");
       n = this.getIntegerFromUser();
     }
-    HashMap<String, Integer> stocks = new HashMap<>();
+    HashMap<String, Float> stocks = new HashMap<>();
     String stockName;
     int stockQuantity;
     for (int i = 0; i < n; i++) {
@@ -296,7 +327,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       if (stocks.containsKey(stockName)) {
         i--;
       }
-      stocks.put(stockName, stockQuantity);
+      stocks.put(stockName, (float)stockQuantity);
     }
     this.model.addInflexiblePortfolio(portfolioName, stocks);
     this.model.persist();

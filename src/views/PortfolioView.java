@@ -28,7 +28,7 @@ public interface PortfolioView {
    * @param name            Name of the portfolio.
    * @param stockQuantities Contents of the portfolio.
    */
-  void displayPortfolioComposition(String name, HashMap<String, Integer> stockQuantities);
+  void displayPortfolioComposition(String name, HashMap<String, Float> stockQuantities);
 
   /**
    * Displays the value of a single portfolio.

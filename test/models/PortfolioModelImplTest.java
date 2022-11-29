@@ -54,7 +54,7 @@ public class PortfolioModelImplTest {
             .concat("2").concat("\n")
             .concat("GOOG").concat("\n")
             .concat("2").concat("\n")
-            .concat("7").concat("\n");
+            .concat("8").concat("\n");
     InputStream input = new ByteArrayInputStream(s.getBytes());
     PortfolioController controller = new PortfolioControllerImpl(model, view, input,
             new PrintStream(out));

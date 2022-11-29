@@ -22,7 +22,7 @@ public interface PortfolioModel {
   void addFlexiblePortfolio(String portfolioName);
 
   //TODO: It takes, type, Hashmap of stock & quantity.
-  void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks);
+  void addInflexiblePortfolio(String portfolioName, HashMap<String, Float> stocks);
 
 
   /**
@@ -105,7 +105,7 @@ public interface PortfolioModel {
    * @param portfolioName Name of the portfolio.
    * @return Stocks and their quantities.
    */
-  HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date);
+  HashMap<String, Float> getStockQuantitiesInPortfolio(String portfolioName, String date);
 
   /**
    * Adds an order to the Portfolio.
@@ -117,7 +117,7 @@ public interface PortfolioModel {
    * @return True if successful, false otherwise.
    */
   Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c,
-                                            HashMap<String, Integer> stocks);
+                                            HashMap<String, Float> stocks);
 
   /**
    * Returns the cost basis of portfolio upto date.
