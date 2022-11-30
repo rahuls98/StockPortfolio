@@ -215,6 +215,21 @@ public class Controller implements Features {
 
   @Override
   public void goToInvestByPercentageScreen(String portfolioName) {
-//    model.get
+    //TODO:Check what date to be used for displaying composition
+    HashMap<String, Integer> stocks = model.getStockQuantitiesInPortfolio(portfolioName, LocalDate.now().toString());
+    String[] stockNames = new String[stocks.size()];
+    int i = 0;
+    for(Map.Entry<String , Integer> stock: stocks.entrySet()){
+      stockNames[i] = stock.getKey();
+      i++;
+    }
+    view.disappear();
+    new InvestByPercentage(stockNames);
+  }
+
+  @Override
+  public void goToPortfolioPerformance() {
+    view.disappear();
+    new PerformanceChart(null);
   }
 }

@@ -17,6 +17,7 @@ public class InvestmentPlanScreen extends JFrame implements IView {
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
+    this.add(new JLabel("Select portfolio to invest in:"));
     group = new ButtonGroup();
     JRadioButton radioButton;
 
@@ -29,6 +30,7 @@ public class InvestmentPlanScreen extends JFrame implements IView {
     }
 
     panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     investByPercentage = new JButton("Invest By Percentage");
     investByPercentage.setActionCommand("Invest By Percentage");
     investSip = new JButton("Invest SIP");
@@ -48,12 +50,12 @@ public class InvestmentPlanScreen extends JFrame implements IView {
   @Override
   public void addFeatures(Features features) {
     ret.addActionListener(e -> features.goToHome());
-
+    investByPercentage.addActionListener(e -> features.goToInvestByPercentageScreen(group.getSelection().getActionCommand()));
   }
 
   @Override
   public void disappear() {
-
+    setVisible(false);
   }
 
   @Override

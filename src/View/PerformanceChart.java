@@ -1,51 +1,119 @@
 package View;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
+import javax.swing.*;
 
-public class PerformanceChart extends Application {
+import Controller.Features;
 
-  @Override public void start(Stage stage) {
-    stage.setTitle("Line Chart Sample");
-    //defining the axes
-    final NumberAxis xAxis = new NumberAxis();
-    final NumberAxis yAxis = new NumberAxis();
-    xAxis.setLabel("Number of Month");
-    //creating the chart
-    final LineChart<Number,Number> lineChart =
-            new LineChart<Number,Number>(xAxis,yAxis);
+public class PerformanceChart extends JFrame implements IView {
+  private Graphics2D g2d;
+  private TreeMap<String, Float> performance;
 
-    lineChart.setTitle("Stock Monitoring, 2010");
-    //defining a series
-    XYChart.Series series = new XYChart.Series();
-    series.setName("My portfolio");
-    //populating the series with data
-    series.getData().add(new XYChart.Data(1, 23));
-    series.getData().add(new XYChart.Data(2, 14));
-    series.getData().add(new XYChart.Data(3, 15));
-    series.getData().add(new XYChart.Data(4, 24));
-    series.getData().add(new XYChart.Data(5, 34));
-    series.getData().add(new XYChart.Data(6, 36));
-    series.getData().add(new XYChart.Data(7, 22));
-    series.getData().add(new XYChart.Data(8, 45));
-    series.getData().add(new XYChart.Data(9, 43));
-    series.getData().add(new XYChart.Data(10, 17));
-    series.getData().add(new XYChart.Data(11, 29));
-    series.getData().add(new XYChart.Data(12, 25));
+  public PerformanceChart(TreeMap<String, Float> performance) {
+    super("Line Graph");
 
-    Scene scene  = new Scene(lineChart,800,600);
-    lineChart.getData().add(series);
+    setSize(500, 300);
+    setResizable(false);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);
+//    this.performance = performance;
+    this.performance = new TreeMap<>();
+    this.performance.put("2022-06-25", (float) 50);
+    this.performance.put("2022-07-15", (float) 100);
+    this.performance.put("2022-08-15", (float) 120);
 
-    stage.setScene(scene);
-    stage.show();
+    setVisible(true);
   }
 
-  public static void main(String[] args) {
-    launch(args);
+  @Override
+  public void paint(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
+    //XAxis
+    g2d.drawLine(20, 250, 450, 250);
+    //YAxis
+    g2d.drawLine(20, 250, 20, 50);
+
+    int x_length = 450 - 20;
+    int y_length = 250 - 50;
+    HashMap<Integer, Float> x_points = new HashMap<>();
+
+    for (int i = 0; i < performance.size(); i++) {
+      float prev = x_points.getOrDefault(i, (float) 20);
+      x_points.put(i + 1, prev + (x_length / performance.size()));
+    }
+
+    for (int i = 0; i < x_points.size(); i++) {
+      g2d.drawLine((int) Math.ceil(x_points.get(i + 1)), 248,
+              (int) Math.ceil(x_points.get(i + 1)), 252);
+    }
+
+
+    float maxVal = 0;
+    float minVal = Float.MAX_VALUE;
+    for (Map.Entry<String, Float> val : performance.entrySet()) {
+      maxVal = Math.max(maxVal, val.getValue());
+      minVal = Math.min(minVal, val.getValue());
+    }
+
+    //TODO: Handle max == min
+
+    HashMap<Integer, Float> y_points = new HashMap<>();
+    int i = 1;
+    for (Map.Entry<String, Float> val : performance.entrySet()) {
+      y_points.put(i, 250 - this.minMaxScaler(val.getValue(), minVal, maxVal));
+      i++;
+    }
+
+    for (i = 0; i < y_points.size(); i++) {
+      g2d.drawLine(18, (int) Math.ceil(y_points.get(i + 1)),
+              22, (int) Math.ceil(y_points.get(i + 1)));
+    }
+
+    //Plotting points
+    for (i = 0; i < performance.size(); i++) {
+      g2d.drawOval((int) Math.ceil(x_points.get(i + 1)),
+              (int) Math.ceil(y_points.get(i + 1)), 2, 2);
+    }
+
+    //Draw Lines
+    for (i = 1; i <= performance.size() - 1; i++) {
+      g2d.drawLine((int) Math.ceil(x_points.get(i)),
+              (int) Math.ceil(y_points.get(i)),
+              (int) Math.ceil(x_points.get(i + 1)),
+              (int) Math.ceil(y_points.get(i + 1)));
+    }
+
+
+  }
+
+
+  private float minMaxScaler(float x, float min, float max) {
+    float scale = 250 - 50;
+    float maxMin = max - min;
+    return ((scale * (x - min)) / maxMin) + 50;
+  }
+
+  @Override
+  public void addFeatures(Features features) {
+
+  }
+
+  @Override
+  public void disappear() {
+
+  }
+
+  @Override
+  public void displayDialog(Boolean flag, String message) {
+
+  }
+
+  @Override
+  public void displayTable(String[] colName, Object[][] data) {
+
   }
 }

@@ -24,4 +24,7 @@ public interface Features {
 
   void goToInvestmentPlanScreen();
   void goToInvestByPercentageScreen(String portfolioName);
+//  void investByPercentage(String portfolioName, )
+
+  void goToPortfolioPerformance();
 }

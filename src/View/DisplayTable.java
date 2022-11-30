@@ -42,7 +42,7 @@ public class DisplayTable extends JFrame implements IView {
   }
 
   @Override
-  public void displayDialog(Boolean flag, String message) {
+  public void displayDialog(Boolean flag, String message)  {
 
   }
 
