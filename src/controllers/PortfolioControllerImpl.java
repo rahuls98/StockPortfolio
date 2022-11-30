@@ -11,7 +11,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import models.DollarCostAveraging;
+import models.FixedAmountStrategy;
 import models.PortfolioModel;
+import models.PortfolioOperation;
 import views.PortfolioView;
 
 /**
@@ -76,71 +79,12 @@ public class PortfolioControllerImpl implements PortfolioController {
           this.getPerformance();
           break;
         case 7:
-          this.executeFixedAmountStrategy();
-          break;
-        case 8:
-          this.executeDollarCostAveraging();
-          break;
-        case 9:
           return;
         default:
           this.output.print("\nInvalid choice, please try again!\n");
           break;
       }
     }
-  }
-
-  private void executeFixedAmountStrategy() {
-    String[] portfolios = model.getPortfolios();
-    if (portfolios.length == 0) {
-      this.output.println("\nYou have no portfolios currently!");
-      return;
-    }
-    String portfolioName = displayPortfoliosAndTakeUserInput(portfolios);
-    this.output.print("Enter investment amount: ");
-    int investmentAmount = this.getIntegerFromUser();
-    this.output.print("Enter number of stocks: ");
-    int stockCounts = this.getIntegerFromUser();
-    String stockTicker;
-    int stockWeight;
-    HashMap<String, Integer> stocks = new HashMap<>();
-    for (int i = 0; i < stockCounts; i++) {
-      this.output.print("Ticker: ");
-      stockTicker = this.input.next();
-      this.output.print("Weight: ");
-      stockWeight = this.getIntegerFromUser();
-      stocks.put(stockTicker, stockWeight);
-    }
-    this.model.executeFixedAmountStrategy(portfolioName, investmentAmount, LocalDate.now(), stocks);
-    this.model.persist();
-  }
-
-  private void executeDollarCostAveraging() {
-    this.output.print("Enter portfolio name: ");
-    String portfolioName = this.input.next();
-    this.output.print("Enter interval in days: ");
-    int intervalDays = this.getIntegerFromUser();
-    this.output.print("Enter start date: ");
-    LocalDate startDate = LocalDate.parse(this.getDateFromUser());
-    this.output.print("Enter end date: ");
-    LocalDate endDate = LocalDate.parse(this.getDateFromUser());
-    this.output.print("Enter investment amount: ");
-    int investmentAmount = this.getIntegerFromUser();
-    this.output.print("Enter number of stocks: ");
-    int stockCounts = this.getIntegerFromUser();
-    String stockTicker;
-    int stockWeight;
-    HashMap<String, Integer> stocks = new HashMap<>();
-    for (int i = 0; i < stockCounts; i++) {
-      this.output.print("Ticker: ");
-      stockTicker = this.input.next();
-      this.output.print("Weight: ");
-      stockWeight = this.getIntegerFromUser();
-      stocks.put(stockTicker, stockWeight);
-    }
-    this.model.addFlexiblePortfolio(portfolioName);
-    this.model.executeSip(portfolioName, investmentAmount, startDate, endDate, intervalDays, stocks);
-    this.model.persist();
   }
 
   private int getIntegerFromUser() {
