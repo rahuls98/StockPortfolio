@@ -94,16 +94,14 @@ public class CreateOrderScreen extends JFrame implements IView {
             ""+portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
             date.getText(),
             "BUY",
-            //TODO: Handle invalid float in commision
-            Float.parseFloat(commission.getText()),
+            commission.getText(),
             this.returnStocks()
     ));
     sellButton.addActionListener(e -> features.createOrder(
             ""+portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
             date.getText(),
             "SELL",
-            //TODO: Handle invalid float in commision
-            Float.parseFloat(commission.getText()),
+            commission.getText(),
             this.returnStocks()
     ));
     ret.addActionListener(e -> features.goToHome());
