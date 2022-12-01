@@ -45,12 +45,10 @@ public class Order {
   }
 
   public void addStock(String stockTicker, int stockQuantity) {
-    // TODO : handle multiple entries for same stock
     this.stocks.put(stockTicker, stockQuantity);
   }
 
   public void addStocks(HashMap<String, Integer> stocks) {
-    // TODO : handle multiple entries for same stock
     this.stocks.putAll(stocks);
   }
 }
