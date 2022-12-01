@@ -14,6 +14,7 @@ import views.DisplayComposition;
 import views.DisplayDialogMessage;
 import views.DisplayTable;
 import views.DisplayValue;
+import views.GetCostBasisScreen;
 import views.HomeScreen;
 import views.IView;
 import views.InvestByPercentage;
@@ -307,5 +308,32 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     }
     view.disappear();
     this.setView(new InvestSip(portfolioName, stockNames));
+  }
+
+  @Override
+  public void goToCostBasis() {
+    String[] portfolios = model.getPortfolios();
+    if (portfolios.length == 0) {
+      view.displayDialog(false, "You have no portfolios currently");
+      this.goToHome();
+      return;
+    }
+    view.disappear();
+    this.setView(new GetCostBasisScreen(portfolios));
+  }
+
+  @Override
+  public void getCostBasis(String portfolioName, String date) {
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      return;
+    }
+    if (!(this.model.isValidDate(date))) {
+      new DisplayDialogMessage(false, "Invalid Date!");
+      return;
+    }
+    new DisplayDialogMessage(true,
+            "Cost basis of " + portfolioName + " as of "
+                    + date + " is $" + model.getCostBasis(portfolioName, date));
   }
 }

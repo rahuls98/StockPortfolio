@@ -28,12 +28,6 @@ public class HomeScreen extends JFrame implements IView {
 
     this.setLayout(new FlowLayout());
 
-//    display = new JLabel("To be displayed");
-    //label = new JLabel(new ImageIcon("Jellyfish.JPG"));
-
-
-//    this.add(display);
-
     JPanel panel = new JPanel();
 
     createPortfolio = new JButton("Create Portfolio");
@@ -78,6 +72,7 @@ public class HomeScreen extends JFrame implements IView {
     createOrder.addActionListener(e -> features.goToCreateOrder());
     investmentPlan.addActionListener(e -> features.goToInvestmentPlanScreen());
     portfolioPerformance.addActionListener(e -> features.goToPortfolioPerformance());
+    getCostBasis.addActionListener(e -> features.goToCostBasis());
   }
 
   @Override

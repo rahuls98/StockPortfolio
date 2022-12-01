@@ -24,7 +24,6 @@ public class InvestSip extends JFrame implements IView {
 
   public InvestSip(String portfolioName, String[] stocks) {
     super();
-    portfolioName = portfolioName;
     setBounds(300, 90, 1000, 5000);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
