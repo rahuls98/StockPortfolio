@@ -50,7 +50,12 @@ class Stock {
   public float getPriceOnDate(String date) {
     int closingValue = 3;
     float price;
+    int count = 0;
     while (true) {
+      if (count == 10) {
+        throw new RuntimeException("No data for stock!");
+      }
+      count += 1;
       if (!(prices.containsKey(date))) {
         APIModel model = new APIModelImpl();
         this.prices = model.getStockPrices(this.ticker);
