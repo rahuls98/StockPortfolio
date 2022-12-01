@@ -50,6 +50,11 @@ public class PerformanceChart extends JFrame implements IView {
       g2d.drawLine((int) Math.ceil(x_points.get(i + 1)), 248,
               (int) Math.ceil(x_points.get(i + 1)), 252);
     }
+    int j = 1;
+    for (Map.Entry<String, Float> entry : this.performance.entrySet()) {
+      g2d.drawString(entry.getKey(), x_points.get(j) - 25, 275 );
+      j++;
+    }
 
 
     float maxVal = 0;
