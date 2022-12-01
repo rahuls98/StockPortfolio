@@ -307,6 +307,9 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     date1 = LocalDate.parse(date);
     HashMap<String, Float> stocks1 = new HashMap<>();
     for (Map.Entry<String, String> stock : stocks.entrySet()) {
+      if (stock.getValue().equals("0")) {
+        continue;
+      }
       try {
         Float.parseFloat(stock.getValue());
       } catch (IllegalArgumentException e) {
@@ -360,14 +363,12 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       return;
     }
     LocalDate startDate1;
-    // TODO : Check for weekends
     if (!this.model.isValidDate(startDate)) {
       new DisplayDialogMessage(false, "Invalid start date.");
       return;
     }
     startDate1 = LocalDate.parse(startDate);
     LocalDate endDate1;
-    // TODO : Check for weekends
     if (!this.model.isValidDate(endDate)) {
       new DisplayDialogMessage(false, "Invalid end date.");
       return;
@@ -382,6 +383,9 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     }
     HashMap<String, Float> stocks1 = new HashMap<>();
     for (Map.Entry<String, String> stock : stocks.entrySet()) {
+      if (stock.getValue().equals("0")) {
+        continue;
+      }
       try {
         Float.parseFloat(stock.getValue());
       } catch (IllegalArgumentException e) {

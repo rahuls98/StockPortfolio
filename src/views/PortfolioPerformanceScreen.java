@@ -75,7 +75,7 @@ public class PortfolioPerformanceScreen extends JFrame implements IView {
 
   @Override
   public void disappear() {
-    return;
+    setVisible(false);
   }
 
   @Override
