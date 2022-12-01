@@ -53,14 +53,22 @@ public class FixedAmountStrategyTest {
 
   @Test
   public void testInvestmentValue() {
-    float actualValue = model.getPortfolioTotal(portfolioName, "2022-11-10");
-    assertEquals(this.investmentAmount, actualValue, 0.0);
+    float actualValue1 = model.getPortfolioTotal(portfolioName, "2022-11-10");
+    float actualValue2 = model.getPortfolioTotal(portfolioName, "2022-11-14");
+    float actualValue3 = model.getPortfolioTotal(portfolioName, "2022-11-16");
+    assertEquals(this.investmentAmount, actualValue1, 0.0);
+    assertEquals(2077, (int)actualValue2);
+    assertEquals(2092, (int)actualValue3);
   }
 
   @Test
   public void testInvestmentCostBasis() {
-    float actualCostBasis = model.getCostBasis(portfolioName, "2022-11-10");
-    assertEquals(this.investmentAmount + this.investmentCommission, actualCostBasis, 0.0);
+    float actualCostBasis1 = model.getCostBasis(portfolioName, "2022-11-10");
+    float actualCostBasis2 = model.getCostBasis(portfolioName, "2022-11-14");
+    float actualCostBasis3 = model.getCostBasis(portfolioName, "2022-11-16");
+    assertEquals(this.investmentAmount + this.investmentCommission, actualCostBasis1, 0.0);
+    assertEquals(2005, (int)actualCostBasis2);
+    assertEquals(2005, (int)actualCostBasis3);
   }
 
   @Test
