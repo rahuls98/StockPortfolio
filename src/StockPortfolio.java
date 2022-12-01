@@ -3,6 +3,8 @@ import java.io.PrintStream;
 
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
+import controllers.PortfolioGUIController;
+import controllers.PortfolioGUIControllerImpl;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
 import views.PortfolioView;
@@ -27,8 +29,12 @@ public class StockPortfolio {
       System.out.println("Storage invalid/corrupted!");
       return;
     }
-    PortfolioView view = new PortfolioViewImpl(out);
-    PortfolioController controller = new PortfolioControllerImpl(model, view, input, out);
-    controller.run();
+    if (args.length > 0 && args[0].equals("gui")) {
+      PortfolioGUIController controller = new PortfolioGUIControllerImpl(model);
+    } else {
+      PortfolioView view = new PortfolioViewImpl(out);
+      PortfolioController controller = new PortfolioControllerImpl(model, view, input, out);
+      controller.run();
+    }
   }
 }

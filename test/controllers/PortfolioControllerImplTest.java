@@ -45,11 +45,10 @@ public class PortfolioControllerImplTest {
           + "4. Get portfolio value\n"
           + "5. Get Cost Basis\n"
           + "6. Get Performance\n"
-          + "7. Fixed amount strategy\n"
-          + "8. Exit\n"
+          + "7. Exit\n"
           + "Select action: ";
 
-  private final String exitOption = "8";
+  private final String exitOption = "7";
 
   private final String invalidInteger = "Please enter a valid integer value: ";
 
@@ -904,7 +903,7 @@ public class PortfolioControllerImplTest {
 
   @Test
   public void testMockComposition() {
-    String s = "3\n1\n2022-11-14\n8\n";
+    String s = "3\n1\n2022-11-14\n7\n";
     InputStream input = new ByteArrayInputStream(s.getBytes());
     StringBuilder log = new StringBuilder();
     PortfolioController controller = new PortfolioControllerImpl(
