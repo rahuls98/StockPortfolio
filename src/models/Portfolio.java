@@ -85,8 +85,8 @@ public class Portfolio implements PortfolioInstanceModel {
   }
 
   private Boolean isOrderBookValid() {
-    HashMap<String, Integer> comp = this.getStockQuantities();
-    for (Map.Entry<String, Integer> stock : comp.entrySet()) {
+    HashMap<String, Float> comp = this.getStockQuantities();
+    for (Map.Entry<String, Float> stock : comp.entrySet()) {
       if (stock.getValue() < 0) {
         return false;
       }
@@ -101,7 +101,7 @@ public class Portfolio implements PortfolioInstanceModel {
     for (int i = 0; i < ordBook.size(); i++) {
       costBasis += ordBook.get(i).getCommission();
       if (ordBook.get(i).getAction() == Action.BUY) {
-        for (Map.Entry<String, Integer> stock : ordBook.get(i).getStocks().entrySet()) {
+        for (Map.Entry<String, Float> stock : ordBook.get(i).getStocks().entrySet()) {
           if (!(this.stocks.containsKey(stock.getKey()))) {
             this.stocks.put(stock.getKey(), new Stock(stock.getKey()));
           }
@@ -115,12 +115,12 @@ public class Portfolio implements PortfolioInstanceModel {
   }
 
   @Override
-  public HashMap<String, Integer> getStockQuantities() {
+  public HashMap<String, Float> getStockQuantities() {
     return getComposition(this.orderBook);
   }
 
   @Override
-  public HashMap<String, Integer> getStockCompositionOnDate(LocalDate d) {
+  public HashMap<String, Float> getStockCompositionOnDate(LocalDate d) {
     return getComposition(this.getOrderBookOnDate(d));
   }
 
@@ -134,14 +134,14 @@ public class Portfolio implements PortfolioInstanceModel {
     return ordBook;
   }
 
-  private HashMap<String, Integer> getComposition(ArrayList<Order> orders) {
-    HashMap<String, Integer> composition = new HashMap<>();
+  private HashMap<String, Float> getComposition(ArrayList<Order> orders) {
+    HashMap<String, Float> composition = new HashMap<>();
     //Add stocks
     for (int i = 0; i < orders.size(); i++) {
       if (orders.get(i).getAction() == Action.BUY) {
-        for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+        for (Map.Entry<String, Float> entry : orders.get(i).getStocks().entrySet()) {
           if (!(composition.containsKey(entry.getKey()))) {
-            composition.put(entry.getKey(), 0);
+            composition.put(entry.getKey(), 0f);
           }
           composition.put(entry.getKey(), composition.get(entry.getKey()) + entry.getValue());
         }
@@ -150,9 +150,9 @@ public class Portfolio implements PortfolioInstanceModel {
     //Subtract sell stocks
     for (int i = 0; i < orders.size(); i++) {
       if (orders.get(i).getAction() == Action.SELL) {
-        for (Map.Entry<String, Integer> entry : orders.get(i).getStocks().entrySet()) {
+        for (Map.Entry<String, Float> entry : orders.get(i).getStocks().entrySet()) {
           if (!(composition.containsKey(entry.getKey()))) {
-            composition.put(entry.getKey(), 0);
+            composition.put(entry.getKey(), 0f);
           }
           composition.put(entry.getKey(), composition.get(entry.getKey()) - entry.getValue());
           if (composition.get(entry.getKey()) == 0) {
@@ -167,8 +167,8 @@ public class Portfolio implements PortfolioInstanceModel {
   @Override
   public HashMap<String, Float> getValue(String date) {
     HashMap<String, Float> values = new HashMap<>();
-    HashMap<String, Integer> comp = this.getStockCompositionOnDate(LocalDate.parse(date));
-    for (Map.Entry<String, Integer> entry : comp.entrySet()) {
+    HashMap<String, Float> comp = this.getStockCompositionOnDate(LocalDate.parse(date));
+    for (Map.Entry<String, Float> entry : comp.entrySet()) {
       if (!(values.containsKey(entry.getKey()))) {
         values.put(entry.getKey(), 0f);
       }

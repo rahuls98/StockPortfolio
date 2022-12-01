@@ -11,7 +11,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import models.DollarCostAveraging;
+import models.FixedAmountStrategy;
 import models.PortfolioModel;
+import models.PortfolioOperation;
 import views.PortfolioView;
 
 /**
@@ -192,7 +195,7 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
     String stockName;
     int stockQuantity;
-    HashMap<String, Integer> stocks = new HashMap<>();
+    HashMap<String, Float> stocks = new HashMap<>();
     for (int i = 0; i < numTransactions; i++) {
       this.output.print("Stock " + (i + 1) + " ticker: ");
       stockName = this.input.next();
@@ -206,7 +209,7 @@ public class PortfolioControllerImpl implements PortfolioController {
         this.output.print("Please enter a valid quantity: ");
         stockQuantity = this.getIntegerFromUser();
       }
-      stocks.put(stockName, stockQuantity);
+      stocks.put(stockName, (float)stockQuantity);
     }
     if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))) {
       this.output.println("Invalid Order");
@@ -248,7 +251,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       this.output.print("Please enter a valid number of stocks: ");
       n = this.getIntegerFromUser();
     }
-    HashMap<String, Integer> stocks = new HashMap<>();
+    HashMap<String, Float> stocks = new HashMap<>();
     String stockName;
     int stockQuantity;
     for (int i = 0; i < n; i++) {
@@ -267,7 +270,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       if (stocks.containsKey(stockName)) {
         i--;
       }
-      stocks.put(stockName, stockQuantity);
+      stocks.put(stockName, (float)stockQuantity);
     }
     this.model.addInflexiblePortfolio(portfolioName, stocks);
     this.model.persist();

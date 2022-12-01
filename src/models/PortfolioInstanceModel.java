@@ -35,7 +35,7 @@ public interface PortfolioInstanceModel {
    *
    * @return Current composition of the portfolio represented as stocks mapped to their quantities.
    */
-  HashMap<String, Integer> getStockQuantities();
+  HashMap<String, Float> getStockQuantities();
 
   /**
    * Retrieves the stocks of the portfolio and their values on a given date.
@@ -75,7 +75,7 @@ public interface PortfolioInstanceModel {
    * @param d Date to get the composition for.
    * @return Composition of the portfolio on the given date.
    */
-  HashMap<String, Integer> getStockCompositionOnDate(LocalDate d);
+  HashMap<String, Float> getStockCompositionOnDate(LocalDate d);
 
   /**
    * Returns the cost basis of the portfolio on a given date.

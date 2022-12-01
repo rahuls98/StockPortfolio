@@ -63,7 +63,7 @@ public class PortfolioModelImpl implements PortfolioModel {
 
   //TODO: It takes, type, Hashmap of stock & quantity.
   @Override
-  public void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks) {
+  public void addInflexiblePortfolio(String portfolioName, HashMap<String, Float> stocks) {
     List<Order> initialOrders = new ArrayList<>();
     Order o = new Order(Action.BUY, LocalDate.of(2011, 03, 02), 0.00f);
     o.addStocks(stocks);
@@ -87,7 +87,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
 
-  private Order createOrder(String date, String action, float c, HashMap<String, Integer> stocks) {
+  private Order createOrder(String date, String action, float c, HashMap<String, Float> stocks) {
     Order o;
     if (action.equals("BUY")) {
       o = new Order(Action.BUY, LocalDate.parse(date), c);
@@ -132,7 +132,7 @@ public class PortfolioModelImpl implements PortfolioModel {
   @Override
   public void loadPortfolioFromXml(String pathToFile) {
     try {
-      int quantity;
+      float quantity;
       FileModelXmlImpl xmlFileHandler = new FileModelXmlImpl();
       xmlFileHandler.readFile(pathToFile);
       Document document = xmlFileHandler.getDocument();
@@ -147,7 +147,7 @@ public class PortfolioModelImpl implements PortfolioModel {
       NodeList orderList = portfolioElement.getElementsByTagName("order");
       if (type.equals("inflexible")) {
         NodeList stockList = portfolioElement.getElementsByTagName("stock");
-        HashMap<String, Integer> stocks = new HashMap<>();
+        HashMap<String, Float> stocks = new HashMap<>();
         for (int j = 0; j < stockList.getLength(); j++) {
           Node stockNode = stockList.item(j);
           Element stockElement = (Element) stockNode;
@@ -155,7 +155,7 @@ public class PortfolioModelImpl implements PortfolioModel {
             throw new IllegalArgumentException("Invalid Ticker");
           }
           try {
-            quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
+            quantity = Float.parseFloat(stockElement.getAttribute("quantity"));
             if (quantity <= 0) {
               throw new IllegalArgumentException("Invalid Quantity");
             }
@@ -176,7 +176,7 @@ public class PortfolioModelImpl implements PortfolioModel {
           if (commission < 0) {
             throw new Exception();
           }
-          HashMap<String, Integer> stocks = new HashMap<>();
+          HashMap<String, Float> stocks = new HashMap<>();
           NodeList stockList = orderElement.getElementsByTagName("stock");
           for (int l = 0; l < stockList.getLength(); l++) {
             Node stockNode = stockList.item(l);
@@ -185,7 +185,7 @@ public class PortfolioModelImpl implements PortfolioModel {
               throw new IllegalArgumentException("Invalid Ticker");
             }
             try {
-              quantity = Integer.parseInt(stockElement.getAttribute("quantity"));
+              quantity = Float.parseFloat(stockElement.getAttribute("quantity"));
               if (quantity <= 0) {
                 throw new IllegalArgumentException("Invalid Quantity");
               }
@@ -244,13 +244,13 @@ public class PortfolioModelImpl implements PortfolioModel {
   }
 
   @Override
-  public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName, String date) {
+  public HashMap<String, Float> getStockQuantitiesInPortfolio(String portfolioName, String date) {
     return this.getPortfolio(portfolioName).getStockCompositionOnDate(LocalDate.parse(date));
   }
 
   @Override
   public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action,
-                                                   float c, HashMap<String, Integer> stocks) {
+                                                   float c, HashMap<String, Float> stocks) {
     return this.addOrderToPortfolio(portfolio, this.createOrder(date, action, c, stocks));
   }
 

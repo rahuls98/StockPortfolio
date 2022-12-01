@@ -436,8 +436,8 @@ public class PortfolioControllerImplTest {
             + "---------------------------\n"
             + "Stock       |  Quantity    \n"
             + "---------------------------\n"
-            + "GOOG        |  2           \n"
-            + "AAPL        |  2           \n"
+            + "GOOG        |  2.0         \n"
+            + "AAPL        |  2.0         \n"
             + "---------------------------"
             + this.startingMenu;
     assertEquals(prepareString(expectedOutput), prepareString(out.toString()));
@@ -937,7 +937,7 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public void addInflexiblePortfolio(String portfolioName, HashMap<String, Integer> stocks) {
+    public void addInflexiblePortfolio(String portfolioName, HashMap<String, Float> stocks) {
       return;
     }
 
@@ -998,16 +998,16 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
-    public HashMap<String, Integer> getStockQuantitiesInPortfolio(String portfolioName,
-                                                                  String date) {
+    public HashMap<String, Float> getStockQuantitiesInPortfolio(String portfolioName,
+                                                                String date) {
       log.append(portfolioName);
       log.append(date);
-      return new HashMap<String, Integer>();
+      return new HashMap<String, Float>();
     }
 
     @Override
     public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action,
-                                                     float c, HashMap<String, Integer> stocks) {
+                                                     float c, HashMap<String, Float> stocks) {
       return null;
     }
 

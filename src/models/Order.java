@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Order {
   private Action action;
   private LocalDate date;
-  private HashMap<String, Integer> stocks;
+  private HashMap<String, Float> stocks;
   private float commission;
 
   /**
@@ -36,7 +36,7 @@ public class Order {
     return this.date;
   }
 
-  public HashMap<String, Integer> getStocks() {
+  public HashMap<String, Float> getStocks() {
     return stocks;
   }
 
@@ -44,11 +44,14 @@ public class Order {
     return this.commission;
   }
 
-  public void addStock(String stockTicker, int stockQuantity) {
+
+  public void addStock(String stockTicker, float stockQuantity) {
+    // TODO : handle multiple entries for same stock
     this.stocks.put(stockTicker, stockQuantity);
   }
 
-  public void addStocks(HashMap<String, Integer> stocks) {
+  public void addStocks(HashMap<String, Float> stocks) {
+    // TODO : handle multiple entries for same stock
     this.stocks.putAll(stocks);
   }
 }

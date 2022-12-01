@@ -41,7 +41,7 @@ public class PortfolioViewImpl implements PortfolioView {
   }
 
   @Override
-  public void displayPortfolioComposition(String name, HashMap<String, Integer> stockQuantities) {
+  public void displayPortfolioComposition(String name, HashMap<String, Float> stockQuantities) {
     if (name == null || stockQuantities == null) {
       throw new IllegalArgumentException("Input cannot be null!");
     }
@@ -53,7 +53,7 @@ public class PortfolioViewImpl implements PortfolioView {
     this.out.format("%s", "---------------------------\n");
     this.out.format("%-12s%-3s%-12s\n", "Stock", "|", "Quantity");
     this.out.format("%s", "---------------------------\n");
-    for (Map.Entry<String, Integer> entry : stockQuantities.entrySet()) {
+    for (Map.Entry<String, Float> entry : stockQuantities.entrySet()) {
       this.out.format("%-12s%-3s%-12s\n", entry.getKey(), "|", entry.getValue());
     }
     this.out.format("%s", "---------------------------\n");

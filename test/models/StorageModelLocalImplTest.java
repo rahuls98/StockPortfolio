@@ -54,10 +54,10 @@ public class StorageModelLocalImplTest {
       try {
         User user = new User("Test");
         // Create inflexible portfolio
-        HashMap<String, Integer> inflexiblePortfolioStocks = new HashMap<>();
-        inflexiblePortfolioStocks.put("APPL", 10);
-        inflexiblePortfolioStocks.put("GOOG", 15);
-        inflexiblePortfolioStocks.put("V", 20);
+        HashMap<String, Float> inflexiblePortfolioStocks = new HashMap<>();
+        inflexiblePortfolioStocks.put("APPL", 10f);
+        inflexiblePortfolioStocks.put("GOOG", 15f);
+        inflexiblePortfolioStocks.put("V", 20f);
         Order order = new Order(Action.BUY,
                 LocalDate.of(2011, 03, 01), 0.0f);
         order.addStocks(inflexiblePortfolioStocks);
@@ -69,12 +69,12 @@ public class StorageModelLocalImplTest {
         // Create flexible portfolio
         Portfolio flexiblePortfolio = new Portfolio("flexible_test", PortfolioType.FLEXIBLE,
                 new ArrayList<>());
-        HashMap<String, Integer> stocks1 = new HashMap<>();
-        stocks1.put("AAPL", 1);
-        HashMap<String, Integer> stocks2 = new HashMap<>();
-        stocks2.put("GOOG", 1);
-        HashMap<String, Integer> stocks3 = new HashMap<>();
-        stocks3.put("GOOG", 1);
+        HashMap<String, Float> stocks1 = new HashMap<>();
+        stocks1.put("AAPL", 1f);
+        HashMap<String, Float> stocks2 = new HashMap<>();
+        stocks2.put("GOOG", 1f);
+        HashMap<String, Float> stocks3 = new HashMap<>();
+        stocks3.put("GOOG", 1f);
         Order o1 = new Order(Action.BUY,
                 LocalDate.of(2022, 10, 07), 10.00f);
         o1.addStocks(stocks1);
