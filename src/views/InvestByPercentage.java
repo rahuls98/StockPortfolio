@@ -22,7 +22,7 @@ public class InvestByPercentage extends JFrame implements IView {
 
   public InvestByPercentage(String portfolioName, String[] stocks) {
     super();
-    portfolioName = portfolioName;
+    this.portfolioName = portfolioName;
     setBounds(300, 90, 1000, 5000);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));

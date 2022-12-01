@@ -46,7 +46,10 @@ public class GetCostBasisScreen extends JFrame implements IView {
   @Override
   public void addFeatures(PortfolioGUIController features) {
     ret.addActionListener(e -> features.goToHome());
-
+    display.addActionListener(e -> features.getCostBasis(
+            group.getSelection().getActionCommand(),
+            date.getText()
+    ));
   }
 
   @Override
