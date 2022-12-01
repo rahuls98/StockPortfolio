@@ -1,3 +1,11 @@
+ASSIGNMENT 6
+---------------
+Both text based interface and GUI are supported by the application.
+1. To run the application using the text based interface : java -jar .\StockPortfolio.jar
+2. To run the application using the GUI : java -jar .\StockPortfolio.jar gui
+
+OLD
+-----
 1) Run the .jar file, this will also create the dependent local storage XML file in the same
 directory. Follow the given instructions hereon.
 (java -jar .\StockPortfolio.jar)
