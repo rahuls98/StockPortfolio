@@ -184,7 +184,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
   @Override
   public void goToCreateOrder() {
-    String[] portfolios = model.getPortfolios();
+    String[] portfolios = model.getFlexiblePortfolios();
     if (portfolios.length == 0) {
       view.displayDialog(false, "You have no portfolios currently");
       this.goToHome();
@@ -237,7 +237,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
   @Override
   public void goToInvestmentPlanScreen() {
-    String[] portfolios = model.getPortfolios();
+    String[] portfolios = model.getFlexiblePortfolios();
     if (portfolios.length == 0) {
       view.displayDialog(false, "You have no portfolios currently");
       this.goToHome();
@@ -406,7 +406,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
   @Override
   public void goToCostBasis() {
-    String[] portfolios = model.getPortfolios();
+    String[] portfolios = model.getFlexiblePortfolios();
     if (portfolios.length == 0) {
       view.displayDialog(false, "You have no portfolios currently");
       this.goToHome();
