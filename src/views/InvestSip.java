@@ -1,5 +1,6 @@
 package views;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import javax.swing.*;
@@ -58,7 +59,7 @@ public class InvestSip extends JFrame implements IView {
     startDate = new JTextField(10);
     this.add(startDate);
     this.add(new JLabel("Enter End Date in YYYY-MM-DD"));
-    endDate = new JTextField(10);
+    endDate = new JTextField(LocalDate.now().minusDays(1).toString(),10);
     this.add(endDate);
     this.add(new JLabel("Enter Commission"));
     commission = new JTextField(10);
