@@ -29,8 +29,8 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
     HashMap<String, Float> stocksMap = new HashMap<>();
     for (Map.Entry<String, Float> stockObject : stocks.entrySet()) {
       stock = new Stock(stockObject.getKey());
-      stockInvestment = investmentAmount / stockObject.getValue();
-      stockQuantity = stock.getPriceOnDate(date.toString()) / stockInvestment;
+      stockInvestment = (stockObject.getValue() / 100) * investmentAmount;
+      stockQuantity = stockInvestment / stock.getPriceOnDate(date.toString());
       stocksMap.put(stockObject.getKey(), stockQuantity);
     }
     model.addOrderToPortfolioFromController(this.portfolioName, this.date.toString(), "BUY",

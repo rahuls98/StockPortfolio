@@ -20,7 +20,7 @@ public interface PortfolioGUIController {
   void goToCreatePortfolioManually();
   void goToCreateOrder();
 
-  void createOrder(String portfolio, String date, String action, float c,
+  void createOrder(String portfolio, String date, String action, String c,
                    HashMap<String, String> stocks);
 
   void goToInvestmentPlanScreen();

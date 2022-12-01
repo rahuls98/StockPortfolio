@@ -97,6 +97,11 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     if (pName == null) {
       return;
     }
+    if (!model.isValidDate(date)) {
+      view.displayDialog(false, "Invalid date!");
+      this.goToHome();
+      return;
+    }
     //TODO: Handle date validation
     //TODO: float composition
     HashMap<String, Float> hMap = this.model.getStockQuantitiesInPortfolio(pName, date);
@@ -131,7 +136,11 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     if (pName == null) {
       return;
     }
-    //TODO: Handle date validation
+    if (!model.isValidDate(date)) {
+      view.displayDialog(false, "Invalid date!");
+      this.goToHome();
+      return;
+    }
     HashMap<String, Float> hMap = this.model.getPortfolioValues(pName, date);
     String[] columnNames = {"Stock", "Value"};
 
@@ -182,7 +191,8 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
   }
 
   @Override
-  public void createOrder(String portfolio, String date, String action, float c, HashMap<String, String> stocks) {
+  public void createOrder(String portfolio, String date, String action, String c, HashMap<String,
+          String> stocks) {
 
     if (!(this.model.isValidDate(date))) {
       new DisplayDialogMessage(false, "Invalid Date!");
@@ -203,7 +213,15 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       stockMap.put(stock.getKey(), Float.parseFloat(stock.getValue()));
     }
 
-    if (!(model.addOrderToPortfolioFromController(portfolio, date, action, c, stockMap))) {
+    try {
+      Float.parseFloat(c);
+    } catch (Exception e) {
+      new DisplayDialogMessage(false, "Invalid commission");
+      return;
+    }
+
+    if (!(model.addOrderToPortfolioFromController(portfolio, date, action, Float.parseFloat(c),
+            stockMap))) {
       new DisplayDialogMessage(false, "Invalid Order, cannot be processed.");
       this.goToHome();
     } else {
