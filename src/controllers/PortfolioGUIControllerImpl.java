@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import models.DollarCostAveraging;
 import models.FixedAmountStrategy;
@@ -24,6 +25,7 @@ import views.InvestByPercentage;
 import views.InvestSip;
 import views.InvestmentPlanScreen;
 import views.PerformanceChart;
+import views.PortfolioPerformanceScreen;
 
 public class PortfolioGUIControllerImpl implements PortfolioGUIController {
   private PortfolioModel model;
@@ -266,8 +268,14 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
   @Override
   public void goToPortfolioPerformance() {
+    String[] portfolios = model.getPortfolios();
+    if (portfolios.length == 0) {
+      view.displayDialog(false, "You have no portfolios currently");
+      this.goToHome();
+      return;
+    }
     view.disappear();
-    new PerformanceChart(null);
+    this.setView(new PortfolioPerformanceScreen(portfolios));
   }
 
   @Override
@@ -427,5 +435,27 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     new DisplayDialogMessage(true,
             "Cost basis of " + portfolioName + " as of "
                     + date + " is $" + model.getCostBasis(portfolioName, date));
+  }
+
+  @Override
+  public void displayPortfolioPerformance(String portfolioName, String startDate, String endDate) {
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      this.goToHome();
+    }
+    if (!this.model.isValidDate(startDate)) {
+      new DisplayDialogMessage(false, "Invalid start date.");
+      return;
+    }
+    LocalDate startDate1 = LocalDate.parse(startDate);
+    LocalDate endDate1;
+    if (!this.model.isValidDate(endDate)) {
+      new DisplayDialogMessage(false, "Invalid end date.");
+      return;
+    }
+    endDate1 = LocalDate.parse(endDate);
+    TreeMap<String, Float> performance = this.model.getPerformanceValues(portfolioName, startDate, endDate);
+    view.disappear();
+    this.setView(new PerformanceChart(performance));
   }
 }
