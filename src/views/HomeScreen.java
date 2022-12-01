@@ -1,11 +1,16 @@
 package views;
 
-import javax.swing.*;
+import java.awt.FlowLayout;
 
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays the application home screen to users.
+ */
 public class HomeScreen extends JFrame implements IView {
   private final JButton createPortfolio;
   private final JButton createOrder;
@@ -16,19 +21,17 @@ public class HomeScreen extends JFrame implements IView {
   private final JButton investmentPlan;
   private final JButton portfolioPerformance;
 
+  /**
+   * Object of a GUI screen class that displays the application home screen to users.
+   */
   public HomeScreen(String caption) {
     super(caption);
 
     setSize(1000, 500);
     setLocation(200, 200);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // this.setResizable(false);
-    // this.setMinimumSize(new Dimension(300,300));
-
 
     this.setLayout(new FlowLayout());
-
-    JPanel panel = new JPanel();
 
     createPortfolio = new JButton("Create Portfolio");
     createPortfolio.setActionCommand("Create Portfolio");
@@ -56,8 +59,6 @@ public class HomeScreen extends JFrame implements IView {
     this.add(getCostBasis);
     this.add(exit);
 
-//    this.add(panel);
-
     pack();
     setVisible(true);
 
@@ -82,16 +83,17 @@ public class HomeScreen extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-    if(flag) {
+    if (flag) {
       JOptionPane.showMessageDialog(this, message);
     } else {
-      JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, message, "Error",
+              JOptionPane.ERROR_MESSAGE);
     }
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 
 

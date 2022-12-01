@@ -3,26 +3,37 @@ package views;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that allows users to make SIP investments.
+ */
 public class InvestSip extends JFrame implements IView {
-  private JTextField[] percentages;
-  private JTextField[] stockNames;
-  private JPanel stockPanel;
-  private int maxStocks = 20;
+  private final JTextField[] percentages;
+  private final JTextField[] stockNames;
+  private final JPanel stockPanel;
+  private final int maxStocks = 20;
   private int stockCount;
-  private String portfolioName;
-  private JTextField commission;
-  private JTextField amount;
-  private JButton addStockButton;
-  private JTextField startDate;
-  private JTextField endDate;
-  private JTextField interval;
-  private JButton submit;
-  private JButton ret;
+  private final String portfolioName;
+  private final JTextField commission;
+  private final JTextField amount;
+  private final JButton addStockButton;
+  private final JTextField startDate;
+  private final JTextField endDate;
+  private final JTextField interval;
+  private final JButton submit;
+  private final JButton ret;
 
+  /**
+   * Object of a GUI screen class that allows users to make SIP investments.
+   */
   public InvestSip(String portfolioName, String[] stocks) {
     super();
     this.portfolioName = portfolioName;
@@ -59,7 +70,7 @@ public class InvestSip extends JFrame implements IView {
     startDate = new JTextField(10);
     this.add(startDate);
     this.add(new JLabel("Enter End Date in YYYY-MM-DD"));
-    endDate = new JTextField(LocalDate.now().minusDays(1).toString(),10);
+    endDate = new JTextField(LocalDate.now().minusDays(1).toString(), 10);
     this.add(endDate);
     this.add(new JLabel("Enter Commission"));
     commission = new JTextField(10);
@@ -129,11 +140,11 @@ public class InvestSip extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

@@ -7,8 +7,12 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * Test suite for the FixedAmountStrategy.
+ */
 public class FixedAmountStrategyTest {
   private String portfolioName;
   private int investmentAmount;
@@ -40,7 +44,7 @@ public class FixedAmountStrategyTest {
   }
 
   @Test
-  public void testInvestment(){
+  public void testInvestment() {
     HashSet<String> hs = new HashSet<>();
     hs.add("META");
     hs.add("AAPL");
@@ -57,8 +61,8 @@ public class FixedAmountStrategyTest {
     float actualValue2 = model.getPortfolioTotal(portfolioName, "2022-11-14");
     float actualValue3 = model.getPortfolioTotal(portfolioName, "2022-11-16");
     assertEquals(this.investmentAmount, actualValue1, 0.0);
-    assertEquals(2077, (int)actualValue2);
-    assertEquals(2092, (int)actualValue3);
+    assertEquals(2077, (int) actualValue2);
+    assertEquals(2092, (int) actualValue3);
   }
 
   @Test
@@ -67,8 +71,8 @@ public class FixedAmountStrategyTest {
     float actualCostBasis2 = model.getCostBasis(portfolioName, "2022-11-14");
     float actualCostBasis3 = model.getCostBasis(portfolioName, "2022-11-16");
     assertEquals(this.investmentAmount + this.investmentCommission, actualCostBasis1, 0.0);
-    assertEquals(2005, (int)actualCostBasis2);
-    assertEquals(2005, (int)actualCostBasis3);
+    assertEquals(2005, (int) actualCostBasis2);
+    assertEquals(2005, (int) actualCostBasis3);
   }
 
   @Test

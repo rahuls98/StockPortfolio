@@ -1,14 +1,22 @@
 package views;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays a table to users.
+ */
 public class DisplayTable extends JFrame implements IView {
-  private JTable table;
-  private JScrollPane sp;
-  private JButton exit;
+  private final JButton exit;
 
+  /**
+   * Object of a GUI screen that displays a table to users.
+   */
   public DisplayTable(String[] colName, Object[][] data) {
     super();
     setSize(1000, 500);
@@ -16,10 +24,10 @@ public class DisplayTable extends JFrame implements IView {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-    table = new JTable(data, colName);
+    JTable table = new JTable(data, colName);
 
     table.setBounds(30, 40, 200, 300);
-    sp = new JScrollPane(table);
+    JScrollPane sp = new JScrollPane(table);
     this.add(sp);
     exit = new JButton("Exit");
     exit.setActionCommand("Exit");
@@ -40,12 +48,12 @@ public class DisplayTable extends JFrame implements IView {
   }
 
   @Override
-  public void displayDialog(Boolean flag, String message)  {
-
+  public void displayDialog(Boolean flag, String message) {
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

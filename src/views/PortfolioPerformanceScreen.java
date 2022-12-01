@@ -1,17 +1,30 @@
 package views;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays the performance of user portfolios.
+ */
 public class PortfolioPerformanceScreen extends JFrame implements IView {
   private JPanel panel;
-  private JTextField startDate;
-  private JTextField endDate;
-  private ButtonGroup group;
-  private JButton display;
-  private JButton ret;
+  private final JTextField startDate;
+  private final JTextField endDate;
+  private final ButtonGroup group;
+  private final JButton display;
+  private final JButton ret;
 
+  /**
+   * Object of a GUI screen class that displays the performance of user portfolios.
+   */
   public PortfolioPerformanceScreen(String[] portfolios) {
     super();
 
@@ -59,16 +72,16 @@ public class PortfolioPerformanceScreen extends JFrame implements IView {
 
   @Override
   public void disappear() {
-
+    return;
   }
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

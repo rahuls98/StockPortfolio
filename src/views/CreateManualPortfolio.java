@@ -1,14 +1,23 @@
 package views;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that allows users to create portfolios manually.
+ */
 public class CreateManualPortfolio extends JFrame implements IView {
-  private JLabel enterName;
-  private JTextField portfolioName;
-  private JButton createPortfolioButton;
+  private final JTextField portfolioName;
+  private final JButton createPortfolioButton;
 
+  /**
+   * Object of a GUI screen class that allows users to create portfolios manually.
+   */
   public CreateManualPortfolio() {
     super();
     setSize(1000, 500);
@@ -16,7 +25,7 @@ public class CreateManualPortfolio extends JFrame implements IView {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-    enterName = new JLabel("Enter name of Portfolio(No spaces allowed)");
+    JLabel enterName = new JLabel("Enter name of Portfolio(No spaces allowed)");
     portfolioName = new JTextField();
     createPortfolioButton = new JButton("Create");
     createPortfolioButton.setActionCommand("Create Portfolio");
@@ -28,9 +37,11 @@ public class CreateManualPortfolio extends JFrame implements IView {
     pack();
     setVisible(true);
   }
+
   @Override
   public void addFeatures(PortfolioGUIController features) {
-    createPortfolioButton.addActionListener(e -> features.createNewPortfolio(portfolioName.getText()));
+    createPortfolioButton.addActionListener(e -> features.createNewPortfolio(
+            portfolioName.getText()));
   }
 
   @Override
@@ -40,11 +51,11 @@ public class CreateManualPortfolio extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

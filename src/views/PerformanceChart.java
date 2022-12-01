@@ -1,18 +1,25 @@
 package views;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays a performance chart.
+ */
 public class PerformanceChart extends JFrame implements IView {
   private Graphics2D g2d;
-  private TreeMap<String, Float> performance;
+  private final TreeMap<String, Float> performance;
 
+  /**
+   * Object of a GUI screen class that displays a performance chart.
+   */
   public PerformanceChart(TreeMap<String, Float> performance) {
     super("Line Graph");
 
@@ -20,7 +27,6 @@ public class PerformanceChart extends JFrame implements IView {
     setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
-//    this.performance = performance;
     this.performance = new TreeMap<>();
     this.performance.put("2022-06-25", (float) 50);
     this.performance.put("2022-07-15", (float) 150);
@@ -52,7 +58,7 @@ public class PerformanceChart extends JFrame implements IView {
     }
     int j = 1;
     for (Map.Entry<String, Float> entry : this.performance.entrySet()) {
-      g2d.drawString(entry.getKey(), x_points.get(j) - 25, 275 );
+      g2d.drawString(entry.getKey(), x_points.get(j) - 25, 275);
       j++;
     }
 
@@ -104,21 +110,21 @@ public class PerformanceChart extends JFrame implements IView {
 
   @Override
   public void addFeatures(PortfolioGUIController features) {
-
+    return;
   }
 
   @Override
   public void disappear() {
-
+    return;
   }
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

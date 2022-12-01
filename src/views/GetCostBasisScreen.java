@@ -1,17 +1,28 @@
 package views;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays cost basis of a portfolio to users.
+ */
 public class GetCostBasisScreen extends JFrame implements IView {
-  private JPanel panel;
-  private JTextField date;
-  private ButtonGroup group;
-  private JButton display;
-  private JButton ret;
+  private final JTextField date;
+  private final ButtonGroup group;
+  private final JButton display;
+  private final JButton ret;
 
-  public GetCostBasisScreen(String[] portfolios){
+  /**
+   * Object of a GUI screen class that displays cost basis of a portfolio to users.
+   */
+  public GetCostBasisScreen(String[] portfolios) {
     super();
 
     setSize(1000, 500);
@@ -59,11 +70,11 @@ public class GetCostBasisScreen extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

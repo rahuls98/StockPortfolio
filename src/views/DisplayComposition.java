@@ -1,16 +1,32 @@
 package views;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays a portfolio composition to users.
+ */
 public class DisplayComposition extends JFrame implements IView {
   private JPanel panel;
-  private JTextField date;
-  private ButtonGroup group;
-  private JButton display;
-  private JButton ret;
+  private final JTextField date;
+  private final ButtonGroup group;
+  private final JButton display;
+  private final JButton ret;
 
+  /**
+   * Object of a GUI screen class that displays a portfolio composition to users.
+   */
   public DisplayComposition(String[] portfolios) {
     super();
 
@@ -59,10 +75,11 @@ public class DisplayComposition extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-    if(flag) {
+    if (flag) {
       JOptionPane.showMessageDialog(this, message);
     } else {
-      JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, message, "Error",
+              JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -75,8 +92,8 @@ public class DisplayComposition extends JFrame implements IView {
 
     JTable table = new JTable(data, colName);
 
-    table.setBounds(30,40,200,300);
-    JScrollPane sp=new JScrollPane(table);
+    table.setBounds(30, 40, 200, 300);
+    JScrollPane sp = new JScrollPane(table);
     f.add(sp);
     f.setVisible(true);
   }

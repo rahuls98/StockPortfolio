@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a class that executes a "start-to-finish" dollar-cost averaging investment strategy.
+ */
 public class DollarCostAveraging<T> implements PortfolioOperation<T> {
 
   private final String portfolioName;
@@ -15,6 +18,18 @@ public class DollarCostAveraging<T> implements PortfolioOperation<T> {
   private final HashMap<String, Float> stocks;
   private final float commission;
 
+  /**
+   * Returns an object of the DollarCostAveraging operation class, which can be used to execute
+   * the dollar-cost averaging investment strategy.
+   *
+   * @param portfolioName Name of the portfolio.
+   * @param investmentAmount Amount to invest using strategy.
+   * @param startDate Starting date for the investment period.
+   * @param endDate Ending date for the investment period.
+   * @param interval Day intervals to perform investments.
+   * @param stocks Portfolio of stocks to invest using strategy.
+   * @param commission Commission for each order.
+   */
   public DollarCostAveraging(String portfolioName, float investmentAmount, LocalDate startDate,
                              LocalDate endDate, int interval, HashMap<String, Float> stocks,
                              float commission) {

@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a class that executes a weighted investment strategy.
+ */
 public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
 
   private final String portfolioName;
@@ -12,6 +15,16 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
   private final HashMap<String, Float> stocks;
   private final float commission;
 
+  /**
+   * Returns an object of the FixedAmountStrategy operation class, which can be used to execute
+   * the weighted investment strategy.
+   *
+   * @param portfolioName Name of the portfolio.
+   * @param investmentAmount Amount to invest using strategy.
+   * @param date Date for executing the investment.
+   * @param stocks Portfolio of stocks to invest using strategy.
+   * @param commission Commission for each order.
+   */
   public FixedAmountStrategy(String portfolioName, float investmentAmount,
                              LocalDate date, HashMap<String, Float> stocks, float commission)
           throws IllegalArgumentException {

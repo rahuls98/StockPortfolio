@@ -27,6 +27,10 @@ import views.InvestmentPlanScreen;
 import views.PerformanceChart;
 import views.PortfolioPerformanceScreen;
 
+/**
+ * Represents a controller class that manages a portfolio GUI application. It takes user inputs,
+ * performs operations based on those inputs, and provides outputs.
+ */
 public class PortfolioGUIControllerImpl implements PortfolioGUIController {
   private PortfolioModel model;
   private IView view;
@@ -157,7 +161,6 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       data[i] = row;
       i++;
     }
-//    this.view.displayTable(columnNames, data);
     new DisplayTable(columnNames, data);
   }
 
@@ -474,7 +477,8 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       return;
     }
     endDate1 = LocalDate.parse(endDate);
-    TreeMap<String, Float> performance = this.model.getPerformanceValues(portfolioName, startDate, endDate);
+    TreeMap<String, Float> performance = this.model.getPerformanceValues(portfolioName, startDate,
+            endDate);
     view.disappear();
     this.setView(new PerformanceChart(performance));
   }

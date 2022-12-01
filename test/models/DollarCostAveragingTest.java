@@ -6,8 +6,12 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * Test suite for the DollarCostAveraging.
+ */
 public class DollarCostAveragingTest {
 
   private String portfolioName;
@@ -47,9 +51,9 @@ public class DollarCostAveragingTest {
     float actualValue3 = model.getPortfolioTotal(portfolioName, "2022-09-30");
     float actualValue4 = model.getPortfolioTotal(portfolioName, "2022-10-07");
     assertEquals(this.investmentAmount, actualValue1, 0.0f);
-    assertEquals(1960, (int)(actualValue2));
-    assertEquals(1822, (int)(actualValue3));
-    assertEquals(3794, (int)(actualValue4));
+    assertEquals(1960, (int) (actualValue2));
+    assertEquals(1822, (int) (actualValue3));
+    assertEquals(3794, (int) (actualValue4));
   }
 
   @Test
@@ -180,6 +184,8 @@ public class DollarCostAveragingTest {
             LocalDate.parse("2018-01-01"), LocalDate.parse("2020-12-15"), 30,
             stocks, 5.6f);
     dca.operate(this.model);
-    this.model.persist();
+    HashMap<String, Float> stockQuantities =
+            this.model.getStockQuantitiesInPortfolio(this.portfolioName, "2022-11-10");
+    assertEquals(3, stockQuantities.size());
   }
 }

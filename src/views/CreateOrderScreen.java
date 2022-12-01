@@ -2,26 +2,36 @@ package views;
 
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that allows users to create orders.
+ */
 public class CreateOrderScreen extends JFrame implements IView {
-  private final int maxSize = 10;
-  private JComboBox portfolioCombobox;
+  private final JComboBox portfolioCombobox;
   private int count = 1;
-  private JPanel panel1;
-  private JPanel panel2;
-  private JTextField[] tickers;
-  private JTextField[] quantity;
-  private JButton addStockButton;
-  private JLabel enterCommission;
-  private JTextField commission;
-  private JLabel enterDate;
-  private JTextField date;
-  private JButton buyButton;
-  private JButton sellButton;
-  private JButton ret;
+  private final JPanel panel1;
+  private final JTextField[] tickers;
+  private final JTextField[] quantity;
+  private final JButton addStockButton;
+  private final JTextField commission;
+  private final JTextField date;
+  private final JButton buyButton;
+  private final JButton sellButton;
+  private final JButton ret;
 
+  /**
+   * Object of a GUI screen class that allows users to create orders.
+   */
   public CreateOrderScreen(String message, String[] portfolios) {
     super(message);
 
@@ -55,17 +65,17 @@ public class CreateOrderScreen extends JFrame implements IView {
     addStockButton.setActionCommand("Add Stock");
     this.add(addStockButton);
 
-    enterCommission = new JLabel("Enter Commission");
+    JLabel enterCommission = new JLabel("Enter Commission");
     commission = new JTextField(10);
     this.add(enterCommission);
     this.add(commission);
 
-    enterDate = new JLabel("Enter Date in YYYY-MM-DD");
+    JLabel enterDate = new JLabel("Enter Date in YYYY-MM-DD");
     date = new JTextField(10);
     this.add(enterDate);
     this.add(date);
 
-    panel2 = new JPanel();
+    JPanel panel2 = new JPanel();
     buyButton = new JButton("Buy");
     sellButton = new JButton("Sell");
     buyButton.setActionCommand("BUY");
@@ -91,14 +101,14 @@ public class CreateOrderScreen extends JFrame implements IView {
   public void addFeatures(PortfolioGUIController features) {
     addStockButton.addActionListener(e -> this.addStock());
     buyButton.addActionListener(e -> features.createOrder(
-            ""+portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
+            "" + portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
             date.getText(),
             "BUY",
             commission.getText(),
             this.returnStocks()
     ));
     sellButton.addActionListener(e -> features.createOrder(
-            ""+portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
+            "" + portfolioCombobox.getItemAt(portfolioCombobox.getSelectedIndex()),
             date.getText(),
             "SELL",
             commission.getText(),
@@ -108,6 +118,7 @@ public class CreateOrderScreen extends JFrame implements IView {
   }
 
   private void addStock() {
+    int maxSize = 10;
     if (count == maxSize) {
       //TODO:Handle message
       return;
@@ -133,7 +144,7 @@ public class CreateOrderScreen extends JFrame implements IView {
 
   private HashMap<String, String> returnStocks() {
     HashMap<String, String> stocks = new HashMap<>();
-    for(int i = 1; i <= count; i++){
+    for (int i = 1; i <= count; i++) {
       stocks.put(tickers[i].getText(), quantity[i].getText());
     }
     return stocks;
@@ -141,11 +152,11 @@ public class CreateOrderScreen extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

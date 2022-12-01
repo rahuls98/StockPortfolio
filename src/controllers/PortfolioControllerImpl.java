@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import models.FixedAmountStrategy;
 import models.PortfolioModel;
-import models.PortfolioOperation;
 import views.PortfolioView;
 
 /**
@@ -208,7 +206,7 @@ public class PortfolioControllerImpl implements PortfolioController {
         this.output.print("Please enter a valid quantity: ");
         stockQuantity = this.getIntegerFromUser();
       }
-      stocks.put(stockName, (float)stockQuantity);
+      stocks.put(stockName, (float) stockQuantity);
     }
     if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))) {
       this.output.println("Invalid Order");
@@ -269,7 +267,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       if (stocks.containsKey(stockName)) {
         i--;
       }
-      stocks.put(stockName, (float)stockQuantity);
+      stocks.put(stockName, (float) stockQuantity);
     }
     this.model.addInflexiblePortfolio(portfolioName, stocks);
     this.model.persist();
@@ -412,9 +410,9 @@ public class PortfolioControllerImpl implements PortfolioController {
   private String getDate() {
     this.output.print("Enter the date for which you want the value: ");
     String strDate = this.input.next();
-    while ((!(this.model.isValidDate(strDate))) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0) ||
-            (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)) {
+    while ((!(this.model.isValidDate(strDate)))
+            || (LocalDate.parse(strDate).compareTo(LocalDate.now()) >= 0)
+            || (LocalDate.parse(strDate).compareTo(LocalDate.parse("2011-03-01")) <= 0)) {
       this.output.print("Please enter a valid date: ");
       strDate = this.input.next();
     }

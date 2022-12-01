@@ -2,24 +2,35 @@ package views;
 
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that allows users to make investments by weighted percentages of an amount.
+ */
 public class InvestByPercentage extends JFrame implements IView {
-  private JTextField[] percentages;
-  private JTextField[] stockNames;
-  private JPanel stockPanel;
-  private int maxStocks = 20;
+  private final JTextField[] percentages;
+  private final JTextField[] stockNames;
+  private final JPanel stockPanel;
+  private final int maxStocks = 20;
   private int stockCount;
-  private String portfolioName;
-  private JTextField commission;
-  private JTextField amount;
-  private JButton addStockButton;
-  private JTextField date;
-  private JButton submit;
-  private JButton ret;
+  private final String portfolioName;
+  private final JTextField commission;
+  private final JTextField amount;
+  private final JButton addStockButton;
+  private final JTextField date;
+  private final JButton submit;
+  private final JButton ret;
 
+  /**
+   * Object of GUI screen class that allows users to make investments by weighted percentages.
+   */
   public InvestByPercentage(String portfolioName, String[] stocks) {
     super();
     this.portfolioName = portfolioName;
@@ -86,7 +97,7 @@ public class InvestByPercentage extends JFrame implements IView {
 
   private HashMap<String, String> returnStocks() {
     HashMap<String, String> stocks = new HashMap<>();
-    for(int i = 0; i < stockCount; i++){
+    for (int i = 0; i < stockCount; i++) {
       stocks.put(stockNames[i].getText(), percentages[i].getText());
     }
     return stocks;
@@ -118,11 +129,11 @@ public class InvestByPercentage extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-
+    return;
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-
+    return;
   }
 }

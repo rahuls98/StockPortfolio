@@ -1,17 +1,30 @@
 package views;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import controllers.PortfolioGUIController;
 
+/**
+ * GUI screen that displays a value to users.
+ */
 public class DisplayValue extends JFrame implements IView {
-  private JPanel panel;
-  private JLabel dateLabel;
-  private JTextField textField;
-  private ButtonGroup group;
-  private JButton display;
-  private JButton ret;
+  private final JTextField textField;
+  private final ButtonGroup group;
+  private final JButton display;
+  private final JButton ret;
 
+  /**
+   * Object of a GUI screen that displays a value to users.
+   */
   public DisplayValue(String[] portfolios) {
     super();
 
@@ -31,7 +44,7 @@ public class DisplayValue extends JFrame implements IView {
       group.add(radioButton);
       this.add(radioButton);
     }
-    dateLabel = new JLabel("Enter Date in YYYY-MM-DD Format");
+    JLabel dateLabel = new JLabel("Enter Date in YYYY-MM-DD Format");
     this.add(dateLabel);
     textField = new JTextField();
     this.add(textField);
@@ -47,7 +60,8 @@ public class DisplayValue extends JFrame implements IView {
 
   @Override
   public void addFeatures(PortfolioGUIController features) {
-    display.addActionListener(e -> features.displayPortfolioValue(group.getSelection().getActionCommand(), textField.getText()));
+    display.addActionListener(e -> features.displayPortfolioValue(
+            group.getSelection().getActionCommand(), textField.getText()));
     ret.addActionListener(e -> features.goToHome());
   }
 
@@ -58,10 +72,11 @@ public class DisplayValue extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-    if(flag) {
+    if (flag) {
       JOptionPane.showMessageDialog(this, message);
     } else {
-      JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, message, "Error",
+              JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -74,8 +89,8 @@ public class DisplayValue extends JFrame implements IView {
 
     JTable table = new JTable(data, colName);
 
-    table.setBounds(30,40,200,300);
-    JScrollPane sp=new JScrollPane(table);
+    table.setBounds(30, 40, 200, 300);
+    JScrollPane sp = new JScrollPane(table);
     f.add(sp);
     f.setVisible(true);
   }
