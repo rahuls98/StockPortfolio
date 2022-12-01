@@ -7,6 +7,12 @@ Instead of juggling between these 2 implementations, we decided it would be more
 but also all future versions of portfolio.
 To support this, we introduced a new feature called 'order book' that contains a list of orders(containing stock transactions). This enables us to perform lazy execution efficiently.
 
+CHANGES (Assignment 6):
+We now have GUI support for the application. The old text based interface is still supported.
+We created a new model to support long term investment operations using the visitor design pattern.
+This enables us to support any number of future investment operations on the portfolio without
+editing the existing portfolio model.
+
 
 1. Model - This is where all the computation and functionality resides. The PortfolioModel is the main model of our implementation and is the only public class in the model folder.
            All the other classes are package private. The controller calls the multiple methods of this class, that in turn call the methods in the other model classes.

@@ -16,6 +16,12 @@ details.
     - Anywhere between 0 and 50 stars to represent the scale.
 - If the date provided is a weekend, the application will return the value for the previous Friday.
 
+- Users can use a GUI to interact with the application, create portfolios, orders, view
+performance charts, etc.
+- Users can execute investment strategies such as weighted investments, dollar cost averaging, etc.
+- Users can view additional details regarding their portfolios, such as value, cost basis,
+composition, etc.
+
 Pending :
 - Allowing spaces in portfolio names.
 - Handling multiple users. Currently, the storage supports multiple users, but the user is hardcoded

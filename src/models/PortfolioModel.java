@@ -169,5 +169,11 @@ public interface PortfolioModel {
    */
   Float getScale(TreeMap<String, Float> values);
 
+  /**
+   * Accepts a visitor for PortfolioOperation and performs the requested operation.
+   *
+   * @param visitor PortfolioOperation visitor.
+   * @return Generic item.
+   */
   <T> T accept(PortfolioOperation visitor);
 }
