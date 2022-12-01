@@ -37,7 +37,7 @@ public class DisplayDialogMessage extends JFrame implements IView {
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-    if(flag) {
+    if (flag) {
       JOptionPane.showMessageDialog(this, message);
     } else {
       JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);

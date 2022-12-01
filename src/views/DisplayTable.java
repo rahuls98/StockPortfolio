@@ -49,8 +49,8 @@ public class DisplayTable extends JFrame implements IView {
   }
 
   @Override
-  public void displayDialog(Boolean flag, String message)  {
-    if(flag) {
+  public void displayDialog(Boolean flag, String message) {
+    if (flag) {
       JOptionPane.showMessageDialog(this, message);
     } else {
       JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);

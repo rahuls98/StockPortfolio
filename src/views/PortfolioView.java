@@ -40,17 +40,19 @@ public interface PortfolioView {
 
   /**
    * Display cost basis of the portfolio.
-   * @param name of portfolio.
-   * @param date of cost basis.
+   *
+   * @param name      of portfolio.
+   * @param date      of cost basis.
    * @param costBasis of portfolio.
    */
   void displayCostBasis(String name, String date, Float costBasis);
 
   /**
    * display the performance of the portfolio.
-   * @param portfolioName of the portfolio.
+   *
+   * @param portfolioName     of the portfolio.
    * @param performanceValues to be displayed.
-   * @param scale for displaying the performance.
+   * @param scale             for displaying the performance.
    */
   void displayPerformance(String portfolioName, TreeMap<String, Float> performanceValues,
                           float scale);
