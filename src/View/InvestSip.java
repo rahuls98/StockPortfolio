@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import Controller.Features;
 
-public class InvestByPercentage extends JFrame implements IView {
+public class InvestSip extends JFrame implements IView {
   private JTextField[] percentages;
   private JTextField[] stockNames;
   private JPanel stockPanel;
@@ -16,11 +16,13 @@ public class InvestByPercentage extends JFrame implements IView {
   private JTextField commission;
   private JTextField amount;
   private JButton addStockButton;
-  private JTextField date;
+  private JTextField startDate;
+  private JTextField endDate;
+  private JTextField interval;
   private JButton submit;
   private JButton ret;
 
-  public InvestByPercentage(String portfolioName, String[] stocks) {
+  public InvestSip(String portfolioName, String[] stocks) {
     super();
     portfolioName = portfolioName;
     setBounds(300, 90, 1000, 5000);
@@ -52,12 +54,18 @@ public class InvestByPercentage extends JFrame implements IView {
     this.add(new JLabel("Enter Amount"));
     amount = new JTextField(10);
     this.add(amount);
-    this.add(new JLabel("Enter date in YYYY-MM-DD"));
-    date = new JTextField(10);
-    this.add(date);
+    this.add(new JLabel("Enter Start Date in YYYY-MM-DD"));
+    startDate = new JTextField(10);
+    this.add(startDate);
+    this.add(new JLabel("Enter End Date in YYYY-MM-DD"));
+    endDate = new JTextField(10);
+    this.add(endDate);
     this.add(new JLabel("Enter Commission"));
     commission = new JTextField(10);
     this.add(commission);
+    this.add(new JLabel("Enter Interval in Days"));
+    interval = new JTextField(10);
+    this.add(interval);
 
     submit = new JButton("Submit");
     submit.setActionCommand("Submit");
@@ -75,18 +83,20 @@ public class InvestByPercentage extends JFrame implements IView {
   public void addFeatures(Features features) {
     addStockButton.addActionListener(e -> this.addStock());
     ret.addActionListener(e -> features.goToHome());
-    submit.addActionListener(e -> features.investByPercentage(
-            this.portfolioName,
-            this.amount.getText(),
-            this.date.getText(),
+    submit.addActionListener(e -> features.investBySIP(
+            portfolioName,
+            amount.getText(),
+            startDate.getText(),
+            endDate.getText(),
+            interval.getText(),
             this.returnStocks(),
-            this.commission.getText()
+            commission.getText()
     ));
   }
 
   private HashMap<String, String> returnStocks() {
     HashMap<String, String> stocks = new HashMap<>();
-    for(int i = 0; i < stockCount; i++){
+    for (int i = 0; i < stockCount; i++) {
       stocks.put(stockNames[i].getText(), percentages[i].getText());
     }
     return stocks;

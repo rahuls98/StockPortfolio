@@ -23,8 +23,8 @@ public class PerformanceChart extends JFrame implements IView {
 //    this.performance = performance;
     this.performance = new TreeMap<>();
     this.performance.put("2022-06-25", (float) 50);
-    this.performance.put("2022-07-15", (float) 100);
-    this.performance.put("2022-08-15", (float) 120);
+    this.performance.put("2022-07-15", (float) 150);
+    this.performance.put("2022-08-15", (float) 100);
 
     setVisible(true);
   }
@@ -64,7 +64,7 @@ public class PerformanceChart extends JFrame implements IView {
     HashMap<Integer, Float> y_points = new HashMap<>();
     int i = 1;
     for (Map.Entry<String, Float> val : performance.entrySet()) {
-      y_points.put(i, 250 - this.minMaxScaler(val.getValue(), minVal, maxVal));
+      y_points.put(i, 270 - this.minMaxScaler(val.getValue(), minVal, maxVal));
       i++;
     }
 

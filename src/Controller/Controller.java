@@ -203,7 +203,7 @@ public class Controller implements Features {
 
   @Override
   public void goToInvestmentPlanScreen() {
-    String[] portfolios = model.getPortfolios( );
+    String[] portfolios = model.getPortfolios();
     if (portfolios.length == 0) {
       view.displayDialog(false, "You have no portfolios currently");
       this.goToHome();
@@ -216,20 +216,65 @@ public class Controller implements Features {
   @Override
   public void goToInvestByPercentageScreen(String portfolioName) {
     //TODO:Check what date to be used for displaying composition
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      this.goToHome();
+    }
     HashMap<String, Integer> stocks = model.getStockQuantitiesInPortfolio(portfolioName, LocalDate.now().toString());
     String[] stockNames = new String[stocks.size()];
     int i = 0;
-    for(Map.Entry<String , Integer> stock: stocks.entrySet()){
+    for (Map.Entry<String, Integer> stock : stocks.entrySet()) {
       stockNames[i] = stock.getKey();
       i++;
     }
     view.disappear();
-    new InvestByPercentage(stockNames);
+    this.setView(new InvestByPercentage(portfolioName, stockNames));
   }
 
   @Override
   public void goToPortfolioPerformance() {
     view.disappear();
     new PerformanceChart(null);
+  }
+
+  @Override
+  public void investByPercentage(String portfolioName,
+                                 String amount,
+                                 String date,
+                                 HashMap<String, String> stocks,
+                                 String commission) {
+    //TODO: Validate amount, date, stock Hashmap(DELETE STOCKS WITH 0 QUANTITY) and commisson
+    //use lines 180-190 as reference
+    //TODO:Call FixedAmountStratergy
+  }
+
+  @Override
+  public void investBySIP(String portfolioName,
+                          String amount,
+                          String startDate,
+                          String endDate,
+                          String interval,
+                          HashMap<String, String> stocks,
+                          String commission) {
+
+    //TODO: Similar validations
+  }
+
+  @Override
+  public void goToInvestSipScreen(String portfolioName) {
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      this.goToHome();
+    }
+    HashMap<String, Integer> stocks = model.getStockQuantitiesInPortfolio(portfolioName, LocalDate.now().toString());
+    String[] stockNames = new String[stocks.size()];
+    int i = 0;
+    for (Map.Entry<String, Integer> stock : stocks.entrySet()) {
+      stockNames[i] = stock.getKey();
+      i++;
+    }
+    view.disappear();
+    this.setView(new InvestSip(portfolioName, stockNames));
+
   }
 }
