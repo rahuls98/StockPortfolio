@@ -3,6 +3,7 @@ package views;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -120,11 +121,12 @@ public class PerformanceChart extends JFrame implements IView {
     }
 
     Font currentFont = g2d.getFont();
-    Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
+    Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.8F);
     g.setFont(newFont);
 
     g2d.drawString(String.valueOf(Math.round(maxVal)), 7, 50);
     g2d.drawString(String.valueOf(Math.round(minVal)), 7, 250);
+
   }
 
 
