@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.HashMap;
@@ -7,6 +8,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JButton;
 
 import controllers.PortfolioGUIController;
 
@@ -15,22 +20,20 @@ import controllers.PortfolioGUIController;
  */
 public class PerformanceChart extends JFrame implements IView {
   private Graphics2D g2d;
-  private final TreeMap<String, Float> performance;
+  private TreeMap<String, Float> performance;
+  private JButton exit;
 
   /**
    * Object of a GUI screen class that displays a performance chart.
    */
   public PerformanceChart(TreeMap<String, Float> performance) {
-    super("Line Graph");
+    super("Portfolio Performance");
 
     setSize(500, 300);
-    setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
-    this.performance = new TreeMap<>();
-    this.performance.put("2022-06-25", (float) 50);
-    this.performance.put("2022-07-15", (float) 150);
-    this.performance.put("2022-08-15", (float) 100);
+    this.performance = performance;
+    exit = new JButton("Return");
 
     setVisible(true);
   }
@@ -58,7 +61,7 @@ public class PerformanceChart extends JFrame implements IView {
     }
     int j = 1;
     for (Map.Entry<String, Float> entry : this.performance.entrySet()) {
-      g2d.drawString(entry.getKey(), x_points.get(j) - 25, 275);
+      g2d.drawString(entry.getKey(), x_points.get(j) - 30, 275);
       j++;
     }
 
@@ -70,19 +73,37 @@ public class PerformanceChart extends JFrame implements IView {
       minVal = Math.min(minVal, val.getValue());
     }
 
-    //TODO: Handle max == min
-
     HashMap<Integer, Float> y_points = new HashMap<>();
+    HashMap<Integer, Float> y_points_temp = new HashMap<>();
     int i = 1;
     for (Map.Entry<String, Float> val : performance.entrySet()) {
-      y_points.put(i, 270 - this.minMaxScaler(val.getValue(), minVal, maxVal));
+      y_points_temp.put(i, 250 - this.minMaxScaler(val.getValue(), minVal, maxVal));
       i++;
     }
+    float minYVal = Float.MAX_VALUE;
+    float maxYVal = 0;
+
+    for (Map.Entry<Integer, Float> temp : y_points_temp.entrySet()) {
+      minYVal = Math.min(minYVal, temp.getValue());
+      maxYVal = Math.max(maxYVal, temp.getValue());
+    }
+
+    float val1;
+    float minYVal1 = Float.MAX_VALUE;
+    float maxYVal1 = 0;
+    for (Map.Entry<Integer, Float> temp : y_points_temp.entrySet()) {
+      val1 = this.minMaxScaler(temp.getValue(), minYVal, maxYVal);
+      minYVal1 = Math.min(minYVal1, val1);
+      maxYVal1 = Math.max(maxYVal1, val1);
+      y_points.put(temp.getKey(), val1);
+    }
+
 
     for (i = 0; i < y_points.size(); i++) {
       g2d.drawLine(18, (int) Math.ceil(y_points.get(i + 1)),
               22, (int) Math.ceil(y_points.get(i + 1)));
     }
+
 
     //Plotting points
     for (i = 0; i < performance.size(); i++) {
@@ -98,33 +119,54 @@ public class PerformanceChart extends JFrame implements IView {
               (int) Math.ceil(y_points.get(i + 1)));
     }
 
+    Font currentFont = g2d.getFont();
+    Font newFont = currentFont.deriveFont(currentFont.getSize() * 0.9F);
+    g.setFont(newFont);
 
+    g2d.drawString(String.valueOf(Math.round(maxVal)), 7, 50);
+    g2d.drawString(String.valueOf(Math.round(minVal)), 7, 250);
   }
 
 
   private float minMaxScaler(float x, float min, float max) {
     float scale = 250 - 50;
     float maxMin = max - min;
-    return ((scale * (x - min)) / maxMin) + 50;
+    float temp1 = scale * (x - min);
+    float temp2 = temp1 / maxMin;
+    return temp2 + 50;
   }
 
   @Override
   public void addFeatures(PortfolioGUIController features) {
-    return;
+    exit.addActionListener(e -> features.goToHome());
   }
 
   @Override
   public void disappear() {
-    return;
+    setVisible(false);
   }
 
   @Override
   public void displayDialog(Boolean flag, String message) {
-    return;
+    if (flag) {
+      JOptionPane.showMessageDialog(this, message);
+    } else {
+      JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
   }
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-    return;
+    JFrame f = new JFrame();
+    f.setSize(1000, 500);
+    f.setLocation(200, 200);
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    JTable table = new JTable(data, colName);
+
+    table.setBounds(30, 40, 200, 300);
+    JScrollPane sp = new JScrollPane(table);
+    f.add(sp);
+    f.setVisible(true);
   }
 }

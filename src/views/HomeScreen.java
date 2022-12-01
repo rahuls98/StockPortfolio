@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 import controllers.PortfolioGUIController;
 
@@ -93,8 +95,16 @@ public class HomeScreen extends JFrame implements IView {
 
   @Override
   public void displayTable(String[] colName, Object[][] data) {
-    return;
+    JFrame f = new JFrame();
+    f.setSize(1000, 500);
+    f.setLocation(200, 200);
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    JTable table = new JTable(data, colName);
+
+    table.setBounds(30, 40, 200, 300);
+    JScrollPane sp = new JScrollPane(table);
+    f.add(sp);
+    f.setVisible(true);
   }
-
-
 }
