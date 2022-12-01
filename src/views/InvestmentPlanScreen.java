@@ -11,7 +11,7 @@ public class InvestmentPlanScreen extends JFrame implements IView {
   private JButton investSip;
   private JButton ret;
 
-  public InvestmentPlanScreen(String[] portfolios){
+  public InvestmentPlanScreen(String[] portfolios) {
     super();
     setBounds(300, 90, 1000, 5000);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,6 +51,7 @@ public class InvestmentPlanScreen extends JFrame implements IView {
   public void addFeatures(PortfolioGUIController features) {
     ret.addActionListener(e -> features.goToHome());
     investByPercentage.addActionListener(e -> features.goToInvestByPercentageScreen(group.getSelection().getActionCommand()));
+    investSip.addActionListener(e -> features.goToInvestSipScreen(group.getSelection().getActionCommand()));
   }
 
   @Override

@@ -27,4 +27,20 @@ public interface PortfolioGUIController {
   void goToInvestByPercentageScreen(String portfolioName);
 
   void goToPortfolioPerformance();
+
+  void investByPercentage(String portfolioName,
+                          String amount,
+                          String date,
+                          HashMap<String, String> stocks,
+                          String commission);
+
+  void investBySIP(String portfolioName,
+                   String amount,
+                   String startDate,
+                   String endDate,
+                   String interval,
+                   HashMap<String, String> stocks,
+                   String commission);
+
+  void goToInvestSipScreen(String portfolioName);
 }
