@@ -50,8 +50,7 @@ public class PortfolioControllerImpl implements PortfolioController {
   public void run() {
     this.output.println("\nPlease enter the menu item number when requested.");
     String[] actions = new String[]{"Create Portfolio", "Create Order", "Get portfolio "
-            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance",
-            "Fixed amount strategy", "Dollar-cost averaging", "Exit"};
+            + "composition", "Get portfolio value", "Get Cost Basis", "Get Performance", "Exit"};
     while (true) {
       this.output.println();
       this.output.println("What would you like to do?");

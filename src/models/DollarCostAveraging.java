@@ -3,6 +3,7 @@ package models;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map;
 
 public class DollarCostAveraging<T> implements PortfolioOperation<T> {
 
@@ -17,6 +18,31 @@ public class DollarCostAveraging<T> implements PortfolioOperation<T> {
   public DollarCostAveraging(String portfolioName, float investmentAmount, LocalDate startDate,
                              LocalDate endDate, int interval, HashMap<String, Float> stocks,
                              float commission) {
+    if (portfolioName == null || portfolioName.equals("")) {
+      throw new IllegalArgumentException("Portfolio required to apply strategy!");
+    }
+    if (investmentAmount <= 0) {
+      throw new IllegalArgumentException("Investment amount should be a positive non-zero value!");
+    }
+    if (startDate.isEqual(endDate) || startDate.isAfter(endDate)) {
+      throw new IllegalArgumentException("Invalid date range provided!");
+    }
+    if (interval < 1) {
+      throw new IllegalArgumentException("Invalid interval provided!");
+    }
+    if (stocks.size() == 0) {
+      throw new IllegalArgumentException("No stocks!");
+    }
+    float total = 0;
+    for (Map.Entry<String, Float> stocksObj : stocks.entrySet()) {
+      total += stocksObj.getValue();
+    }
+    if (total != 100) {
+      throw new IllegalArgumentException("Weights don't add upto 100% !");
+    }
+    if (commission < 0) {
+      throw new IllegalArgumentException("Commission cannot be negative!");
+    }
     this.portfolioName = portfolioName;
     this.investmentAmount = investmentAmount;
     this.startDate = startDate;

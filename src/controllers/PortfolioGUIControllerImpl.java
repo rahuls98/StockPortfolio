@@ -319,8 +319,14 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       new DisplayDialogMessage(false, "Invalid commission.");
       return;
     }
-    PortfolioOperation<Void> fas = new FixedAmountStrategy<>(portfolioName, amount1, date1, stocks1,
-            commission1);
+    PortfolioOperation<Void> fas;
+    try {
+      fas = new FixedAmountStrategy<>(portfolioName, amount1, date1, stocks1,
+              commission1);
+    } catch (IllegalArgumentException e) {
+      new DisplayDialogMessage(false, e.getMessage());
+      return;
+    }
     fas.operate(this.model);
     this.model.persist();
     new DisplayDialogMessage(true, "Order created successfully!");
@@ -384,8 +390,14 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       new DisplayDialogMessage(false, "Invalid commission.");
       return;
     }
-    PortfolioOperation<Void> dca = new DollarCostAveraging<>(portfolioName, amount1, startDate1,
-            endDate1, interval1, stocks1, commission1);
+    PortfolioOperation<Void> dca;
+    try {
+      dca = new DollarCostAveraging<>(portfolioName, amount1, startDate1,
+              endDate1, interval1, stocks1, commission1);
+    } catch (IllegalArgumentException e) {
+      new DisplayDialogMessage(false, e.getMessage());
+      return;
+    }
     dca.operate(this.model);
     this.model.persist();
     new DisplayDialogMessage(true, "Order created successfully!");
