@@ -7,14 +7,14 @@ import java.util.HashMap;
 public class DollarCostAveraging<T> implements PortfolioOperation<T> {
 
   private final String portfolioName;
-  private final int investmentAmount;
+  private final float investmentAmount;
   private final LocalDate startDate;
   private final LocalDate endDate;
   private final int interval;
   private final HashMap<String, Float> stocks;
   private final float commission;
 
-  public DollarCostAveraging(String portfolioName, int investmentAmount, LocalDate startDate,
+  public DollarCostAveraging(String portfolioName, float investmentAmount, LocalDate startDate,
                              LocalDate endDate, int interval, HashMap<String, Float> stocks,
                              float commission) {
     this.portfolioName = portfolioName;
