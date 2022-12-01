@@ -37,7 +37,8 @@ public class DollarCostAveragingTest {
     this.dca = new DollarCostAveraging<>(portfolioName, this.investmentAmount,
             LocalDate.parse("2022-09-07"), LocalDate.parse("2022-11-20"), 30,
             stocks, this.investmentCommission);
-    this.dca.operate(model);
+//    this.dca.operate(model);
+    model.accept(this.dca);
   }
 
   @Test

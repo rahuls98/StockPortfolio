@@ -24,7 +24,7 @@ public class InvestSip extends JFrame implements IView {
 
   public InvestSip(String portfolioName, String[] stocks) {
     super();
-    portfolioName = portfolioName;
+    this.portfolioName = portfolioName;
     setBounds(300, 90, 1000, 5000);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
@@ -84,7 +84,7 @@ public class InvestSip extends JFrame implements IView {
     addStockButton.addActionListener(e -> this.addStock());
     ret.addActionListener(e -> features.goToHome());
     submit.addActionListener(e -> features.investBySIP(
-            portfolioName,
+            this.portfolioName,
             amount.getText(),
             startDate.getText(),
             endDate.getText(),

@@ -44,6 +44,7 @@ public class Order {
     return this.commission;
   }
 
+
   public void addStock(String stockTicker, float stockQuantity) {
     // TODO : handle multiple entries for same stock
     this.stocks.put(stockTicker, stockQuantity);

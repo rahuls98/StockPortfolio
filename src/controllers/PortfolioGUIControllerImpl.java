@@ -17,6 +17,7 @@ import views.DisplayComposition;
 import views.DisplayDialogMessage;
 import views.DisplayTable;
 import views.DisplayValue;
+import views.GetCostBasisScreen;
 import views.HomeScreen;
 import views.IView;
 import views.InvestByPercentage;
@@ -105,8 +106,6 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       this.goToHome();
       return;
     }
-    //TODO: Handle date validation
-    //TODO: float composition
     HashMap<String, Float> hMap = this.model.getStockQuantitiesInPortfolio(pName, date);
     String[] columnNames = {"Stock", "Quantity"};
 
@@ -115,7 +114,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     int i = 0;
     Object[] row;
     for (Map.Entry<String, Float> comp : hMap.entrySet()) {
-      row = new Object[]{comp.getKey(), comp.getValue()};
+      row = new Object[]{comp.getKey(), String.format("%.2f",comp.getValue())};
       data[i] = row;
       i++;
     }
@@ -183,7 +182,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
   @Override
   public void goToCreateOrder() {
-    String[] portfolios = model.getPortfolios();
+    String[] portfolios = model.getFlexiblePortfolios();
     if (portfolios.length == 0) {
       view.displayDialog(false, "You have no portfolios currently");
       this.goToHome();
@@ -236,7 +235,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
   @Override
   public void goToInvestmentPlanScreen() {
-    String[] portfolios = model.getPortfolios();
+    String[] portfolios = model.getFlexiblePortfolios();
     if (portfolios.length == 0) {
       view.displayDialog(false, "You have no portfolios currently");
       this.goToHome();
@@ -413,5 +412,32 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     }
     view.disappear();
     this.setView(new InvestSip(portfolioName, stockNames));
+  }
+
+  @Override
+  public void goToCostBasis() {
+    String[] portfolios = model.getFlexiblePortfolios();
+    if (portfolios.length == 0) {
+      view.displayDialog(false, "You have no portfolios currently");
+      this.goToHome();
+      return;
+    }
+    view.disappear();
+    this.setView(new GetCostBasisScreen(portfolios));
+  }
+
+  @Override
+  public void getCostBasis(String portfolioName, String date) {
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      return;
+    }
+    if (!(this.model.isValidDate(date))) {
+      new DisplayDialogMessage(false, "Invalid Date!");
+      return;
+    }
+    new DisplayDialogMessage(true,
+            "Cost basis of " + portfolioName + " as of "
+                    + date + " is $" + model.getCostBasis(portfolioName, date));
   }
 }

@@ -43,4 +43,8 @@ public interface PortfolioGUIController {
                    String commission);
 
   void goToInvestSipScreen(String portfolioName);
+
+  void goToCostBasis();
+
+  void getCostBasis(String portfolioName, String date);
 }
