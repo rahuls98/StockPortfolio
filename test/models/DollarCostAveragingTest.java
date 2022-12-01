@@ -27,6 +27,10 @@ public class DollarCostAveragingTest {
       throw new RuntimeException(e);
     }
     model.addFlexiblePortfolio(portfolioName);
+  }
+
+  @Test
+  public void testInvestmentValue() {
     HashMap<String, Float> stocks = new HashMap<>();
     stocks.put("META", 40f);
     stocks.put("AAPL", 20f);
@@ -38,10 +42,6 @@ public class DollarCostAveragingTest {
             LocalDate.parse("2022-09-07"), LocalDate.parse("2022-11-20"), 30,
             stocks, this.investmentCommission);
     model.accept(this.dca);
-  }
-
-  @Test
-  public void testInvestmentValue() {
     float actualValue1 = model.getPortfolioTotal(portfolioName, "2022-09-07");
     float actualValue2 = model.getPortfolioTotal(portfolioName, "2022-09-19");
     float actualValue3 = model.getPortfolioTotal(portfolioName, "2022-09-30");
@@ -54,6 +54,17 @@ public class DollarCostAveragingTest {
 
   @Test
   public void testInvestmentCostBasis() {
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("META", 40f);
+    stocks.put("AAPL", 20f);
+    stocks.put("NFLX", 30f);
+    stocks.put("GOOG", 10f);
+    this.investmentAmount = 2000;
+    this.investmentCommission = 5.6f;
+    this.dca = new DollarCostAveraging<>(portfolioName, this.investmentAmount,
+            LocalDate.parse("2022-09-07"), LocalDate.parse("2022-11-20"), 30,
+            stocks, this.investmentCommission);
+    model.accept(this.dca);
     float actualCostBasis1 = model.getCostBasis(portfolioName, "2022-09-07");
     float actualCostBasis2 = model.getCostBasis(portfolioName, "2022-09-18");
     float actualCostBasis3 = model.getCostBasis(portfolioName, "2022-09-30");
@@ -156,5 +167,19 @@ public class DollarCostAveragingTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Invalid interval provided!", e.getMessage());
     }
+  }
+
+  @Test
+  public void testHolidayDates() {
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("AAPL", 40f);
+    stocks.put("NFLX", 40f);
+    stocks.put("GOOG", 20f);
+
+    PortfolioOperation<Void> dca = new DollarCostAveraging<>(this.portfolioName, 2000,
+            LocalDate.parse("2018-01-01"), LocalDate.parse("2020-12-15"), 30,
+            stocks, 5.6f);
+    dca.operate(this.model);
+    this.model.persist();
   }
 }
