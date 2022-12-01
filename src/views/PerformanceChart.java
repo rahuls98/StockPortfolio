@@ -20,11 +20,11 @@ public class PerformanceChart extends JFrame implements IView {
     setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
-    this.performance = performance;
-//    this.performance = new TreeMap<>();
-//    this.performance.put("2022-06-25", (float) 50);
-//    this.performance.put("2022-07-15", (float) 150);
-//    this.performance.put("2022-08-15", (float) 100);
+//    this.performance = performance;
+    this.performance = new TreeMap<>();
+    this.performance.put("2022-06-25", (float) 50);
+    this.performance.put("2022-07-15", (float) 150);
+    this.performance.put("2022-08-15", (float) 100);
 
     setVisible(true);
   }

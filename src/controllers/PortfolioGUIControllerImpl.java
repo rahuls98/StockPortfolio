@@ -116,7 +116,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     int i = 0;
     Object[] row;
     for (Map.Entry<String, Float> comp : hMap.entrySet()) {
-      row = new Object[]{comp.getKey(), String.format("%.2f",comp.getValue())};
+      row = new Object[]{comp.getKey(), String.format("%.2f", comp.getValue())};
       data[i] = row;
       i++;
     }
@@ -284,6 +284,10 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
                                  String date,
                                  HashMap<String, String> stocks,
                                  String commission) {
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      this.goToHome();
+    }
     float amount1;
     try {
       amount1 = Float.parseFloat(amount);
@@ -341,6 +345,10 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
                           String interval,
                           HashMap<String, String> stocks,
                           String commission) {
+    if (portfolioName == null) {
+      new DisplayDialogMessage(false, "Select a portfolio!");
+      this.goToHome();
+    }
     float amount1;
     try {
       amount1 = Float.parseFloat(amount);
