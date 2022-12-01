@@ -21,6 +21,7 @@ import java.util.TreeMap;
 import models.Portfolio;
 import models.PortfolioModel;
 import models.PortfolioModelImpl;
+import models.PortfolioOperation;
 import views.PortfolioView;
 import views.PortfolioViewImpl;
 
@@ -1024,6 +1025,11 @@ public class PortfolioControllerImplTest {
 
     @Override
     public Float getScale(TreeMap<String, Float> values) {
+      return null;
+    }
+
+    @Override
+    public <T> T accept(PortfolioOperation visitor) {
       return null;
     }
   }

@@ -36,7 +36,7 @@ public class FixedAmountStrategyTest {
     this.investmentCommission = 5.6f;
     this.fas = new FixedAmountStrategy<>(portfolioName, this.investmentAmount,
             LocalDate.parse("2022-11-10"), stocks, this.investmentCommission);
-    fas.operate(model);
+    model.accept(this.fas);
   }
 
   @Test

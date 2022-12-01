@@ -336,4 +336,9 @@ public class PortfolioModelImpl implements PortfolioModel {
     }
     return scale;
   }
+
+  @Override
+  public <T> T accept(PortfolioOperation visitor) {
+    return (T) visitor.operate(this);
+  }
 }

@@ -169,4 +169,6 @@ public interface PortfolioModel {
    * @return scale as a float.
    */
   Float getScale(TreeMap<String, Float> values);
+
+  <T> T accept(PortfolioOperation visitor);
 }
