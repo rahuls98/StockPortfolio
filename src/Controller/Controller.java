@@ -87,6 +87,7 @@ public class Controller implements Features {
       return;
     }
     //TODO: Handle date validation
+    //TODO: float composition
     HashMap<String, Integer> hMap = this.model.getStockQuantitiesInPortfolio(pName, date);
     String[] columnNames = {"Stock", "Quantity"};
 
