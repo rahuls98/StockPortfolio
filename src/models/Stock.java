@@ -1,5 +1,6 @@
 package models;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 
 /**
@@ -48,10 +49,19 @@ class Stock {
    */
   public float getPriceOnDate(String date) {
     int closingValue = 3;
-    if (!(prices.containsKey(date))) {
-      APIModel model = new APIModelImpl();
-      this.prices = model.getStockPrices(this.ticker);
+    float price;
+    while (true) {
+      if (!(prices.containsKey(date))) {
+        APIModel model = new APIModelImpl();
+        this.prices = model.getStockPrices(this.ticker);
+      }
+      try {
+        price = this.prices.get(date)[closingValue];
+        break;
+      } catch (NullPointerException e) {
+        date = LocalDate.parse(date).minusDays(1).toString();
+      }
     }
-    return this.prices.get(date)[closingValue];
+    return price;
   }
 }

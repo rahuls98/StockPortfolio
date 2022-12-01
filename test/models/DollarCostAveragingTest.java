@@ -157,4 +157,18 @@ public class DollarCostAveragingTest {
       assertEquals("Invalid interval provided!", e.getMessage());
     }
   }
+
+  @Test
+  public void testHolidayDates() {
+    HashMap<String, Float> stocks = new HashMap<>();
+    stocks.put("META", 40f);
+    stocks.put("NFLX", 30f);
+    stocks.put("AAPL", 20f);
+    stocks.put("GOOG", 10f);
+
+    PortfolioOperation<Void> dca = new DollarCostAveraging<>(this.portfolioName, 2000,
+            LocalDate.parse("2012-01-01"), LocalDate.parse("2015-12-15"), 30,
+            stocks, 5.6f);
+    dca.operate(this.model);
+  }
 }
