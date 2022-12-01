@@ -6,7 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.DollarCostAveraging;
+import models.FixedAmountStrategy;
 import models.PortfolioModel;
+import models.PortfolioOperation;
 import views.CreateManualPortfolio;
 import views.CreateOrderScreen;
 import views.CreatePortfolioScreen;
@@ -274,9 +277,47 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
                                  String date,
                                  HashMap<String, String> stocks,
                                  String commission) {
-    //TODO: Validate amount, date, stock Hashmap(DELETE STOCKS WITH 0 QUANTITY) and commisson
-    //use lines 180-190 as reference
-    //TODO:Call FixedAmountStratergy
+    float amount1;
+    try {
+      amount1 = Float.parseFloat(amount);
+    } catch (Exception e) {
+      new DisplayDialogMessage(false, "Invalid amount.");
+      return;
+    }
+    LocalDate date1;
+    // TODO : Check for weekends
+    if (!this.model.isValidDate(date)) {
+      new DisplayDialogMessage(false, "Invalid date.");
+      return;
+    }
+    date1 = LocalDate.parse(date);
+    HashMap<String, Float> stocks1 = new HashMap<>();
+    for (Map.Entry<String, String> stock : stocks.entrySet()) {
+      try {
+        Float.parseFloat(stock.getValue());
+      } catch (IllegalArgumentException e) {
+        new DisplayDialogMessage(false, "Invalid Quantity");
+        return;
+      }
+      if (!(this.model.isValidTicker(stock.getKey()))) {
+        new DisplayDialogMessage(false, "Invalid Stock");
+        return;
+      }
+      stocks1.put(stock.getKey(), Float.parseFloat(stock.getValue()));
+    }
+    float commission1;
+    try {
+      commission1 = Float.parseFloat(commission);
+    } catch (Exception e) {
+      new DisplayDialogMessage(false, "Invalid commission.");
+      return;
+    }
+    PortfolioOperation<Void> fas = new FixedAmountStrategy<>(portfolioName, amount1, date1, stocks1,
+            commission1);
+    fas.operate(this.model);
+    this.model.persist();
+    new DisplayDialogMessage(true, "Order created successfully!");
+    this.goToHome();
   }
 
   @Override
@@ -287,8 +328,61 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
                           String interval,
                           HashMap<String, String> stocks,
                           String commission) {
-
-    //TODO: Similar validations
+    float amount1;
+    try {
+      amount1 = Float.parseFloat(amount);
+    } catch (Exception e) {
+      new DisplayDialogMessage(false, "Invalid amount.");
+      return;
+    }
+    LocalDate startDate1;
+    // TODO : Check for weekends
+    if (!this.model.isValidDate(startDate)) {
+      new DisplayDialogMessage(false, "Invalid start date.");
+      return;
+    }
+    startDate1 = LocalDate.parse(startDate);
+    LocalDate endDate1;
+    // TODO : Check for weekends
+    if (!this.model.isValidDate(endDate)) {
+      new DisplayDialogMessage(false, "Invalid end date.");
+      return;
+    }
+    endDate1 = LocalDate.parse(endDate);
+    int interval1;
+    try {
+      interval1 = Integer.parseInt(interval);
+    } catch (Exception e) {
+      new DisplayDialogMessage(false, "Invalid interval.");
+      return;
+    }
+    HashMap<String, Float> stocks1 = new HashMap<>();
+    for (Map.Entry<String, String> stock : stocks.entrySet()) {
+      try {
+        Float.parseFloat(stock.getValue());
+      } catch (IllegalArgumentException e) {
+        new DisplayDialogMessage(false, "Invalid Quantity");
+        return;
+      }
+      if (!(this.model.isValidTicker(stock.getKey()))) {
+        new DisplayDialogMessage(false, "Invalid Stock");
+        return;
+      }
+      stocks1.put(stock.getKey(), Float.parseFloat(stock.getValue()));
+    }
+    float commission1;
+    try {
+      commission1 = Float.parseFloat(commission);
+    } catch (Exception e) {
+      new DisplayDialogMessage(false, "Invalid commission.");
+      return;
+    }
+    PortfolioOperation<Void> dca = new DollarCostAveraging<>(portfolioName, amount1, startDate1,
+            endDate1, interval1, stocks1, commission1);
+    dca.operate(this.model);
+    this.model.persist();
+    new DisplayDialogMessage(true, "Order created successfully!");
+    this.goToHome();
   }
 
   @Override
