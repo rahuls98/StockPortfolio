@@ -19,7 +19,7 @@ public class StockPortfolio {
    * Main method of the Stock Portfolio application.
    */
   public static void main(String[] args) {
-    String userName = "Test";
+    String userName = "test_user";
     InputStream input = System.in;
     PrintStream out = System.out;
     PortfolioModel model = null;

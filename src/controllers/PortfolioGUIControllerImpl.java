@@ -106,8 +106,6 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       this.goToHome();
       return;
     }
-    //TODO: Handle date validation
-    //TODO: float composition
     HashMap<String, Float> hMap = this.model.getStockQuantitiesInPortfolio(pName, date);
     String[] columnNames = {"Stock", "Quantity"};
 
@@ -116,7 +114,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     int i = 0;
     Object[] row;
     for (Map.Entry<String, Float> comp : hMap.entrySet()) {
-      row = new Object[]{comp.getKey(), comp.getValue()};
+      row = new Object[]{comp.getKey(), String.format("%.2f",comp.getValue())};
       data[i] = row;
       i++;
     }
