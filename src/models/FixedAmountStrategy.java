@@ -66,7 +66,7 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
       stockQuantity = stockInvestment / stock.getPriceOnDate(date.toString());
       stocksMap.put(stockObject.getKey(), stockQuantity);
     }
-    model.addOrderToPortfolioFromController(this.portfolioName, this.date.toString(), "BUY",
+    model.createOrderInPortfolio(this.portfolioName, this.date.toString(), "BUY",
             this.commission, stocksMap);
     return null;
   }

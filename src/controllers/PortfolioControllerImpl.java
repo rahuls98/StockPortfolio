@@ -208,7 +208,7 @@ public class PortfolioControllerImpl implements PortfolioController {
       }
       stocks.put(stockName, (float) stockQuantity);
     }
-    if (!(model.addOrderToPortfolioFromController(portfolioName, date, action, com, stocks))) {
+    if (!(model.createOrderInPortfolio(portfolioName, date, action, com, stocks))) {
       this.output.println("Invalid Order");
     } else {
       this.output.println("Order Recorded");

@@ -3,7 +3,6 @@ package views;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;

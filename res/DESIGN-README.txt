@@ -10,8 +10,10 @@ To support this, we introduced a new feature called 'order book' that contains a
 CHANGES (Assignment 6):
 We now have GUI support for the application. The old text based interface is still supported.
 We created a new model to support long term investment operations using the visitor design pattern.
+We have created an interface with a single operation method that is implemented by the new functionality classes that the application now supports(Dollar Cost Averaging, etc.)
 This enables us to support any number of future investment operations on the portfolio without
 editing the existing portfolio model.
+We also enabled Buying & Selling of partial stocks.
 
 
 1. Model - This is where all the computation and functionality resides. The PortfolioModel is the main model of our implementation and is the only public class in the model folder.
@@ -47,9 +49,14 @@ editing the existing portfolio model.
 
           10. PortfolioType -  An enum that represents the types of portfolios supported by the application,i.e, INFLEXIBLE or FLEXIBLE.
 
+          11. PortfolioOperation Interface & Implementations - Supports any current or future long term investing strategies.
+
 2. View - View is responsible for displaying outputs to the user. Currently, it implements a text based user interface.
 
 3. Controller - It is implemented as an asynchronous controller and is responsible for knowing the state, getting user input, calling the appropriate
-                functions on the model and finally calling view methods to display results.
+                functions on the model and finally calling view methods to display result.
+
+4. GUI Controller Interface & Class - This controller now supports the GUI.
+
 
 

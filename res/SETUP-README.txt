@@ -4,6 +4,12 @@ Both text based interface and GUI are supported by the application.
 1. To run the application using the text based interface : java -jar .\StockPortfolio.jar
 2. To run the application using the GUI : java -jar .\StockPortfolio.jar gui
 
+Sample dates for Portfolio Performance(Charts)
+Select PortfolioName from drop down
+Start Date: 2022-11-25
+End Date: 2022-11-30
+Click Display
+
 OLD
 -----
 1) Run the .jar file, this will also create the dependent local storage XML file in the same

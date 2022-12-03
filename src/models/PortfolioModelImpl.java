@@ -248,9 +248,8 @@ public class PortfolioModelImpl implements PortfolioModel {
     return this.getPortfolio(portfolioName).getStockCompositionOnDate(LocalDate.parse(date));
   }
 
-  @Override
-  public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action,
-                                                   float c, HashMap<String, Float> stocks) {
+  public Boolean createOrderInPortfolio(String portfolio, String date, String action,
+                                        float c, HashMap<String, Float> stocks) {
     return this.addOrderToPortfolio(portfolio, this.createOrder(date, action, c, stocks));
   }
 

@@ -138,7 +138,7 @@ public interface PortfolioModel {
    * @param stocks    Stocks in the order.
    * @return True if successful, false otherwise.
    */
-  Boolean addOrderToPortfolioFromController(String portfolio, String date, String action, float c,
+  Boolean createOrderInPortfolio(String portfolio, String date, String action, float c,
                                             HashMap<String, Float> stocks);
 
   /**
