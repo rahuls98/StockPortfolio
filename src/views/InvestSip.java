@@ -46,7 +46,10 @@ public class InvestSip extends JFrame implements IView {
     JPanel panel;
     if (stocks.length > 0) {
       this.add(new JLabel("Enter percentages from your below stocks"));
+    } else {
+      this.add(new JLabel("Enter percentages for stocks"));
     }
+    this.add(new JLabel("The weights should add upto a 100"));
     percentages = new JTextField[this.maxStocks];
     stockNames = new JTextField[this.maxStocks];
     stockPanel = new JPanel();
