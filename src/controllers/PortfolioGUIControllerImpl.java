@@ -311,7 +311,10 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
         continue;
       }
       try {
-        Float.parseFloat(stock.getValue());
+        float a = Float.parseFloat(stock.getValue());
+        if (a < 0) {
+          throw new IllegalArgumentException();
+        }
       } catch (IllegalArgumentException e) {
         new DisplayDialogMessage(false, "Invalid Quantity");
         return;
@@ -387,7 +390,10 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
         continue;
       }
       try {
-        Float.parseFloat(stock.getValue());
+        float a = Float.parseFloat(stock.getValue());
+        if (a < 0) {
+          throw new IllegalArgumentException();
+        }
       } catch (IllegalArgumentException e) {
         new DisplayDialogMessage(false, "Invalid Quantity");
         return;
