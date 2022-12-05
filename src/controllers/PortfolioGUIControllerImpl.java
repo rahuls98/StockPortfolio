@@ -413,7 +413,12 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       new DisplayDialogMessage(false, e.getMessage());
       return;
     }
-    dca.operate(this.model);
+    try {
+      dca.operate(this.model);
+    } catch (RuntimeException e) {
+      new DisplayDialogMessage(false, e.getMessage());
+      return;
+    }
     this.model.persist();
     new DisplayDialogMessage(true, "Order created successfully!");
     this.goToHome();

@@ -1,5 +1,6 @@
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 import controllers.PortfolioController;
 import controllers.PortfolioControllerImpl;
@@ -29,13 +30,19 @@ public class StockPortfolio {
       System.out.println("Storage invalid/corrupted!");
       return;
     }
-//    if (args.length > 0 && args[0].equals("gui")) {
-    if(true){
-      PortfolioGUIController controller = new PortfolioGUIControllerImpl(model);
-    } else {
+
+    System.out.println("Which interface do you want to use?");
+    System.out.println("1. Text based interface");
+    System.out.println("2. Graphical user interface");
+    System.out.print("Enter choice: ");
+    Scanner sc = new Scanner(System.in);
+    int ch = sc.nextInt();
+    if (ch == 1) {
       PortfolioView view = new PortfolioViewImpl(out);
       PortfolioController controller = new PortfolioControllerImpl(model, view, input, out);
       controller.run();
+    } else if (ch == 2) {
+      PortfolioGUIController controller = new PortfolioGUIControllerImpl(model);
     }
   }
 }
