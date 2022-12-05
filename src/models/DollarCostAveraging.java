@@ -17,6 +17,7 @@ public class DollarCostAveraging<T> implements PortfolioOperation<T> {
   private final int interval;
   private final HashMap<String, Float> stocks;
   private final float commission;
+  private final HashMap<String, Stock> stockValues;
 
   /**
    * Returns an object of the DollarCostAveraging operation class, which can be used to execute
@@ -65,6 +66,11 @@ public class DollarCostAveraging<T> implements PortfolioOperation<T> {
     this.interval = interval;
     this.stocks = stocks;
     this.commission = commission;
+    this.stockValues = new HashMap<>();
+    for(Map.Entry<String, Float> stock: stocks.entrySet()) {
+      stockValues.put(stock.getKey(), new Stock(stock.getKey()));
+      stockValues.get(stock.getKey()).getPriceOnDate(LocalDate.now().toString());
+    }
   }
 
   @Override
@@ -98,7 +104,7 @@ public class DollarCostAveraging<T> implements PortfolioOperation<T> {
         }
         if (flag) {
           fixedAmountStrategy = new FixedAmountStrategy<>(this.portfolioName,
-                  this.investmentAmount, date, this.stocks, this.commission);
+                  this.investmentAmount, date, this.stocks, this.commission, stockValues);
           fixedAmountStrategy.operate(model);
         } else {
           break;
@@ -107,7 +113,7 @@ public class DollarCostAveraging<T> implements PortfolioOperation<T> {
       date = LocalDate.ofEpochDay(ld1.toEpochDay() + j + ((long) this.interval * i));
       if (!date.isAfter(ld2)) {
         fixedAmountStrategy = new FixedAmountStrategy<>(this.portfolioName,
-                this.investmentAmount, date, this.stocks, this.commission);
+                this.investmentAmount, date, this.stocks, this.commission, stockValues);
         fixedAmountStrategy.operate(model);
       }
     } catch (DateTimeException e) {

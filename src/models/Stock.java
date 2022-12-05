@@ -51,15 +51,16 @@ class Stock {
     int closingValue = 3;
     float price;
     int count = 0;
+    if(this.prices.size() == 0) {
+      APIModel model = new APIModelImpl();
+      this.prices = model.getStockPrices(this.ticker);
+    }
+
     while (true) {
       if (count == 10) {
         throw new RuntimeException("No data for stock!");
       }
       count += 1;
-      if (!(prices.containsKey(date))) {
-        APIModel model = new APIModelImpl();
-        this.prices = model.getStockPrices(this.ticker);
-      }
       try {
         price = this.prices.get(date)[closingValue];
         break;

@@ -14,6 +14,7 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
   private final LocalDate date;
   private final HashMap<String, Float> stocks;
   private final float commission;
+  private final HashMap<String, Stock> stockValues;
 
   /**
    * Returns an object of the FixedAmountStrategy operation class, which can be used to execute
@@ -26,7 +27,8 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
    * @param commission Commission for each order.
    */
   public FixedAmountStrategy(String portfolioName, float investmentAmount,
-                             LocalDate date, HashMap<String, Float> stocks, float commission)
+                             LocalDate date, HashMap<String, Float> stocks, float commission,
+                             HashMap<String, Stock> stockList)
           throws IllegalArgumentException {
     if (portfolioName == null || portfolioName.equals("")) {
       throw new IllegalArgumentException("Portfolio required to apply strategy!");
@@ -52,6 +54,7 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
     this.date = date;
     this.stocks = stocks;
     this.commission = commission;
+    this.stockValues = stockList;
   }
 
   @Override
@@ -61,7 +64,10 @@ public class FixedAmountStrategy<T> implements PortfolioOperation<T> {
     float stockQuantity;
     HashMap<String, Float> stocksMap = new HashMap<>();
     for (Map.Entry<String, Float> stockObject : stocks.entrySet()) {
-      stock = new Stock(stockObject.getKey());
+      stock = this.stockValues.getOrDefault(
+              stockObject.getKey(),
+              new Stock(stockObject.getKey())
+              );
       stockInvestment = (stockObject.getValue() / 100) * investmentAmount;
       stockQuantity = stockInvestment / stock.getPriceOnDate(date.toString());
       stocksMap.put(stockObject.getKey(), stockQuantity);

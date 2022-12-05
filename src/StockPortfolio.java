@@ -29,7 +29,8 @@ public class StockPortfolio {
       System.out.println("Storage invalid/corrupted!");
       return;
     }
-    if (args.length > 0 && args[0].equals("gui")) {
+//    if (args.length > 0 && args[0].equals("gui")) {
+    if(true){
       PortfolioGUIController controller = new PortfolioGUIControllerImpl(model);
     } else {
       PortfolioView view = new PortfolioViewImpl(out);

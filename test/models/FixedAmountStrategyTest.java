@@ -39,7 +39,7 @@ public class FixedAmountStrategyTest {
     this.investmentAmount = 2000;
     this.investmentCommission = 5.6f;
     this.fas = new FixedAmountStrategy<>(portfolioName, this.investmentAmount,
-            LocalDate.parse("2022-11-10"), stocks, this.investmentCommission);
+            LocalDate.parse("2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
     model.accept(this.fas);
   }
 
@@ -83,7 +83,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>(null, this.investmentAmount, LocalDate.parse(
-              "2022-11-10"), stocks, this.investmentCommission);
+              "2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Portfolio required to apply strategy!", e.getMessage());
@@ -91,7 +91,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>("", this.investmentAmount, LocalDate.parse(
-              "2022-11-10"), stocks, this.investmentCommission);
+              "2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Portfolio required to apply strategy!", e.getMessage());
@@ -99,7 +99,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>(portfolioName, this.investmentAmount, LocalDate.parse(
-              "2022-11-10"), stocks, this.investmentCommission);
+              "2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("No stocks!", e.getMessage());
@@ -107,7 +107,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>(portfolioName, 0, LocalDate.parse(
-              "2022-11-10"), stocks, this.investmentCommission);
+              "2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Investment amount should be a positive non-zero value!", e.getMessage());
@@ -115,7 +115,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>(portfolioName, -1000, LocalDate.parse(
-              "2022-11-10"), stocks, this.investmentCommission);
+              "2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Investment amount should be a positive non-zero value!", e.getMessage());
@@ -127,7 +127,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>(portfolioName, this.investmentAmount, LocalDate.parse(
-              "2022-11-10"), stocks, this.investmentCommission);
+              "2022-11-10"), stocks, this.investmentCommission, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Weights don't add upto 100% !", e.getMessage());
@@ -137,7 +137,7 @@ public class FixedAmountStrategyTest {
 
     try {
       this.fas = new FixedAmountStrategy<>(portfolioName, this.investmentAmount, LocalDate.parse(
-              "2022-11-10"), stocks, -5);
+              "2022-11-10"), stocks, -5, new HashMap<>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Commission cannot be negative!", e.getMessage());

@@ -227,7 +227,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
       return;
     }
 
-    if (!(model.addOrderToPortfolioFromController(portfolio, date, action, Float.parseFloat(c),
+    if (!(model.createOrderInPortfolio(portfolio, date, action, Float.parseFloat(c),
             stockMap))) {
       new DisplayDialogMessage(false, "Invalid Order, cannot be processed.");
       this.goToHome();
@@ -332,7 +332,7 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     PortfolioOperation<Void> fas;
     try {
       fas = new FixedAmountStrategy<>(portfolioName, amount1, date1, stocks1,
-              commission1);
+              commission1, new HashMap<>());
     } catch (IllegalArgumentException e) {
       new DisplayDialogMessage(false, e.getMessage());
       return;

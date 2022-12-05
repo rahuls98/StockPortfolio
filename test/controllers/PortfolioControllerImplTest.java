@@ -1007,6 +1007,11 @@ public class PortfolioControllerImplTest {
     }
 
     @Override
+    public Boolean createOrderInPortfolio(String portfolio, String date, String action, float c, HashMap<String, Float> stocks) {
+      return null;
+    }
+
+
     public Boolean addOrderToPortfolioFromController(String portfolio, String date, String action,
                                                      float c, HashMap<String, Float> stocks) {
       return null;
