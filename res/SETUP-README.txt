@@ -1,8 +1,8 @@
 ASSIGNMENT 6
 ---------------
 Both text based interface and GUI are supported by the application.
-1. To run the application using the text based interface : java -jar .\StockPortfolio.jar
-2. To run the application using the GUI : java -jar .\StockPortfolio.jar gui
+1. To run the application using the text based interface : Select option 1
+2. To run the application using the GUI : Select option 2
 
 Sample dates for Portfolio Performance(Charts)
 Select PortfolioName from drop down

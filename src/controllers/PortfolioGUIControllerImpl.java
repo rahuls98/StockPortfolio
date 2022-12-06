@@ -217,6 +217,9 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
     for (Map.Entry<String, String> stock : stocks.entrySet()) {
       try {
         Integer.parseInt(stock.getValue());
+        if(Integer.parseInt(stock.getValue()) < 0) {
+          throw new IllegalArgumentException();
+        }
       } catch (IllegalArgumentException e) {
         new DisplayDialogMessage(false, "Invalid Quantity");
         return;

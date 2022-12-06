@@ -31,18 +31,25 @@ public class StockPortfolio {
       return;
     }
 
-    System.out.println("Which interface do you want to use?");
-    System.out.println("1. Text based interface");
-    System.out.println("2. Graphical user interface");
-    System.out.print("Enter choice: ");
-    Scanner sc = new Scanner(System.in);
-    int ch = sc.nextInt();
-    if (ch == 1) {
-      PortfolioView view = new PortfolioViewImpl(out);
-      PortfolioController controller = new PortfolioControllerImpl(model, view, input, out);
-      controller.run();
-    } else if (ch == 2) {
-      PortfolioGUIController controller = new PortfolioGUIControllerImpl(model);
+    while (true) {
+      System.out.println("Which interface do you want to use?");
+      System.out.println("1. Text based interface");
+      System.out.println("2. Graphical user interface");
+      System.out.println("3. Exit");
+      System.out.print("Enter choice: ");
+      Scanner sc = new Scanner(System.in);
+      int ch = sc.nextInt();
+      if (ch == 1) {
+        PortfolioView view = new PortfolioViewImpl(out);
+        PortfolioController controller = new PortfolioControllerImpl(model, view, input, out);
+        controller.run();
+      } else if (ch == 2) {
+        PortfolioGUIController controller = new PortfolioGUIControllerImpl(model);
+      } else if (ch == 3) {
+        return;
+      } else {
+        System.out.println("\nInvalid choice, please try again!\n");
+      }
     }
   }
 }
