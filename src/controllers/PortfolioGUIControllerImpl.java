@@ -1,7 +1,9 @@
 package controllers;
 
 import java.io.File;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -203,6 +205,12 @@ public class PortfolioGUIControllerImpl implements PortfolioGUIController {
 
     if (!(this.model.isValidDate(date))) {
       new DisplayDialogMessage(false, "Invalid Date!");
+      return;
+    }
+    LocalDate date1 = LocalDate.parse(date);
+    DayOfWeek day = DayOfWeek.of(date1.get(ChronoField.DAY_OF_WEEK));
+    if ((day == DayOfWeek.SUNDAY) || (day == DayOfWeek.SATURDAY)) {
+      new DisplayDialogMessage(false, "Entered day is weekend, try again.");
       return;
     }
     HashMap<String, Float> stockMap = new HashMap<>();
